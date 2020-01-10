@@ -47,7 +47,7 @@ colorEnd = "\x1b[0m"
 printColored :: Color -> String -> IO () 
 printColored c x = printf "%s%s%s" c x colorEnd
 
-runTests' :: (Show a, Eq b, Show b) =>
+runTests' :: (Show a, TestEq b, Show b) =>
         [Int]                    -- Run times of test cases
     ->  Int                      -- Test case number
     ->  Int                      -- Total number of test cases
@@ -65,7 +65,7 @@ runTests' rts i n f fin fout (t:ts) = do
     let input            = fin t 
         expected         = fout t
     (res, rt) <- time $ return $ f input 
-    if res == expected 
+    if res `eq` expected
         then do
             printf "\rTest \x1b[32mPASSED\x1b[0m (%5d/%d) [%4d us]" i n rt 
             runTests' (rt:rts) (i+1) n f fin fout ts

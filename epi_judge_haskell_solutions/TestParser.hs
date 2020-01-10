@@ -7,6 +7,7 @@ module TestParser
     ,   testCases
     ,   intData
     ,   longData
+    ,   doubleData
     ,   tuple3Data
     ,   tuple4Data
     ,   uncurry2
@@ -23,18 +24,21 @@ data DataType =
         TupleDT [DataType] Name
     |   IntDT (Maybe Name)
     |   LongDT (Maybe Name)
+    |   DoubleDT (Maybe Name)
     deriving (Show)
 
 data Data = 
         TupleD DataType [Data]
     |   IntD DataType Int
     |   LongD DataType Integer
+    |   DoubleD DataType Double
     |   Explanation Text
 
 instance Show Data where 
     show (TupleD _ ds)   = show ds 
     show (IntD _ x)      = show x
     show (LongD _ x)     = show x 
+    show (DoubleD _ x)   = show x
     show (Explanation x) = show x
 
 p_dts :: Parser [DataType]
@@ -45,6 +49,7 @@ p_dt = choice [
         p_tuple_dt
     ,   p_int_dt
     ,   p_long_dt
+    ,   p_double_dt
     ]
     <?> "Type"
 
@@ -57,20 +62,30 @@ p_d parseExpl sep (dt@(TupleDT dts _):rest) = do
     return (x:xs)
 p_d parseExpl sep (dt@(IntDT _):rest) = do
     [x] <- case rest of
-        [] -> pure <$> p_int
+        -- sep is not found for last element of tuple so not using manyTill
+        -- as it consumes until sep succeeds
+        [] -> pure <$> p_int 
         _  -> p_int `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
     return (IntD dt (read x):xs)
 p_d parseExpl sep (dt@(LongDT _):rest) = do 
     [x] <- case rest of
         [] -> pure <$> p_long
-        _  -> p_int `manyTill` (try sep)
+        _  -> p_double `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
     return (LongD dt (read x):xs)
+p_d parseExpl sep (dt@(DoubleDT _):rest) = do 
+    [x] <- case rest of 
+        [] -> pure <$> p_double
+        _  -> p_double `manyTill` (try sep)
+    xs  <- spaces *> p_d parseExpl sep rest
+    return (DoubleD dt (read x):xs)
 
 p_int = (++) <$> option "" (string "-") <*> many1 digit
 
 p_long = (++) <$> option "" (string "-") <*> many1 digit
+
+p_double = (++) <$> option "" (string "-") <*> (many1 (digit <|> oneOf ".-+e"))
 
 p_tuple_dt = TupleDT
     <$> (string "tuple" 
@@ -89,6 +104,12 @@ p_int_dt = IntDT <$>
 p_long_dt = LongDT <$>
     (
         string "long"
+    *>  optional (between (char '[') (char ']') (many . noneOf $ "[]"))
+    )
+
+p_double_dt = DoubleDT <$>
+    (
+        string "float"
     *>  optional (between (char '[') (char ']') (many . noneOf $ "[]"))
     )
 
@@ -114,6 +135,9 @@ intData (IntD _ x) = x
 
 longData :: Data -> Integer
 longData (LongD _ x) = x
+
+doubleData :: Data -> Double 
+doubleData (DoubleD _ x) = x 
 
 tuple3Data :: Data -> (Data, Data, Data)
 tuple3Data (TupleD _ [p,q,r]) = (p,q,r)

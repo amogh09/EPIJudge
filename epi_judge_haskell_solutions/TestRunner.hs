@@ -10,6 +10,7 @@ module TestRunner
 import EPIPrelude
 import TestParser
 import System.CPUTime
+import TestEq
 
 time :: IO a -> IO (a, Int)
 time a = do 
@@ -25,19 +26,46 @@ goTest :: (Show a, Eq b, Show b) =>
         (a -> b)
     ->  (TestCase -> a)
     ->  (TestCase -> b)
+    -> (b -> b -> Bool)    
     ->  String
     ->  IO ()
-goTest f fin fout fileName = do 
+goTest f fin fout cmp fileName = do 
     ts <- testCases fileName
-    runTests f fin fout ts 
+    runTests f fin fout cmp ts 
 
 runTests :: (Show a, Eq b, Show b) => 
        (a -> b) 
     -> (TestCase -> a)
     -> (TestCase -> b)
+    -> (b -> b -> Bool)
     -> [TestCase] 
     -> IO ()
-runTests f fin fout ts = runTests' [] 1 (length ts) f fin fout ts
+runTests f fin fout cmp ts = runTests' [] 1 (length ts) f fin fout cmp ts
+
+runTests' :: (Show a, Show b) =>
+        [Int]                    -- Run times of test cases
+    ->  Int                      -- Test case number
+    ->  Int                      -- Total number of test cases
+    ->  (a -> b)                 -- Function to test 
+    ->  (TestCase -> a)          -- Test case to function input
+    ->  (TestCase -> b)          -- Test case to expected output
+    ->  (b -> b -> Bool)         -- Comparator function
+    ->  [TestCase]               -- List of test cases
+    ->  IO ()                    
+runTests' rts _ _ _ _ _ _ [] = do
+    printf "\nAverage running time: %4d us" (sum rts `div` length rts)
+    printf "\nMedian running time:  %4d us\n" (sort rts !! (length rts `div` 2))
+    putStrLn . pack $ "*** You've passed ALL tests. Congratulations! ***"
+    return ()
+runTests' rts i n f fin fout cmp (t:ts) = do
+    let input            = fin t 
+        expected         = fout t
+    (res, rt) <- time $ return $ f input 
+    if res `cmp` expected 
+        then do
+            printf "\rTest \x1b[32mPASSED\x1b[0m (%5d/%d) [%4d us]" i n rt 
+            runTests' (rt:rts) (i+1) n f fin fout cmp ts
+        else printFailure i n t expected res
 
 type Color = String
 
@@ -46,30 +74,6 @@ colorEnd = "\x1b[0m"
 
 printColored :: Color -> String -> IO () 
 printColored c x = printf "%s%s%s" c x colorEnd
-
-runTests' :: (Show a, Eq b, Show b) =>
-        [Int]                    -- Run times of test cases
-    ->  Int                      -- Test case number
-    ->  Int                      -- Total number of test cases
-    ->  (a -> b)                 -- Function to test 
-    ->  (TestCase -> a)          -- Test case to function input
-    ->  (TestCase -> b)          -- Test case to expected output
-    ->  [TestCase]               -- List of test cases
-    ->  IO ()                    
-runTests' rts _ _ _ _ _ [] = do
-    printf "\nAverage running time: %4d us" (sum rts `div` length rts)
-    printf "\nMedian running time:  %4d us\n" (sort rts !! (length rts `div` 2))
-    putStrLn . pack $ "*** You've passed ALL tests. Congratulations! ***"
-    return ()
-runTests' rts i n f fin fout (t:ts) = do
-    let input            = fin t 
-        expected         = fout t
-    (res, rt) <- time $ return $ f input 
-    if res == expected 
-        then do
-            printf "\rTest \x1b[32mPASSED\x1b[0m (%5d/%d) [%4d us]" i n rt 
-            runTests' (rt:rts) (i+1) n f fin fout ts
-        else printFailure i n t expected res
 
 printFailure :: (Show b) => Int -> Int -> TestCase -> b -> b -> IO ()
 printFailure i n t expected result = do 
