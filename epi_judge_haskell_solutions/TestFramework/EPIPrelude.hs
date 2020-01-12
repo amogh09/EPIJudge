@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module EPIPrelude 
+module TestFramework.EPIPrelude 
     (
         module Prelude
     ,   module Text.Show 

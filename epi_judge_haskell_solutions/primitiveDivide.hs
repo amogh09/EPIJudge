@@ -1,4 +1,4 @@
-import TestRunner 
+import TestFramework.TestRunner 
 import Data.Bits 
 
 getBit :: Int -> Int -> Int
@@ -17,4 +17,5 @@ main = goTest
     (uncurry primitiveDivide)
     (\(x:y:_)   -> (intData x, intData y))
     (\(_:_:z:_) -> intData z)
+    (==)
     "../test_data/primitive_divide.tsv"

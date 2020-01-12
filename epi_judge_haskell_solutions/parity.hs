@@ -1,4 +1,4 @@
-import TestRunner 
+import TestFramework.TestRunner 
 import Data.Bits
 
 parity :: Integer -> Int
@@ -13,5 +13,6 @@ parity x =
 main = goTest 
     parity 
     (longData . head) 
-    (intData . head . tail) 
+    (intData . head . tail)
+    (==) 
     "../test_data/parity.tsv"

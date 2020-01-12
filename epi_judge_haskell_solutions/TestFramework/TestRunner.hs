@@ -1,20 +1,19 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module TestRunner 
+module TestFramework.TestRunner 
     (
         goTest
     ,   goTestRandomVoid
     ,   uncurry2
     ,   allInRange    
     ,   TestCase
-    ,   module TestParser
+    ,   module TestFramework.TestParser
     ) where 
 
-import EPIPrelude
+import TestFramework.EPIPrelude
 import System.Random
-import TestParser
+import TestFramework.TestParser
 import System.CPUTime
-import TestEq
 
 time :: IO a -> IO (a, Int)
 time a = do 
@@ -27,11 +26,11 @@ time a = do
 type TestCase = [Data]
 
 goTest :: (Show a, Eq b, Show b) =>
-        (a -> b)
-    ->  (TestCase -> a)
-    ->  (TestCase -> b)
-    -> (b -> b -> Bool)    
-    ->  String
+        (a -> b)               -- Function to test 
+    ->  (TestCase -> a)        -- Test case to function input    
+    ->  (TestCase -> b)        -- Test case to function output 
+    ->  (b -> b -> Bool)       -- Result Comparator
+    ->  String                 -- File name of test data
     ->  IO ()
 goTest f fin fout cmp fileName = do 
     ts <- testCases fileName

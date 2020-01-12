@@ -1,4 +1,4 @@
-import TestRunner 
+import TestFramework.TestRunner 
 import Data.Bits 
 
 closestIntSameWeight :: Integer -> Integer
@@ -17,4 +17,5 @@ main = goTest
     closestIntSameWeight
     (longData . head)
     (longData . head . tail)
+    (==)
     "../test_data/closest_int_same_weight.tsv"

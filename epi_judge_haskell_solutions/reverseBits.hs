@@ -1,4 +1,4 @@
-import TestRunner
+import TestFramework.TestRunner
 import Data.Bits
 
 swapBits :: Integer -> Int -> Int -> Integer
@@ -20,4 +20,5 @@ main = goTest
     reverseBits 
     (longData . head) 
     (longData . head . tail) 
+    (==)
     "../test_data/reverse_bits.tsv"

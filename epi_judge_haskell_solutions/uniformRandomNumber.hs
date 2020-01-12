@@ -1,6 +1,6 @@
-import TestRunner 
+import TestFramework.TestRunner 
+import TestFramework.Randomness
 import System.Random
-import Randomness
 
 zeroOneRandom :: RandomGen g => g -> (Int,g) 
 zeroOneRandom = randomR (0,1)

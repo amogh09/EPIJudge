@@ -1,9 +1,9 @@
-module Randomness
+module TestFramework.Randomness
     (
         checkUniformRandomness
     ) where 
 
-import EPIPrelude
+import TestFramework.EPIPrelude
 import qualified Data.Vector as V
 import qualified Data.Set as S
 import qualified Data.Map as M

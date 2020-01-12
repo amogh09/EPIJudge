@@ -1,4 +1,4 @@
-import TestRunner
+import TestFramework.TestRunner
 import Data.Bits
 
 countBits :: Int -> Int
@@ -10,5 +10,6 @@ countBits x
 main = goTest 
     countBits 
     (intData . head) 
-    (intData . head . tail) 
+    (intData . head . tail)
+    (==) 
     "../test_data/count_bits.tsv"

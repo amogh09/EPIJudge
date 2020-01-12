@@ -1,5 +1,4 @@
-import TestRunner
-import Debug.Trace
+import TestFramework.TestRunner
 
 powerXY' :: Double -> Int -> Double
 powerXY' x y

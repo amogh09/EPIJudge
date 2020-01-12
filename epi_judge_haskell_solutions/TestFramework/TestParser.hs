@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module TestParser 
+module TestFramework.TestParser 
     (
         p_tsv
     ,   Data (..) 
@@ -13,7 +13,7 @@ module TestParser
     ,   tuple4Data
     ) where
 
-import EPIPrelude
+import TestFramework.EPIPrelude
 import Text.Parsec.Text
 import Text.Parsec.Char
 import Text.Parsec hiding ((<|>), many, optional)

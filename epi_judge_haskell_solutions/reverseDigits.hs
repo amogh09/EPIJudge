@@ -1,4 +1,4 @@
-import TestRunner 
+import TestFramework.TestRunner 
 
 reverseDigits :: Int -> Integer 
 reverseDigits x

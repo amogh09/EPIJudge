@@ -1,4 +1,4 @@
-import TestRunner 
+import TestFramework.TestRunner 
 import Data.Bits 
 
 mulSingle :: Int -> Int -> Int 
@@ -41,4 +41,5 @@ main = goTest
     (uncurry primitiveMultiply)
     (\(x:y:_)   -> (longData x, longData y))
     (\(_:_:z:_) -> longData z)
+    (==)
     "../test_data/primitive_multiply.tsv"
