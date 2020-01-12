@@ -1,3 +1,5 @@
+This repository provides EPIJudge problems in Haskell.
+
 # EPI Judge
 
 ## Introduction
