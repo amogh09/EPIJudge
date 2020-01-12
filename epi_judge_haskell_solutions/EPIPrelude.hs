@@ -24,7 +24,10 @@ module EPIPrelude
     ,   dropRight
     ) where
 
-import Prelude ((-), (+), div, (^), fromIntegral, (==), Integer, Double, abs)
+import Prelude (
+        (-), (+), div, (^), fromIntegral, (==), Integer
+    ,   Double, abs, sqrt, log, (<=), (>=), (&&)
+    )
 import Text.Show (Show, show)
 import Text.Read (read)
 import Data.List
