@@ -14,7 +14,7 @@ EPI Judge consists of the following:
 
 Here's how to download the judge:
 
-    $ git clone https://github.com/adnanaziz/EPIJudge.git
+    $ git clone https://github.com/amogh09/EPIJudgeHaskell.git
 If you do not have `git`, here's a good [tutorial](https://www.atlassian.com/git/tutorials/install-git) on installing git itself.
 
 ## Running the judge using IDEs
