@@ -11,6 +11,7 @@ module TestFramework.TestParser
     ,   boolData
     ,   tuple3Data
     ,   tuple4Data
+    ,   intList 
     ) where
 
 import TestFramework.EPIPrelude
@@ -26,6 +27,7 @@ data DataType =
     |   LongDT (Maybe Name)
     |   DoubleDT (Maybe Name)
     |   BoolDT (Maybe Name)
+    |   ListDT DataType (Maybe Name)
     |   VoidDT
     deriving (Show)
 
@@ -35,6 +37,7 @@ data Data =
     |   LongD DataType Integer
     |   DoubleD DataType Double
     |   BoolD DataType Bool
+    |   ListD DataType [Data]
     |   VoidD
     |   Explanation Text
 
@@ -44,6 +47,7 @@ instance Show Data where
     show (LongD _ x)     = show x 
     show (DoubleD _ x)   = show x
     show (BoolD _ x)     = show x 
+    show (ListD _ x)     = show x
     show VoidD           = "void"
     show (Explanation x) = show x
 
@@ -57,6 +61,7 @@ p_dt = choice [
     ,   p_long_dt
     ,   p_double_dt
     ,   p_bool_dt
+    ,   p_list_dt
     ,   p_void_dt
     ]
     <?> "Type"
@@ -65,17 +70,17 @@ p_d :: Bool -> Parser Char -> [DataType] -> Parser [Data]
 p_d True  _ [] = pure . Explanation . pack <$> (many . noneOf $ "\n\r") 
 p_d False _ [] = return []
 p_d parseExpl sep (dt@(TupleDT dts _):rest) = do
-    [x] <- (p_tuple_d dt dts) `manyTill` (try sep)
+    [x] <- (p_tuple dts) `manyTill` (try sep)
     xs  <- p_d parseExpl sep rest 
-    return $ x:xs
+    return $ TupleD dt x:xs
 p_d parseExpl sep (dt@(IntDT _):rest) = do
     [x] <- case rest of
         -- sep is not found for last element of tuple so not using manyTill
         -- as it consumes until sep succeeds
-        [] -> pure <$> p_int 
-        _  -> p_int `manyTill` (try sep)
+        [] -> pure <$> p_int dt 
+        _  -> p_int dt `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
-    return $ IntD dt (read x):xs
+    return $ x:xs
 p_d parseExpl sep (dt@(LongDT _):rest) = do 
     [x] <- case rest of
         [] -> pure <$> p_long
@@ -94,23 +99,29 @@ p_d parseExpl sep (dt@(BoolDT _):rest) = do
         _  -> p_bool `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
     return $ BoolD dt (readBool x):xs
+p_d parseExpl sep (dt@(ListDT ldt _):rest) = do 
+    [x] <- p_list dt ldt `manyTill` sep 
+    xs  <- p_d parseExpl sep rest 
+    return $ x:xs
 p_d parseExpl sep (VoidDT:rest) = do 
     xs <- spaces *> p_d parseExpl sep rest 
     return $ VoidD:xs 
 
-p_int = (++) <$> option "" (string "-") <*> many1 digit
+p_int :: DataType -> Parser Data
+p_int dt = IntD dt <$> (read <$> ((++) <$> option "" (string "-") <*> many1 digit))
 p_long = (++) <$> option "" (string "-") <*> many1 digit
 p_double = (++) <$> option "" (string "-") <*> (many1 (digit <|> oneOf ".-+e"))
 p_bool = string "true" <|> string "false" <?> "Bool"
+p_tuple dts = between (char '[') (char ']') (p_d False (char ',') dts)
+p_list dt ldt@(IntDT _) = ListD dt <$> 
+    between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
+
+p_single_field_name = between (char '[') (char ']') (many . noneOf $ "[]") 
+
 p_tuple_dt = TupleDT
     <$> (string "tuple" 
      *> between (char '(') (char ')') ((spaces *> p_dt) `sepBy` (char ',')))
     <*> between (char '[') (char ']') (many . noneOf $ "[]")
-
-p_single_field_name = between (char '[') (char ']') (many . noneOf $ "[]") 
-
-p_tuple_d dt dts = TupleD dt 
-    <$> between (char '[') (char ']') (p_d False (char ',') dts)
 p_int_dt = IntDT <$> 
     (
         string "int" 
@@ -131,6 +142,12 @@ p_bool_dt = BoolDT <$>
         string "bool"
     *>  optional p_single_field_name
     )
+p_list_dt = ListDT <$> 
+    (
+        string "array" 
+    *>  between (char '(') (char ')') p_dt
+    )
+    <*> optional p_single_field_name
 p_void_dt = string "void" *> return VoidDT
 
 p_tsv = do 
@@ -172,3 +189,6 @@ tuple3Data (TupleD _ [p,q,r]) = (p,q,r)
 
 tuple4Data :: Data -> (Data, Data, Data, Data)
 tuple4Data (TupleD _ [p,q,r,s]) = (p,q,r,s)
+
+intList :: Data -> [Int]
+intList (ListD _ ds) = intData <$> ds

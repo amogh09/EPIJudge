@@ -3,6 +3,7 @@
 module TestFramework.TestRunner 
     (
         goTest
+    ,   goTestVoid
     ,   goTestRandomVoid
     ,   uncurry2
     ,   allInRange    
@@ -58,6 +59,37 @@ runTests rts i n f fin fout cmp (t:ts) = do
         else do 
             printFailure i n t 
             printFailureInfoAndExpl t expected res
+
+goTestVoid :: (Show a, Eq b, Show b) =>
+        (a -> b)                  -- Function to test 
+    ->  (TestCase -> a)           -- Test case to function input 
+    ->  (a -> b -> (Bool,String)) -- Output checker function with fail info
+    ->  String                    -- Test data file name
+    ->  IO ()
+goTestVoid f fin chk fileName = do 
+    ts <- testCases fileName
+    runTestsVoid [] 1 (length ts) f fin chk ts 
+
+runTestsVoid :: (Show a, Show b) =>
+        [Int]                     -- Run times of test cases
+    ->  Int                       -- Test case number
+    ->  Int                       -- Total number of test cases
+    ->  (a -> b)                  -- Function to test 
+    ->  (TestCase -> a)           -- Test case to function input
+    ->  (a -> b -> (Bool,String)) -- Output checker function
+    ->  [TestCase]                -- List of test cases
+    ->  IO ()
+runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
+runTestsVoid rts i n f fin chk (t:ts) = do 
+    let input = fin t 
+    (res, rt) <- time $ return $ f input
+    case chk input res of 
+        (True, _) -> do 
+            printSuccess i n rt 
+            runTestsVoid (rt:rts) (i+1) n f fin chk ts
+        (False, failureInfo) -> do 
+            printFailure i n t
+            printf "%s\n" failureInfo
 
 goTestRandomVoid :: (RandomGen g, Show a, Eq b, Show b) =>
         g 
