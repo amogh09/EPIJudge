@@ -168,7 +168,7 @@ Then just open `epi_judge_cpp/vs/epi_judge_cpp.sln` solution with Visual Studio 
 | Generate uniform random numbers | uniformRandomNumber.hs | uniform\_random\_number.cc | UniformRandomNumber.java | uniform\_random\_number.py | 
 | Rectangle intersection | rectangleIntersection.hs | rectangle\_intersection.cc | RectangleIntersection.java | rectangle\_intersection.py | 
 | Bootcamp: Arrays | evenOddArray.hs | even\_odd\_array.cc | EvenOddArray.java | even\_odd\_array.py | 
-| The Dutch national flag problem | <TBA> | dutch\_national\_flag.cc | DutchNationalFlag.java | dutch\_national\_flag.py | 
+| The Dutch national flag problem | dutchNationalFlag.hs | dutch\_national\_flag.cc | DutchNationalFlag.java | dutch\_national\_flag.py | 
 | Increment an arbitrary-precision integer | <TBA> | int\_as\_array\_increment.cc | IntAsArrayIncrement.java | int\_as\_array\_increment.py | 
 | Multiply two arbitrary-precision integers | <TBA> | int\_as\_array\_multiply.cc | IntAsArrayMultiply.java | int\_as\_array\_multiply.py | 
 | Advancing through an array | <TBA> | advance\_by\_offsets.cc | AdvanceByOffsets.java | advance\_by\_offsets.py | 

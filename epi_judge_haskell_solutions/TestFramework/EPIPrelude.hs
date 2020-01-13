@@ -26,7 +26,7 @@ module TestFramework.EPIPrelude
 
 import Prelude (
         (-), (+), div, (^), fromIntegral, (==), Integer
-    ,   Double, abs, sqrt, log, (<=), (>=), (&&)
+    ,   Double, abs, sqrt, log, (<=), (>=), (&&), otherwise
     )
 import Text.Show (Show, show)
 import Text.Read (read)

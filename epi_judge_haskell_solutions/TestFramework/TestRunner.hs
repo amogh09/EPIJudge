@@ -7,6 +7,7 @@ module TestFramework.TestRunner
     ,   goTestRandomVoid
     ,   uncurry2
     ,   allInRange    
+    ,   splitWhen
     ,   TestCase
     ,   module TestFramework.TestParser
     ) where 
@@ -178,3 +179,10 @@ uncurry2 f (x,y,z) = f x y z
 
 allInRange :: (Ord a) => a -> a -> [a] -> Bool 
 allInRange lo hi = all (\x -> lo <= x && x <= hi) 
+
+splitWhen :: (a -> Bool) -> [a] -> ([a],[a])
+splitWhen p = f [] where
+    f ls [] = (reverse ls,[])
+    f ls (x:xs) 
+        | p x = (reverse ls,x:xs)
+        | otherwise = f (x:ls) xs

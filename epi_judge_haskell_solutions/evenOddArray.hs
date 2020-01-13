@@ -6,13 +6,6 @@ evenOdd xs = es ++ os where
     es = filter even xs 
     os = filter odd xs
 
-splitWhen :: (a -> Bool) -> [a] -> ([a],[a])
-splitWhen p = f [] where
-    f ls [] = (reverse ls,[])
-    f ls (x:xs) 
-        | p x = (reverse ls,x:xs)
-        | otherwise = f (x:ls) xs
-
 chk :: [Int] -> [Int] -> (Bool,String)
 chk xs res = 
     let (_,os) = splitWhen odd res 
