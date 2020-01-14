@@ -16,6 +16,7 @@ import TestFramework.EPIPrelude
 import System.Random
 import TestFramework.TestParser
 import System.CPUTime
+import Control.Exception (evaluate)
 
 time :: IO a -> IO (a, Int)
 time a = do 
@@ -83,7 +84,7 @@ runTestsVoid :: (Show a, Show b) =>
 runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
 runTestsVoid rts i n f fin chk (t:ts) = do 
     let input = fin t 
-    (res, rt) <- time $ return $ f input
+    (res, rt) <- time $ evaluate $ f input
     case chk input res of 
         (True, _) -> do 
             printSuccess i n rt 
