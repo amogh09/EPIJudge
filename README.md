@@ -169,7 +169,7 @@ Then just open `epi_judge_cpp/vs/epi_judge_cpp.sln` solution with Visual Studio 
 | Rectangle intersection | rectangleIntersection.hs | rectangle\_intersection.cc | RectangleIntersection.java | rectangle\_intersection.py | 
 | Bootcamp: Arrays | evenOddArray.hs | even\_odd\_array.cc | EvenOddArray.java | even\_odd\_array.py | 
 | The Dutch national flag problem | dutchNationalFlag.hs | dutch\_national\_flag.cc | DutchNationalFlag.java | dutch\_national\_flag.py | 
-| Increment an arbitrary-precision integer | <TBA> | int\_as\_array\_increment.cc | IntAsArrayIncrement.java | int\_as\_array\_increment.py | 
+| Increment an arbitrary-precision integer | intAsArrayIncrement.hs | int\_as\_array\_increment.cc | IntAsArrayIncrement.java | int\_as\_array\_increment.py | 
 | Multiply two arbitrary-precision integers | <TBA> | int\_as\_array\_multiply.cc | IntAsArrayMultiply.java | int\_as\_array\_multiply.py | 
 | Advancing through an array | <TBA> | advance\_by\_offsets.cc | AdvanceByOffsets.java | advance\_by\_offsets.py | 
 | Delete duplicates from a sorted array | <TBA> | sorted\_array\_remove\_dups.cc | SortedArrayRemoveDups.java | sorted\_array\_remove\_dups.py | 

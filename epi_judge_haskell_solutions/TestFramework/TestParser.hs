@@ -12,6 +12,7 @@ module TestFramework.TestParser
     ,   tuple3Data
     ,   tuple4Data
     ,   intList 
+    ,   listToTuple2
     ) where
 
 import TestFramework.EPIPrelude
@@ -192,3 +193,6 @@ tuple4Data (TupleD _ [p,q,r,s]) = (p,q,r,s)
 
 intList :: Data -> [Int]
 intList (ListD _ ds) = intData <$> ds
+
+listToTuple2 :: [a] -> (a,a)
+listToTuple2 (x:y:_) = (x,y)
