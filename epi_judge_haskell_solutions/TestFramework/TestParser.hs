@@ -18,6 +18,7 @@ module TestFramework.TestParser
 import TestFramework.EPIPrelude
 import Text.Parsec.Text
 import Text.Parsec.Char
+import TestFramework.NumberParser
 import Text.Parsec hiding ((<|>), many, optional)
 
 type Name = String
@@ -108,53 +109,83 @@ p_d parseExpl sep (VoidDT:rest) = do
     xs <- spaces *> p_d parseExpl sep rest 
     return $ VoidD:xs 
 
-p_int :: DataType -> Parser Data
-p_int dt = IntD dt <$> (read <$> ((++) <$> option "" (string "-") <*> many1 digit))
+p_int' :: Parser Int
+p_int' = int
+
+p_int :: DataType -> Parser Data 
+p_int dt = IntD dt <$> p_int'
+
+p_long :: Parser String 
 p_long = (++) <$> option "" (string "-") <*> many1 digit
+
+p_double :: Parser String 
 p_double = (++) <$> option "" (string "-") <*> (many1 (digit <|> oneOf ".-+e"))
+
+p_bool :: Parser String 
 p_bool = string "true" <|> string "false" <?> "Bool"
+
+p_tuple :: [DataType] -> Parser [Data]
 p_tuple dts = between (char '[') (char ']') (p_d False (char ',') dts)
+
+p_list :: DataType -> DataType -> Parser Data
 p_list dt ldt@(IntDT _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
 
+p_single_field_name :: Parser String
 p_single_field_name = between (char '[') (char ']') (many . noneOf $ "[]") 
 
+p_tuple_dt :: Parser DataType
 p_tuple_dt = TupleDT
     <$> (string "tuple" 
      *> between (char '(') (char ')') ((spaces *> p_dt) `sepBy` (char ',')))
     <*> between (char '[') (char ']') (many . noneOf $ "[]")
+
+p_int_dt :: Parser DataType
 p_int_dt = IntDT <$> 
     (
         string "int" 
     *>  optional p_single_field_name
     )
+
+p_long_dt :: Parser DataType
 p_long_dt = LongDT <$>
     (
         string "long"
     *>  optional p_single_field_name
     )
+
+p_double_dt :: Parser DataType
 p_double_dt = DoubleDT <$>
     (
         string "float"
     *>  optional p_single_field_name
     )
+
+p_bool_dt :: Parser DataType
 p_bool_dt = BoolDT <$>
     (
         string "bool"
     *>  optional p_single_field_name
     )
+
+p_list_dt :: Parser DataType
 p_list_dt = ListDT <$> 
     (
         string "array" 
     *>  between (char '(') (char ')') p_dt
     )
     <*> optional p_single_field_name
+
+p_void_dt :: Parser DataType
 p_void_dt = string "void" *> return VoidDT
 
+p_tsv :: Parser ([DataType],[[Data]])
 p_tsv = do 
     dts <- p_dts <* eol
     ds  <- p_d True tab dts `endBy` eol
     return (dts,ds)
+
+eol :: Parser String
 eol   = try (string "\n\r")
     <|> try (string "\r\n")
     <|> string "\n"

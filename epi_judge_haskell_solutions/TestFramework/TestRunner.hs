@@ -23,7 +23,7 @@ time a = do
     start <- getCPUTime
     v     <- a
     end   <- getCPUTime 
-    let diff = (fromIntegral (end - start)) `div` (10^6)
+    let diff = (fromIntegral (end - start)) `div` 1000000
     return (v,diff)
 
 type TestCase = [Data]
@@ -133,8 +133,14 @@ printSuccess i n rt = do
     printf " (%5d/%d) [%4d us]" i n rt
     
 type Color = String
+
+yellow :: Color 
 yellow   = "\x1b[33m"
+
+green :: Color 
 green    = "\x1b[32m"
+
+colorEnd :: Color
 colorEnd = "\x1b[0m"
 
 printColored :: Color -> String -> IO () 
