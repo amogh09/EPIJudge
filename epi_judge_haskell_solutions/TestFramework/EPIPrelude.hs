@@ -27,7 +27,7 @@ module TestFramework.EPIPrelude
 import Prelude (
         (-), (+), div, (^), fromIntegral, (==), Integer
     ,   Double, abs, sqrt, log, (<=), (>=), (&&), otherwise, (**)
-    ,   round
+    ,   round, (/=), (||), id, Num
     )
 import Text.Show (Show, show)
 import Text.Read (read)
@@ -37,7 +37,7 @@ import Data.Maybe (Maybe)
 import Data.String (String)
 import Data.Char (Char)
 import Data.Either (Either(Left,Right))
-import Data.Text (Text, pack, append, unpack)
+import Data.Text (Text, pack, append, unpack, empty)
 import Data.Text.IO (readFile, putStrLn)
 import Text.Printf (printf)
 import Data.Int (Int)
@@ -55,7 +55,7 @@ import Control.Applicative
     ,   optional
     ,   many
     )
-import Control.Monad (return, (>>), forM_, forM, mapM_, mapM, liftM, ap)
+import Control.Monad (return, (>>), forM_, forM, mapM_, mapM, liftM, ap, (>>=))
 import System.IO (IO, print)
 
 dropRight :: Int -> [a] -> [a] 

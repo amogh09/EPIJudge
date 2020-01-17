@@ -15,13 +15,11 @@ module TestFramework.TestParser
     ,   listToTuple2
     ) where
 
-import TestFramework.EPIPrelude
-import Text.Parsec.Text
-import Text.Parsec.Char
-import TestFramework.NumberParser
-import Text.Parsec hiding ((<|>), many, optional)
+import TestFramework.EPIPrelude hiding (takeWhile)
+import Data.Attoparsec.Text
+import Data.Char 
 
-type Name = String
+type Name = Text
 
 data DataType = 
         TupleDT [DataType] Name
@@ -54,7 +52,7 @@ instance Show Data where
     show (Explanation x) = show x
 
 p_dts :: Parser [DataType]
-p_dts = p_dt `sepBy` tab
+p_dts = p_dt `sepBy1'` tab
 
 p_dt :: Parser DataType
 p_dt = choice [
@@ -69,7 +67,7 @@ p_dt = choice [
     <?> "Type"
 
 p_d :: Bool -> Parser Char -> [DataType] -> Parser [Data] 
-p_d True  _ [] = pure . Explanation . pack <$> (many . noneOf $ "\n\r") 
+p_d True  _ [] = pure . Explanation <$> (takeTill isEndOfLine) 
 p_d False _ [] = return []
 p_d parseExpl sep (dt@(TupleDT dts _):rest) = do
     [x] <- (p_tuple dts) `manyTill` (try sep)
@@ -86,21 +84,21 @@ p_d parseExpl sep (dt@(IntDT _):rest) = do
 p_d parseExpl sep (dt@(LongDT _):rest) = do 
     [x] <- case rest of
         [] -> pure <$> p_long
-        _  -> p_double `manyTill` (try sep)
+        _  -> p_long `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
-    return $ LongD dt (read x):xs
+    return $ LongD dt x:xs
 p_d parseExpl sep (dt@(DoubleDT _):rest) = do 
     [x] <- case rest of 
         [] -> pure <$> p_double
         _  -> p_double `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest
-    return $ DoubleD dt (read x):xs
+    return $ DoubleD dt x:xs
 p_d parseExpl sep (dt@(BoolDT _):rest) = do 
     [x] <- case rest of 
         [] -> pure <$> p_bool 
         _  -> p_bool `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest 
-    return $ BoolD dt (readBool x):xs
+    return $ BoolD dt (readBool . unpack $ x):xs
 p_d parseExpl sep (dt@(ListDT ldt _):rest) = do 
     [x] <- p_list dt ldt `manyTill` sep 
     xs  <- p_d parseExpl sep rest 
@@ -109,20 +107,23 @@ p_d parseExpl sep (VoidDT:rest) = do
     xs <- spaces *> p_d parseExpl sep rest 
     return $ VoidD:xs 
 
-p_int' :: Parser Int
-p_int' = int
+spaces :: Parser ()
+spaces = takeWhile (==' ') >> return ()
+
+between :: Parser b -> Parser b -> Parser a -> Parser a
+between l r m = l *> m <* r 
 
 p_int :: DataType -> Parser Data 
-p_int dt = IntD dt <$> p_int'
+p_int dt = IntD dt <$> signed decimal
 
-p_long :: Parser String 
-p_long = (++) <$> option "" (string "-") <*> many1 digit
+p_long :: Parser Integer
+p_long = signed decimal
 
-p_double :: Parser String 
-p_double = (++) <$> option "" (string "-") <*> (many1 (digit <|> oneOf ".-+e"))
-
-p_bool :: Parser String 
-p_bool = string "true" <|> string "false" <?> "Bool"
+p_double :: Parser Double
+p_double = double
+    
+p_bool :: Parser Text 
+p_bool = string (pack "true") <|> string (pack "false") <?> "Bool"
 
 p_tuple :: [DataType] -> Parser [Data]
 p_tuple dts = between (char '[') (char ']') (p_d False (char ',') dts)
@@ -131,66 +132,62 @@ p_list :: DataType -> DataType -> Parser Data
 p_list dt ldt@(IntDT _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
 
-p_single_field_name :: Parser String
-p_single_field_name = between (char '[') (char ']') (many . noneOf $ "[]") 
+p_single_field_name :: Parser Text
+p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
 
 p_tuple_dt :: Parser DataType
 p_tuple_dt = TupleDT
-    <$> (string "tuple" 
-     *> between (char '(') (char ')') ((spaces *> p_dt) `sepBy` (char ',')))
-    <*> between (char '[') (char ']') (many . noneOf $ "[]")
+    <$> (string (pack "tuple") 
+     *> (char '(' *> ((spaces >> p_dt) `sepBy'` (char ',')) <* char ')'))
+    <*> between (char '[') (char ']') (takeTill (==']'))
 
 p_int_dt :: Parser DataType
 p_int_dt = IntDT <$> 
     (
-        string "int" 
+        string (pack "int") 
     *>  optional p_single_field_name
     )
 
 p_long_dt :: Parser DataType
 p_long_dt = LongDT <$>
     (
-        string "long"
+        string (pack "long")
     *>  optional p_single_field_name
     )
 
 p_double_dt :: Parser DataType
 p_double_dt = DoubleDT <$>
     (
-        string "float"
+        string (pack "float")
     *>  optional p_single_field_name
     )
 
 p_bool_dt :: Parser DataType
 p_bool_dt = BoolDT <$>
     (
-        string "bool"
+        string (pack "bool")
     *>  optional p_single_field_name
     )
 
 p_list_dt :: Parser DataType
 p_list_dt = ListDT <$> 
     (
-        string "array" 
-    *>  between (char '(') (char ')') p_dt
+        string (pack "array") 
+    *>  (char '(' *> p_dt <* char ')') 
     )
     <*> optional p_single_field_name
 
 p_void_dt :: Parser DataType
-p_void_dt = string "void" *> return VoidDT
+p_void_dt = string (pack "void") *> return VoidDT
+
+tab :: Parser Char 
+tab = char '\t'
 
 p_tsv :: Parser ([DataType],[[Data]])
 p_tsv = do 
-    dts <- p_dts <* eol
-    ds  <- p_d True tab dts `endBy` eol
+    dts <- p_dts <* endOfLine
+    ds  <- sepBy1' (p_d True tab dts) endOfLine
     return (dts,ds)
-
-eol :: Parser String
-eol   = try (string "\n\r")
-    <|> try (string "\r\n")
-    <|> string "\n"
-    <|> string "\r"
-    <?> "End of line"
 
 readBool :: String -> Bool
 readBool "false" = False 
@@ -200,7 +197,7 @@ readBool x       = read x
 testCases :: String -> IO [[Data]]
 testCases fileName = do
     contents <- readFile fileName
-    case parse p_tsv "" contents of 
+    case eitherResult (feed (parse p_tsv contents) empty) of 
         Left err     -> print err >> return [] 
         Right (_,cs) -> return cs
 
