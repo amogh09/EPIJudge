@@ -127,49 +127,51 @@ p_single_field_name :: Parser Text
 p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
 
 p_tuple_dt :: Parser DataType
-p_tuple_dt = TupleDT
-    <$> (string (pack "tuple") 
-     *> (char '(' *> ((spaces >> p_dt) `sepBy'` (char ',')) <* char ')'))
+p_tuple_dt = TupleDT <$> 
+    (
+        string "tuple" 
+    *>  between (char '(') (char ')') ((spaces >> p_dt) `sepBy'` (char ','))
+    )
     <*> between (char '[') (char ']') (takeTill (==']'))
+
+p_list_dt :: Parser DataType
+p_list_dt = ListDT <$> 
+    (
+        string "array" 
+    *>  (char '(' *> p_dt <* char ')') 
+    )
+    <*> optional p_single_field_name
 
 p_int_dt :: Parser DataType
 p_int_dt = IntDT <$> 
     (
-        string (pack "int") 
+        string "int" 
     *>  optional p_single_field_name
     )
 
 p_long_dt :: Parser DataType
 p_long_dt = LongDT <$>
     (
-        string (pack "long")
+        string "long"
     *>  optional p_single_field_name
     )
 
 p_double_dt :: Parser DataType
 p_double_dt = DoubleDT <$>
     (
-        string (pack "float")
+        string "float"
     *>  optional p_single_field_name
     )
 
 p_bool_dt :: Parser DataType
 p_bool_dt = BoolDT <$>
     (
-        string (pack "bool")
+        string "bool"
     *>  optional p_single_field_name
     )
 
-p_list_dt :: Parser DataType
-p_list_dt = ListDT <$> 
-    (
-        string (pack "array") 
-    *>  (char '(' *> p_dt <* char ')') 
-    )
-    <*> optional p_single_field_name
-
 p_void_dt :: Parser DataType
-p_void_dt = string (pack "void") *> return VoidDT
+p_void_dt = string "void" *> return VoidDT
 
 tab :: Parser Char 
 tab = char '\t'
