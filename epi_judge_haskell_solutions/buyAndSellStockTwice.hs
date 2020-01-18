@@ -2,13 +2,12 @@ import TestFramework.TestRunner
 import Data.List (foldl')
 
 buyAndSellStockTwice :: [Double] -> Double 
-buyAndSellStockTwice xs = 
-    maximum 
-        [
-            snd . foldl' f (head xs, 0) . zip (tail bestSndDeals) $ xs -- two trxs
-        ,   lx - head xs -- one trx
-        ,   0 -- no trxs
-        ]
+buyAndSellStockTwice xs = maximum 
+    [
+        snd . foldl' f (head xs, 0) . zip (tail bestSndDeals) $ xs -- two trxs
+    ,   lx - head xs -- one trx
+    ,   0 -- no trxs
+    ]
     where 
         lx = last xs
         f (lmin,res) (p2,x) = (min lmin x, max res (p2 + x - lmin))
