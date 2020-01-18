@@ -1,4 +1,4 @@
-import TestRunner
+import TestFramework.TestRunner
 
 data Rectangle = Rectangle {
         _x :: Int
@@ -8,7 +8,7 @@ data Rectangle = Rectangle {
     } deriving (Show, Eq)
 
 intersectRectangle :: Rectangle -> Rectangle -> Rectangle
-intersectRectangle r1 r2 = Rectangle 0 0 0 0 -- TODO
+intersectRectangle r1 r2 = r1 -- TODO
 
 toRect :: Data -> Rectangle
 toRect t = 
@@ -21,9 +21,9 @@ fin c = let [r1,r2] = toRect <$> take 2 c in (r1,r2)
 fout :: TestCase -> Rectangle
 fout c = toRect (c !! 2)
 
-main = 
-    goTest 
-        (uncurry intersectRectangle) 
-        fin 
-        fout
-        "../test_data/rectangle_intersection.tsv"
+main = goTest 
+    (uncurry intersectRectangle) 
+    fin 
+    fout
+    (==)
+    "../test_data/rectangle_intersection.tsv"

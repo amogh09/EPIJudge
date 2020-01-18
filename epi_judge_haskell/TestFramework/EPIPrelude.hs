@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module EPIPrelude 
+module TestFramework.EPIPrelude 
     (
         module Prelude
     ,   module Text.Show 
@@ -24,7 +24,11 @@ module EPIPrelude
     ,   dropRight
     ) where
 
-import Prelude ((-), (+), div, (^), fromIntegral, (==))
+import Prelude (
+        (-), (+), div, (^), fromIntegral, (==), Integer
+    ,   Double, abs, sqrt, log, (<=), (>=), (&&), otherwise, (**)
+    ,   round, (/=), (||), id, Num, (<)
+    )
 import Text.Show (Show, show)
 import Text.Read (read)
 import Data.List
@@ -33,7 +37,7 @@ import Data.Maybe (Maybe)
 import Data.String (String)
 import Data.Char (Char)
 import Data.Either (Either(Left,Right))
-import Data.Text (Text, pack, append)
+import Data.Text (Text, pack, append, unpack, empty)
 import Data.Text.IO (readFile, putStrLn)
 import Text.Printf (printf)
 import Data.Int (Int)
@@ -51,7 +55,7 @@ import Control.Applicative
     ,   optional
     ,   many
     )
-import Control.Monad (return, (>>), forM_, forM, mapM_, mapM)
+import Control.Monad (return, (>>), forM_, forM, mapM_, mapM, liftM, ap, (>>=))
 import System.IO (IO, print)
 
 dropRight :: Int -> [a] -> [a] 

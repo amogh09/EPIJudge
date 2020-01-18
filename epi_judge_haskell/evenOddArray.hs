@@ -1,0 +1,22 @@
+import TestFramework.TestRunner 
+import Data.List (sort)
+
+evenOdd :: [Int] -> [Int]
+evenOdd xs = xs -- TODO
+
+chk :: [Int] -> [Int] -> (Bool,String)
+chk xs res = 
+    let (_,os) = splitWhen odd res 
+    in  if not . all odd $ os
+            then (False, "Even element found in odd part")
+        else if length xs /= length res
+            then (False, "Result length does not match input length")
+        else if sort xs /= sort res 
+            then (False, "Input elements do not match result elements")
+            else (True, "")
+
+main = goTestVoid 
+    evenOdd
+    (intList . head)
+    chk
+    "../test_data/even_odd_array.tsv"

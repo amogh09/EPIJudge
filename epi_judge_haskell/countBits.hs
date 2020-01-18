@@ -1,18 +1,12 @@
-import TestRunner
+import TestFramework.TestRunner
 import Data.Bits
 
 countBits :: Int -> Int
-countBits x = 0 -- TODO
+countBits x = x -- TODO
 
-fin :: TestCase -> Int 
-fin (x:_) = intData x 
-
-fout :: TestCase -> Int 
-fout (_:x:_) = intData x 
-
-main = 
-    goTest
-        countBits
-        fin
-        fout
-        "../test_data/count_bits.tsv"
+main = goTest 
+    countBits 
+    (intData . head) 
+    (intData . head . tail)
+    (==) 
+    "../test_data/count_bits.tsv"

@@ -2,24 +2,8 @@ import TestFramework.TestRunner
 import TestFramework.Randomness
 import System.Random
 
-zeroOneRandom :: RandomGen g => g -> (Int,g) 
-zeroOneRandom = randomR (0,1)
-
-binaryToInt :: [Int] -> Int 
-binaryToInt xs = f 0 xs where 
-    f r [] = r 
-    f r (0:xs) = f (r*2) xs 
-    f r (1:xs) = f (r*2+1) xs
-
 uniformRandom :: RandomGen g => Int -> Int -> g -> (Int,g) 
-uniformRandom lo hi g  
-    | lo + r <= hi = (lo+r,g') 
-    | otherwise    = uniformRandom lo hi g'
-    where 
-        digitsCount = (+1) . fromIntegral . ceiling $ 
-            logBase 2 . fromIntegral $ (hi - lo)
-        (zos,g') = collectRandom digitsCount zeroOneRandom g 
-        r = binaryToInt zos
+uniformRandom lo hi g = (0,g) -- TODO
 
 uniformRandomWrapper :: RandomGen g => Int -> Int -> g -> ([Int],g)
 uniformRandomWrapper lo hi g = collectRandom 10000 (uniformRandom lo hi) g
