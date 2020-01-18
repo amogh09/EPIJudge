@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module TestFramework.TestParser 
     (
@@ -67,45 +68,30 @@ p_dt = choice [
     ]
     <?> "Type"
 
+parseSingleData :: Bool -> Parser Char -> [DataType] -> Parser Data -> Parser [Data]
+parseSingleData isTsv sep rest p = do 
+    x  <- p 
+    if isTsv || not (null rest) then sep >> return () else return () 
+    xs <- spaces *> p_d isTsv sep rest 
+    return $ x:xs    
+
+parseMultiData :: Bool -> Parser Char -> [DataType] -> Parser Data -> Parser [Data]
+parseMultiData isTsv sep rest p = do 
+    x  <- p <* sep 
+    xs <- p_d isTsv sep rest 
+    return $ x:xs
+
 p_d :: Bool -> Parser Char -> [DataType] -> Parser [Data] 
-p_d True  _ [] = pure . Explanation <$> (takeTill isEndOfLine) 
+p_d True  _ [] = pure . Explanation <$> takeTill isEndOfLine 
 p_d False _ [] = return []
-p_d parseExpl sep (dt@(TupleDT dts _):rest) = do
-    [x] <- (p_tuple dts) `manyTill` (try sep)
-    xs  <- p_d parseExpl sep rest 
-    return $ TupleD dt x:xs
-p_d parseExpl sep (dt@(IntDT _):rest) = do
-    [x] <- case rest of
-        -- sep is not found for last element of tuple so not using manyTill
-        -- as it consumes until sep succeeds
-        [] -> pure <$> p_int dt 
-        _  -> p_int dt `manyTill` (try sep)
-    xs  <- spaces *> p_d parseExpl sep rest 
-    return $ x:xs
-p_d parseExpl sep (dt@(LongDT _):rest) = do 
-    [x] <- case rest of
-        [] -> pure <$> p_long
-        _  -> p_long `manyTill` (try sep)
-    xs  <- spaces *> p_d parseExpl sep rest 
-    return $ LongD dt x:xs
-p_d parseExpl sep (dt@(DoubleDT _):rest) = do 
-    [x] <- case rest of 
-        [] -> pure <$> p_double dt
-        _  -> p_double dt `manyTill` (try sep)
-    xs  <- spaces *> p_d parseExpl sep rest
-    return $ x:xs
-p_d parseExpl sep (dt@(BoolDT _):rest) = do 
-    [x] <- case rest of 
-        [] -> pure <$> p_bool 
-        _  -> p_bool `manyTill` (try sep)
-    xs  <- spaces *> p_d parseExpl sep rest 
-    return $ BoolD dt (readBool . unpack $ x):xs
-p_d parseExpl sep (dt@(ListDT ldt _):rest) = do 
-    [x] <- p_list dt ldt `manyTill` sep 
-    xs  <- p_d parseExpl sep rest 
-    return $ x:xs
-p_d parseExpl sep (VoidDT:rest) = do 
-    xs <- spaces *> p_d parseExpl sep rest 
+p_d isTsv sep (dt@(TupleDT dts _):rest) = parseMultiData isTsv sep rest (p_tuple dt dts)
+p_d isTsv sep (dt@(ListDT ldt _):rest)  = parseMultiData isTsv sep rest (p_list dt ldt) 
+p_d isTsv sep (dt@(IntDT _):dts)    = parseSingleData isTsv sep dts (p_int dt)
+p_d isTsv sep (dt@(LongDT _):dts)   = parseSingleData isTsv sep dts (p_long dt)
+p_d isTsv sep (dt@(DoubleDT _):dts) = parseSingleData isTsv sep dts (p_double dt)
+p_d isTsv sep (dt@(BoolDT _):dts)   = parseSingleData isTsv sep dts (p_bool dt)
+p_d isTsv sep (VoidDT:rest) = do 
+    xs <- spaces *> p_d isTsv sep rest 
     return $ VoidD:xs 
 
 spaces :: Parser ()
@@ -117,17 +103,19 @@ between l r m = l *> m <* r
 p_int :: DataType -> Parser Data 
 p_int dt = IntD dt <$> signed decimal
 
-p_long :: Parser Integer
-p_long = signed decimal
+p_long :: DataType -> Parser Data
+p_long dt = LongD dt <$> signed decimal
 
 p_double :: DataType -> Parser Data
 p_double dt = DoubleD dt <$> double
     
-p_bool :: Parser Text 
-p_bool = string (pack "true") <|> string (pack "false") <?> "Bool"
+p_bool :: DataType -> Parser Data 
+p_bool dt = BoolD dt <$> readBool <$> 
+    (string "true" <|> string "false" <?> "Bool")
 
-p_tuple :: [DataType] -> Parser [Data]
-p_tuple dts = between (char '[') (char ']') (p_d False (char ',') dts)
+p_tuple :: DataType -> [DataType] -> Parser Data
+p_tuple dt dts = TupleD dt <$> 
+    between (char '[') (char ']') (p_d False (char ',') dts)
 
 p_list :: DataType -> DataType -> Parser Data
 p_list dt ldt@(IntDT _) = ListD dt <$> 
@@ -192,10 +180,10 @@ p_tsv = do
     ds  <- sepBy1' (p_d True tab dts) endOfLine
     return (dts,ds)
 
-readBool :: String -> Bool
+readBool :: Text -> Bool
 readBool "false" = False 
 readBool "true"  = True 
-readBool x       = read x
+readBool x       = read . unpack $ x
 
 testCases :: String -> IO [[Data]]
 testCases fileName = do
