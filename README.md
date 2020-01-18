@@ -2,9 +2,11 @@
 
 This repository provides [EPIJudge](https://github.com/adnanaziz/EPIJudge) problems in Haskell. 
 
+## Project status
 The project is under active development and I am working on translating the problems to Haskell along with their solutions. Please see the table at the bottom of this page to get the current status of problems. 
 
-The project comes with a Haskell TestFramework just like we have one for Python, Java, and C++. It uses the test data provided in EPIJudge without any modifications.
+## Test Framework
+The project comes with a Haskell Test Framework (see `epi_judge_haskell_solutions/TestFramework`) just like we have one for Python, Java, and C++. It uses the test data provided in EPIJudge without any modifications. The framework works for the problems that have already been translated to Haskell but might not work for pending ones. It will be updated as per requirements of the pending problems when they are translated. I am using [attoparsec](https://hackage.haskell.org/package/attoparsec) to parse test data. As of writing it is generally faster (without any effor at optimizing) than the ones in other languages. 
 
 ## Haskell dependencies
 The project uses the following Haskell dependencies. All of them can be downloaded using cabal. 
