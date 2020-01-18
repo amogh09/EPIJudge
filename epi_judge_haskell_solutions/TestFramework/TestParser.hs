@@ -12,6 +12,7 @@ module TestFramework.TestParser
     ,   tuple3Data
     ,   tuple4Data
     ,   intList 
+    ,   doubleList
     ,   listToTuple2
     ) where
 
@@ -89,10 +90,10 @@ p_d parseExpl sep (dt@(LongDT _):rest) = do
     return $ LongD dt x:xs
 p_d parseExpl sep (dt@(DoubleDT _):rest) = do 
     [x] <- case rest of 
-        [] -> pure <$> p_double
-        _  -> p_double `manyTill` (try sep)
+        [] -> pure <$> p_double dt
+        _  -> p_double dt `manyTill` (try sep)
     xs  <- spaces *> p_d parseExpl sep rest
-    return $ DoubleD dt x:xs
+    return $ x:xs
 p_d parseExpl sep (dt@(BoolDT _):rest) = do 
     [x] <- case rest of 
         [] -> pure <$> p_bool 
@@ -119,8 +120,8 @@ p_int dt = IntD dt <$> signed decimal
 p_long :: Parser Integer
 p_long = signed decimal
 
-p_double :: Parser Double
-p_double = double
+p_double :: DataType -> Parser Data
+p_double dt = DoubleD dt <$> double
     
 p_bool :: Parser Text 
 p_bool = string (pack "true") <|> string (pack "false") <?> "Bool"
@@ -131,6 +132,8 @@ p_tuple dts = between (char '[') (char ']') (p_d False (char ',') dts)
 p_list :: DataType -> DataType -> Parser Data
 p_list dt ldt@(IntDT _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
+p_list dt ldt@(DoubleDT _) = ListD dt <$> 
+    between (char '[') (char ']') ((spaces *> p_double ldt) `sepBy` (char ','))
 
 p_single_field_name :: Parser Text
 p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
@@ -221,6 +224,9 @@ tuple4Data (TupleD _ [p,q,r,s]) = (p,q,r,s)
 
 intList :: Data -> [Int]
 intList (ListD _ ds) = intData <$> ds
+
+doubleList :: Data -> [Double]
+doubleList (ListD _ ds) = doubleData <$> ds
 
 listToTuple2 :: [a] -> (a,a)
 listToTuple2 (x:y:_) = (x,y)

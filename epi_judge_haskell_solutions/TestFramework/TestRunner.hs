@@ -8,6 +8,7 @@ module TestFramework.TestRunner
     ,   uncurry2
     ,   allInRange    
     ,   splitWhen
+    ,   cmpDouble
     ,   TestCase
     ,   module TestFramework.TestParser
     ) where 
@@ -193,3 +194,6 @@ splitWhen p = f [] where
     f ls (x:xs) 
         | p x = (reverse ls,x:xs)
         | otherwise = f (x:ls) xs
+
+cmpDouble :: Double -> Double -> Bool 
+cmpDouble x y = abs (x - y) < 0.00001

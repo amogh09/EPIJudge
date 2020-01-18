@@ -172,8 +172,8 @@ Then just open `epi_judge_cpp/vs/epi_judge_cpp.sln` solution with Visual Studio 
 | Increment an arbitrary-precision integer | intAsArrayIncrement.hs | int\_as\_array\_increment.cc | IntAsArrayIncrement.java | int\_as\_array\_increment.py | 
 | Multiply two arbitrary-precision integers | intAsArrayMultiply.hs | int\_as\_array\_multiply.cc | IntAsArrayMultiply.java | int\_as\_array\_multiply.py | 
 | Advancing through an array | advanceByOffsets.hs | advance\_by\_offsets.cc | AdvanceByOffsets.java | advance\_by\_offsets.py | 
-| Delete duplicates from a sorted array | <TBA> | sorted\_array\_remove\_dups.cc | SortedArrayRemoveDups.java | sorted\_array\_remove\_dups.py | 
-| Buy and sell a stock once | <TBA> | buy\_and\_sell\_stock.cc | BuyAndSellStock.java | buy\_and\_sell\_stock.py | 
+| Delete duplicates from a sorted array | sortedArrayRemoveDups.hs | sorted\_array\_remove\_dups.cc | SortedArrayRemoveDups.java | sorted\_array\_remove\_dups.py | 
+| Buy and sell a stock once | buyAndSellStock.hs | buy\_and\_sell\_stock.cc | BuyAndSellStock.java | buy\_and\_sell\_stock.py | 
 | Buy and sell a stock twice | <TBA> | buy\_and\_sell\_stock\_twice.cc | BuyAndSellStockTwice.java | buy\_and\_sell\_stock\_twice.py | 
 | Computing an alternation | <TBA> | alternating\_array.cc | AlternatingArray.java | alternating\_array.py | 
 | Enumerate all primes to n | <TBA> | prime\_sieve.cc | PrimeSieve.java | prime\_sieve.py | 
