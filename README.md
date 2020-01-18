@@ -1,6 +1,6 @@
 # EPI Judge Haskell
 
-This repository provides [EPIJudge](https://github.com/adnanaziz/EPIJudge) problems in Haskell. 
+[EPIJudgeHaskell](https://github.com/amogh09/EPIJudgeHaskell) provides [EPIJudge](https://github.com/adnanaziz/EPIJudge) problems in Haskell. 
 
 ## Project status
 The project is under active development and I am working on translating the problems to Haskell along with their solutions. Please see the table at the bottom of this page to get the current status of problems. 
