@@ -1,6 +1,6 @@
 # EPI Judge Haskell
 
-This repository provides [EPIJudge](https://github.com/adnanaziz/EPIJudge) problems in Haskell (GHC).
+This repository provides [EPIJudge](https://github.com/adnanaziz/EPIJudge) problems in Haskell.
 
 ## Haskell dependencies
 The project uses the following Haskell dependencies. All of them can be downloaded using cabal. 
