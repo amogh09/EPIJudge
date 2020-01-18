@@ -25,11 +25,53 @@ Example:
 
     $ make parity
 
+## Example run
+`Makefile` is provided to ease the running of problems. Simply run `make <problem_name>` within `epi_judge_haskell` or `epi_judge_haskell_solutions` directories to run the desired problem. The command will compile the problem file, run it against the test data, and print the results.
+
+### Successful run
+```
+$ make sortedArrayRemoveDups 
+Creating build directory
+mkdir -p build
+Compiling sortedArrayRemoveDups.hs
+ghc  -O2 -outputdir build  -o build/sortedArrayRemoveDups sortedArrayRemoveDups.hs
+Loaded package environment from /Users/home/.ghc/x86_64-darwin-8.8.1/environments/default
+[1 of 4] Compiling TestFramework.EPIPrelude ( TestFramework/EPIPrelude.hs, build/TestFramework/EPIPrelude.o )
+[2 of 4] Compiling TestFramework.TestParser ( TestFramework/TestParser.hs, build/TestFramework/TestParser.o )
+[3 of 4] Compiling TestFramework.TestRunner ( TestFramework/TestRunner.hs, build/TestFramework/TestRunner.o )
+[4 of 4] Compiling Main             ( sortedArrayRemoveDups.hs, build/Main.o )
+Linking build/sortedArrayRemoveDups ...
+Running sortedArrayRemoveDups
+build/sortedArrayRemoveDups
+Test PASSED ( 2003/2003) [   2 us]
+Average running time:    0 us
+Median running time:     0 us
+*** You've passed ALL tests. Congratulations! ***
+```
+### Failed run
+```
+$ make sortedArrayRemoveDups
+Compiling sortedArrayRemoveDups.hs
+ghc  -O2 -outputdir build  -o build/sortedArrayRemoveDups sortedArrayRemoveDups.hs
+Loaded package environment from /Users/home/.ghc/x86_64-darwin-8.8.1/environments/default
+[4 of 4] Compiling Main             ( sortedArrayRemoveDups.hs, build/Main.o )
+Linking build/sortedArrayRemoveDups ...
+Running sortedArrayRemoveDups
+build/sortedArrayRemoveDups
+Test FAILED (    1/2003)
+Arguments
+	Input1:           [-8,-7,-6,-5,-5,-4,-3,-1,-1,0,0,2,2,2,4]
+
+Failure info
+	explanation:      TODO
+	expected:         [-8,-7,-6,-5,-4,-3,-1,0,2,4]
+	result:           [-8,-7,-6,-5,-5,-4,-3,-1,-1,0,0,2,2,2,4]
+```
+
 ## FAQ
 
 - How can I contact the authors? 
-
-Please feel free to send me questions and feedback -  `amoghdroid09@gmail.com`
+  - Please feel free to send me questions and feedback -  `amoghdroid09@gmail.com`
 
 - What Haskell compiler is supported?
   - Any recent GHC version should work. I have developed the project using GHC 8.8.1.
