@@ -298,8 +298,3 @@ Failure info
 | Find the longest subarray whose sum <=  k | <TBA> | longest\_subarray\_with\_sum\_constraint.cc | LongestSubarrayWithSumConstraint.java | longest\_subarray\_with\_sum\_constraint.py | 
 | Road network | <TBA> | road\_network.cc | RoadNetwork.java | road\_network.py | 
 | Test if arbitrage is possible | <TBA> | arbitrage.cc | Arbitrage.java | arbitrage.py | 
-
-## Acknowledgments
-
-A big shout-out to the hundreds of users who tried out the release over the past couple of months. As always, we never fail to be impressed by the enthusiasm and commitment our readers have; it has served to bring out the best in us.
-We all thank [Viacheslav Kroilov](https://github.com/metopa), for applying his exceptional software engineering skills to make EPI Judge a reality.
