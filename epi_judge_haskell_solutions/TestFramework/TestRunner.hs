@@ -18,6 +18,7 @@ import System.Random
 import TestFramework.TestParser
 import System.CPUTime
 import Control.Exception (evaluate)
+import Debug.Trace
 
 time :: IO a -> IO (a, Int)
 time a = do 
@@ -92,6 +93,8 @@ runTestsVoid rts i n f fin chk (t:ts) = do
             runTestsVoid (rt:rts) (i+1) n f fin chk ts
         (False, failureInfo) -> do 
             printFailure i n t
+            printColored yellow "Failure info"
+            printf ":             "
             printf "%s\n" failureInfo
 
 goTestRandomVoid :: (RandomGen g, Show a, Eq b, Show b) =>
