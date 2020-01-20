@@ -105,7 +105,7 @@ Failure info
 | Computing an alternation | alternatingArray.hs | alternating\_array.cc | AlternatingArray.java | alternating\_array.py | 
 | Enumerate all primes to n | primeSieve.hs | prime\_sieve.cc | PrimeSieve.java | prime\_sieve.py | 
 | Permute the elements of an array | applyPermutation.hs | apply\_permutation.cc | ApplyPermutation.java | apply\_permutation.py | 
-| Compute the next permutation | <TBA> | next\_permutation.cc | NextPermutation.java | next\_permutation.py | 
+| Compute the next permutation | nextPermutation.hs | next\_permutation.cc | NextPermutation.java | next\_permutation.py | 
 | Sample offline data | <TBA> | offline\_sampling.cc | OfflineSampling.java | offline\_sampling.py | 
 | Sample online data | <TBA> | online\_sampling.cc | OnlineSampling.java | online\_sampling.py | 
 | Compute a random permutation | <TBA> | random\_permutation.cc | RandomPermutation.java | random\_permutation.py | 
