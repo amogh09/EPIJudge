@@ -1,5 +1,5 @@
 import TestFramework.TestRunner 
-import Data.List (sort)
+import Data.List (sort,find)
 
 dutchFlagPartition :: Int -> [Int] -> [Int]
 dutchFlagPartition i xs = ls ++ ms ++ rs where 
@@ -8,17 +8,20 @@ dutchFlagPartition i xs = ls ++ ms ++ rs where
     ms = filter (==pivot) xs 
     rs = filter (>pivot) xs 
 
-chk :: (Int,[Int]) -> [Int] -> (Bool,String)
-chk (i,xs) res = 
-    if not . all (<pivot) $ ls 
-        then (False, "Element greater than pivot found before elements equal to pivot")
-    else if not . all (==pivot) $ ms 
-        then (False, "Element not equal to pivot found when elements equal to pivot expected")
-    else if not . all (>pivot) $ rs 
-        then (False, "Element not greater than pivot found when elements greater than pivot expected")
-    else if sort xs /= sort res 
-        then (False, "Output either misses an element or contains an extra element")
-        else (True, "")
+chk :: (Int,[Int]) -> [Int] -> Maybe String
+chk (i,xs) res = either Just (const Nothing) $ do 
+    rightIfNothing 
+        (\x -> "Element " ++ show x ++ " greater than pivot found before elements equal to pivot")
+        (find (>=pivot) ls)
+    rightIfNothing
+        (\x -> "Element " ++ show x ++ " not equal to pivot found when elements equal to pivot expected")
+        (find (/=pivot) ms)
+    rightIfNothing
+        (\x -> "Element " ++ show x ++ " not greater than pivot found when elements greater than pivot expected")
+        (find (<=pivot) rs)
+    if sort xs /= sort res 
+        then Left "Output either misses an element or contains an extra element"
+        else Right ()
     where
         pivot = xs !! i 
         (ls,rest) = splitWhen (==pivot) res 

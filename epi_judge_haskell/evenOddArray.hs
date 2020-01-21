@@ -1,19 +1,23 @@
 import TestFramework.TestRunner 
-import Data.List (sort)
+import Data.List (sort,find)
 
 evenOdd :: [Int] -> [Int]
 evenOdd xs = xs -- TODO
 
-chk :: [Int] -> [Int] -> (Bool,String)
-chk xs res = 
-    let (_,os) = splitWhen odd res 
-    in  if not . all odd $ os
-            then (False, "Even element found in odd part")
-        else if length xs /= length res
-            then (False, "Result length does not match input length")
-        else if sort xs /= sort res 
-            then (False, "Input elements do not match result elements")
-            else (True, "")
+chk :: [Int] -> [Int] -> Maybe String
+chk xs res = either Just (const Nothing) $ do
+    let (es,os) = splitWhen odd res 
+    rightIfNothing
+        (\x -> "Odd element " ++ show x ++ " found in even part")
+        (find odd es)
+    rightIfNothing
+        (\x -> "Even element " ++ show x ++ " found in odd part")
+        (find even os)
+    if length xs /= length res
+        then Left "Result length does not match input length"
+    else if sort xs /= sort res 
+        then Left "Input elements do not match result elements"
+        else Right ()
 
 main = goTestVoid 
     evenOdd

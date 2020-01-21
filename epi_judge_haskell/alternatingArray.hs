@@ -4,25 +4,25 @@ import Data.List (sort, partition)
 rearrange :: Ord a => [a] -> [a]
 rearrange xs = xs -- TODO 
 
-isAlternating :: Ord a => [a] -> Bool 
+isAlternating :: Ord a => [a] -> Maybe (a,a) 
 isAlternating xs = f True (fmap snd evens) (fmap snd odds) where
     (evens, odds) = partition (even . fst) . zip [0..] $ xs
-    f _ [] _ = True 
-    f _ _ [] = True
+    f _ [] _ = Nothing
+    f _ _ [] = Nothing
     f True (x:xs) (y:ys)
-        | x > y = False 
+        | x > y = Just (x,y) 
         | otherwise = f False xs (y:ys)
     f False (x:xs) (y:ys)
-        | x < y = False 
+        | x > y = Just (y,x)
         | otherwise = f True (x:xs) ys
 
-chk :: Ord a => [a] -> [a] -> (Bool, String)
+chk :: (Ord a, Show a) => [a] -> [a] -> Maybe String
 chk inp out = 
-    if not (isAlternating out) 
-        then (False, "Output is not alternating")
-    else if sort inp /= sort out 
-        then (False, "Output does not match elements from input")
-        else (True, "")
+    case isAlternating out of 
+        Just (x,y) -> Just ("Output is not alternating: " ++ show (x,y) ++ " in " ++ show out) 
+        _ -> if sort inp /= sort out 
+                then Just "Output does not match elements from input"
+                else Nothing
 
 main = goTestVoid 
     rearrange

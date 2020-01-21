@@ -24,13 +24,13 @@ isAlternating xs = f True (fmap snd evens) (fmap snd odds) where
         | x > y = Just (y,x)
         | otherwise = f True (x:xs) ys
 
-chk :: (Ord a, Show a) => [a] -> [a] -> (Bool, String)
+chk :: (Ord a, Show a) => [a] -> [a] -> Maybe String
 chk inp out = 
     case isAlternating out of 
-        Just (x,y) -> (False, "Output is not alternating: " ++ show (x,y) ++ " in " ++ show out) 
+        Just (x,y) -> Just ("Output is not alternating: " ++ show (x,y) ++ " in " ++ show out) 
         _ -> if sort inp /= sort out 
-                then (False, "Output does not match elements from input")
-                else (True, "")
+                then Just "Output does not match elements from input"
+                else Nothing
 
 main = goTestVoid 
     rearrange

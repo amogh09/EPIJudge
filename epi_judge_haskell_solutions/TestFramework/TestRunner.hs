@@ -68,7 +68,7 @@ runTests rts i n f fin fout cmp (t:ts) = do
 goTestVoid :: (Show a, Eq b, Show b) =>
         (a -> b)                  -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input 
-    ->  (a -> b -> (Bool,String)) -- Output checker function with fail info
+    ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
     ->  String                    -- Test data file name
     ->  IO ()
 goTestVoid f fin chk fileName = do 
@@ -81,7 +81,7 @@ runTestsVoid :: (Show a, Show b) =>
     ->  Int                       -- Total number of test cases
     ->  (a -> b)                  -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input
-    ->  (a -> b -> (Bool,String)) -- Output checker function
+    ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
     ->  [TestCase]                -- List of test cases
     ->  IO ()
 runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
@@ -89,10 +89,10 @@ runTestsVoid rts i n f fin chk (t:ts) = do
     let input = fin t 
     (res, rt) <- time $ evaluate $ f input
     case chk input res of 
-        (True, _) -> do 
+        Nothing -> do 
             printSuccess i n rt 
             runTestsVoid (rt:rts) (i+1) n f fin chk ts
-        (False, failureInfo) -> do 
+        Just failureInfo -> do 
             printFailure i n t
             printColored yellow "Failure info"
             printf ":             "
