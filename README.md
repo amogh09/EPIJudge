@@ -106,7 +106,7 @@ Failure info
 | Enumerate all primes to n | primeSieve.hs | prime\_sieve.cc | PrimeSieve.java | prime\_sieve.py | 
 | Permute the elements of an array | applyPermutation.hs | apply\_permutation.cc | ApplyPermutation.java | apply\_permutation.py | 
 | Compute the next permutation | nextPermutation.hs | next\_permutation.cc | NextPermutation.java | next\_permutation.py | 
-| Sample offline data | <TBA> | offline\_sampling.cc | OfflineSampling.java | offline\_sampling.py | 
+| Sample offline data | offlineSampling.hs | offline\_sampling.cc | OfflineSampling.java | offline\_sampling.py | 
 | Sample online data | <TBA> | online\_sampling.cc | OnlineSampling.java | online\_sampling.py | 
 | Compute a random permutation | <TBA> | random\_permutation.cc | RandomPermutation.java | random\_permutation.py | 
 | Compute a random subset | <TBA> | random\_subset.cc | RandomSubset.java | random\_subset.py | 

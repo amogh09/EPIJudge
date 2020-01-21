@@ -1,6 +1,7 @@
 import TestFramework.TestRunner 
 import TestFramework.Randomness
 import System.Random
+import Data.List (find)
 
 zeroOneRandom :: RandomGen g => g -> (Int,g) 
 zeroOneRandom = randomR (0,1)
@@ -24,17 +25,14 @@ uniformRandom lo hi g
 uniformRandomWrapper :: RandomGen g => Int -> Int -> g -> ([Int],g)
 uniformRandomWrapper lo hi g = collectRandom 10000 (uniformRandom lo hi) g
 
-collectRandom :: RandomGen g => Int -> (g -> (a,g)) -> g -> ([a],g)
-collectRandom k f g = foldr fun ([],g) [1..k] where 
-    fun _ (xs,g) = let (x,g') = f g in (x:xs,g')
-
-chk :: (Int,Int) -> [Int] -> (Bool, String)
-chk (lo,hi) res = 
-    if not (allInRange lo hi res)
-        then (False, "Not all numbers in range (" ++ show lo ++ "," ++ show hi ++ ")") 
-    else if not (checkUniformRandomness [x-lo | x <- res] (hi-lo+1))
-        then (False, "Result is not uniformly random")
-        else (True, "")
+chk :: (Int,Int) -> [Int] -> Maybe String
+chk (lo,hi) res = either Just (const Nothing) $ do
+    rightIfNothing
+        (\r -> "Generated number " ++ show r ++ " is not in range " ++ show (lo,hi))
+        (find (\r -> r<lo || r>hi) res)
+    if not (checkUniformRandomness [x-lo | x <- res] (hi-lo+1))
+        then Left "Generated numbers are not uniformly random"
+        else Right ()
 
 main = do 
     g <- getStdGen

@@ -43,6 +43,7 @@ import Text.Printf (printf)
 import Data.Int (Int)
 import Data.Ord (Ord)
 import Data.Eq (Eq)
+import Data.Maybe (Maybe(Just, Nothing))
 import Data.Function (($), (.))
 import Control.Applicative 
     (

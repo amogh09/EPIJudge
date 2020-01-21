@@ -1,12 +1,16 @@
 module TestFramework.Randomness
     (
         checkUniformRandomness
+    ,   getAllCombinations
+    ,   binomialCoefficient
+    ,   collectRandom
     ) where 
 
 import TestFramework.EPIPrelude
 import qualified Data.Vector as V
 import qualified Data.Set as S
 import qualified Data.Map as M
+import System.Random
 
 toCounter :: (Ord a) => [a] -> M.Map a Int 
 toCounter = foldl' (\agg x -> M.insertWith (+) x 1 agg) M.empty 
@@ -88,3 +92,31 @@ checkUniformRandomness xs n =
     &&  checkBinomialDistFitPairs xs n 
     && checkBinomialDistFitTriples xs n 
     && checkBirthdaySpacings xs n
+
+getAllCombinations :: (Ord a) => Int -> [a] -> M.Map [a] Int
+getAllCombinations k xs = M.fromList $ getAllCombinations' n k xs `zip` [0..]
+    where n = length xs
+
+getAllCombinations' :: (Ord a) => Int -> Int -> [a] -> [[a]]
+getAllCombinations' _ _ [] = []
+getAllCombinations' _ 1 xs = pure <$> xs
+getAllCombinations' n k (x:xs)
+    | k <= 0 = [] 
+    | k >= n = [x:xs]
+    | otherwise = 
+            fmap (x:) (getAllCombinations' (n-1) (k-1) xs) 
+        ++  getAllCombinations' n k xs
+
+factorial :: Int -> Int
+factorial 0 = 1
+factorial 1 = 1 
+factorial n
+    | n < 0 = 0 
+    | otherwise = n * factorial (n-1)
+
+binomialCoefficient :: Int -> Int -> Int
+n `binomialCoefficient` k = factorial n `div` (factorial (n-k) * factorial k)
+
+collectRandom :: RandomGen g => Int -> (g -> (a,g)) -> g -> ([a],g)
+collectRandom k f g = foldr fun ([],g) [1..k] where 
+    fun _ (xs,g) = let (x,g') = f g in (x:xs,g')

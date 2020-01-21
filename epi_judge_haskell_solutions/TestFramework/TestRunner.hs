@@ -9,6 +9,7 @@ module TestFramework.TestRunner
     ,   allInRange    
     ,   splitWhen
     ,   cmpDouble
+    ,   rightIfNothing
     ,   TestCase
     ,   module TestFramework.TestParser
     ) where 
@@ -101,7 +102,7 @@ goTestRandomVoid :: (RandomGen g, Show a, Eq b, Show b) =>
         g 
     ->  (a -> g -> (b,g))         -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input 
-    ->  (a -> b -> (Bool,String)) -- Output checker function with fail info
+    ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
     ->  String                    -- Test data file name
     ->  IO ()
 goTestRandomVoid g f fin chk fileName = do 
@@ -115,7 +116,7 @@ runTestsRandomVoid :: (Show a, Show b, RandomGen g) =>
     ->  Int                       -- Total number of test cases
     ->  (a -> g -> (b,g))         -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input
-    ->  (a -> b -> (Bool,String)) -- Output checker function
+    ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
     ->  [TestCase]                -- List of test cases
     ->  IO ()
 runTestsRandomVoid _ rts _ _ _ _ _ [] = printCongrats rts
@@ -123,11 +124,13 @@ runTestsRandomVoid g rts i n f fin chk (t:ts) = do
     let input = fin t 
     ((res,g'), rt) <- time $ return $ f input g
     case chk input res of 
-        (True, _) -> do 
+        Nothing -> do 
             printSuccess i n rt 
             runTestsRandomVoid g' (rt:rts) (i+1) n f fin chk ts
-        (False, failureInfo) -> do 
+        Just failureInfo -> do 
             printFailure i n t
+            printColored yellow "Failure info"
+            printf ":             "
             printf "%s\n" failureInfo
 
 printSuccess :: Int -> Int -> Int -> IO ()
@@ -200,3 +203,7 @@ splitWhen p = f [] where
 
 cmpDouble :: Double -> Double -> Bool 
 cmpDouble x y = abs (x - y) < 0.00001
+
+rightIfNothing :: (a -> e) -> Maybe a -> Either e ()
+rightIfNothing f Nothing  = Right () 
+rightIfNothing f (Just x) = Left $ f x 
