@@ -90,8 +90,8 @@ checkUniformRandomness :: (Ord a) =>
 checkUniformRandomness xs n = 
         checkBinomialDistFit xs n 
     &&  checkBinomialDistFitPairs xs n 
-    && checkBinomialDistFitTriples xs n 
-    && checkBirthdaySpacings xs n
+    &&  checkBinomialDistFitTriples xs n 
+    &&  checkBirthdaySpacings xs n
 
 getAllCombinations :: (Ord a) => Int -> [a] -> M.Map [a] Int
 getAllCombinations k xs = M.fromList $ getAllCombinations' n k xs `zip` [0..]
