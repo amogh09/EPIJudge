@@ -17,7 +17,7 @@ chk (k,xs) ys = either Just (const Nothing) $ do
     rightIfNothing 
         (\p -> "Invalid sample " ++ show (fst p)) 
         (find (isNothing . snd) permIds)
-    if not (checkUniformRandomness (snd <$> permIds) permsCount)
+    if not (checkUniformRandomness 6 (snd <$> permIds) permsCount)
         then Left "Samples are not uniformly random"
         else Right ()
     where

@@ -18,7 +18,7 @@ chk (k,xs) ys = either Just (const Nothing) $ do
     rightIfNothing 
         (\smp -> "Invalid sample " ++ show (fst smp)) 
         (find (isNothing . snd) combIds)
-    if not (checkUniformRandomness (snd <$> combIds) combsCount)
+    if not (checkUniformRandomness 7 (snd <$> combIds) combsCount)
         then Left "Samples are not uniformly random"
         else Right ()
     where

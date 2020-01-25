@@ -30,7 +30,7 @@ chk (lo,hi) res = either Just (const Nothing) $ do
     rightIfNothing
         (\r -> "Generated number " ++ show r ++ " is not in range " ++ show (lo,hi))
         (find (\r -> r<lo || r>hi) res)
-    if not (checkUniformRandomness [x-lo | x <- res] (hi-lo+1))
+    if not (checkUniformRandomness 7 [x-lo | x <- res] (hi-lo+1))
         then Left "Generated numbers are not uniformly random"
         else Right ()
 

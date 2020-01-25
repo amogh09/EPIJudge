@@ -11,7 +11,7 @@ module TestFramework.Randomness
 import TestFramework.EPIPrelude
 import qualified Data.Vector as V
 import qualified Data.Set as S
-import qualified Data.Map.Strict as M
+import qualified Data.Map as M
 import System.Random
 
 toCounter :: (Ord a) => [a] -> M.Map a Int 
@@ -20,10 +20,11 @@ toCounter = foldl' (\agg x -> M.insertWith (+) x 1 agg) M.empty
 -- |Checks if distribution of randomly generated values fits a 
 --  binomial distribution
 checkBinomialDistFit :: (Ord a) => 
-        [a]    -- List of values in range [0..n-1]
+        Int    -- number of binomical standard deviations to use
+    ->  [a]    -- List of values in range [0..n-1]
     ->  Int    -- Upper bound n on values above 
     ->  Bool   -- True if the distribution of values fits binomial distribution
-checkBinomialDistFit xs n
+checkBinomialDistFit s xs n
     -- At least a binomial mean frequency of 50 for each value
     -- and mean should be at least 50 smaller than number of trials
     -- to make the test meaningful
@@ -36,7 +37,7 @@ checkBinomialDistFit xs n
     where 
         -- 7 std deviations cover 99.9999999997440% 
         -- data points in a binomial distribution
-        allowedDev = 7 * stdDev 
+        allowedDev = (fromIntegral s) * stdDev 
         lxs = (fromIntegral $ length xs) :: Double 
         -- p is the proability of random event 
         p = 1.0 / (fromIntegral n)
@@ -47,18 +48,22 @@ checkBinomialDistFit xs n
         freqs = toCounter xs
 
 checkBinomialDistFitPairs :: (Ord a) =>
-        [a] 
+        Int
+    ->  [a] 
     ->  Int 
     ->  Bool 
-checkBinomialDistFitPairs xs n = checkBinomialDistFit 
+checkBinomialDistFitPairs s xs n = checkBinomialDistFit 
+    s
     (xs `zip` tail xs)
     (n*n)
 
 checkBinomialDistFitTriples :: (Ord a) => 
-        [a]
+        Int
+    ->  [a]
     ->  Int 
     -> Bool 
-checkBinomialDistFitTriples xs n = checkBinomialDistFit
+checkBinomialDistFitTriples s xs n = checkBinomialDistFit 
+    s
     (zip3 xs (tail xs) (drop 2 xs))
     (n*n*n)
 
@@ -86,13 +91,14 @@ checkBirthdaySpacings xs n
             ]
 
 checkUniformRandomness :: (Ord a) => 
-        [a]    -- List of randomly generated values in range [0..n-1]
+        Int    -- Number of binomial standard deviations to use 
+    ->  [a]    -- List of randomly generated values in range [0..n-1]
     ->  Int    -- Value n such that n << len([a])
     ->  Bool   -- True if list contains uniformly random values
-checkUniformRandomness xs n = 
-        checkBinomialDistFit xs n 
-    &&  checkBinomialDistFitPairs xs n 
-    &&  checkBinomialDistFitTriples xs n 
+checkUniformRandomness s xs n = 
+        checkBinomialDistFit s xs n 
+    &&  checkBinomialDistFitPairs s xs n 
+    &&  checkBinomialDistFitTriples s xs n 
     &&  checkBirthdaySpacings xs n
 
 getAllCombinations :: (Ord a) => Int -> [a] -> M.Map [a] Int
@@ -110,7 +116,7 @@ getAllCombinations' n k (x:xs)
         ++  getAllCombinations' n k xs
 
 permutationsWithIds :: (Ord a) => [a] -> M.Map [a] Int
-permutationsWithIds xs = M.fromList $ permutations xs `zip` [0..]
+permutationsWithIds xs = M.fromList $ allPermutations xs `zip` [0..]
 
 allPermutations :: (Ord a) => [a] -> [[a]]
 allPermutations [] = []
