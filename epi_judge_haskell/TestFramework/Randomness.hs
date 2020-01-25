@@ -3,6 +3,8 @@ module TestFramework.Randomness
         checkUniformRandomness
     ,   getAllCombinations
     ,   binomialCoefficient
+    ,   allPermutations
+    ,   permutationsWithIds
     ,   collectRandom
     ) where 
 
@@ -107,6 +109,16 @@ getAllCombinations' n k (x:xs)
             fmap (x:) (getAllCombinations' (n-1) (k-1) xs) 
         ++  getAllCombinations' n k xs
 
+permutationsWithIds :: (Ord a) => [a] -> M.Map [a] Int
+permutationsWithIds xs = M.fromList $ allPermutations xs `zip` [0..]
+
+allPermutations :: (Ord a) => [a] -> [[a]]
+allPermutations [] = []
+allPermutations [x] = [[x]]
+allPermutations xs = ((head xs:) <$> allPermutations (tail xs)) ++ do 
+    i <- [1..length xs - 1]
+    ((xs !! i):) <$> allPermutations (tail (take i xs) ++ (head xs : drop (i+1) xs))
+                        
 factorial :: Int -> Int
 factorial 0 = 1
 factorial 1 = 1 

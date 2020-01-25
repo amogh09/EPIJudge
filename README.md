@@ -108,7 +108,7 @@ Failure info
 | Compute the next permutation | nextPermutation.hs | next\_permutation.cc | NextPermutation.java | next\_permutation.py | 
 | Sample offline data | offlineSampling.hs | offline\_sampling.cc | OfflineSampling.java | offline\_sampling.py | 
 | Sample online data | onlineSampling.hs | online\_sampling.cc | OnlineSampling.java | online\_sampling.py | 
-| Compute a random permutation | <TBA> | random\_permutation.cc | RandomPermutation.java | random\_permutation.py | 
+| Compute a random permutation | randomPermutation.hs | random\_permutation.cc | RandomPermutation.java | random\_permutation.py | 
 | Compute a random subset | <TBA> | random\_subset.cc | RandomSubset.java | random\_subset.py | 
 | Generate nonuniform random numbers | <TBA> | nonuniform\_random\_number.cc | NonuniformRandomNumber.java | nonuniform\_random\_number.py | 
 | The Sudoku checker problem | <TBA> | is\_valid\_sudoku.cc | IsValidSudoku.java | is\_valid\_sudoku.py | 
