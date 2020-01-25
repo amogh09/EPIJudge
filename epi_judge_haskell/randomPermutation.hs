@@ -13,7 +13,7 @@ randomSamplingWrapper k xs = collectRandom 10000 (randomPermutation xs)
 
 chk :: (Show a, Ord a) => (Int, [a]) -> [[a]] -> Maybe String
 chk (k,xs) ys = either Just (const Nothing) $ do 
-    let permIds = fmap (\p -> (p, (perms M.!?) . sort $ p)) ys 
+    let permIds = fmap (\p -> (p, (perms M.!?) $ p)) ys 
     rightIfNothing 
         (\p -> "Invalid sample " ++ show (fst p)) 
         (find (isNothing . snd) permIds)
