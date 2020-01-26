@@ -30,6 +30,7 @@ NEXT_PERMUTATION = nextPermutation
 OFFLINE_SAMPLING = offlineSampling
 ONLINE_SAMPLING = onlineSampling
 RANDOM_PERMUTATION = randomPermutation
+RANDOM_SUBSET = randomSubset
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -274,6 +275,15 @@ ${RANDOM_PERMUTATION}: ${BUILD_DIR}/${RANDOM_PERMUTATION}
 	${BUILD_DIR}/${RANDOM_PERMUTATION}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${RANDOM_SUBSET}
+${BUILD_DIR}/${RANDOM_SUBSET}: ${BUILD_DIR} ${RANDOM_SUBSET}.hs
+	@echo "Compiling ${RANDOM_SUBSET}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${RANDOM_SUBSET} ${RANDOM_SUBSET}.hs
+${RANDOM_SUBSET}: ${BUILD_DIR}/${RANDOM_SUBSET}
+	@echo "Running ${RANDOM_SUBSET}"
+	${BUILD_DIR}/${RANDOM_SUBSET}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -306,7 +316,8 @@ all: \
 	${NEXT_PERMUTATION} \
 	${OFFLINE_SAMPLING} \
 	${ONLINE_SAMPLING} \
-	${RANDOM_PERMUTATION}
+	${RANDOM_PERMUTATION} \
+	${RANDOM_SUBSET}
 
 .PHONY: clean 
 clean:

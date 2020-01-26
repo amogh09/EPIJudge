@@ -102,6 +102,7 @@ checkUniformRandomness s xs n =
     &&  checkBirthdaySpacings xs n
 
 getAllCombinations :: (Ord a) => Int -> [a] -> M.Map [a] Int
+getAllCombinations 0 _ = M.fromList [([],0)]
 getAllCombinations k xs = M.fromList $ getAllCombinations' n k xs `zip` [0..]
     where n = length xs
 
