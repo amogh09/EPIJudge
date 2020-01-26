@@ -6,20 +6,19 @@ import System.Random
 import Data.List (sort,find)
 import Data.Maybe (isNothing)
 
-randomPermutation :: (Show a, RandomGen g) => [a] -> g -> ([a],g)
-randomPermutation xs g = ((vxs V.!) <$> snd <$> M.toList idxToVals, g') where 
-    vxs = V.fromList xs 
-    n = V.length vxs
+randomPermutation :: RandomGen g => Int -> g -> ([Int],g)
+randomPermutation n g = ((vxs V.!) <$> snd <$> M.toList idxToVals, g') where 
+    vxs = V.fromList [0..n-1] 
     (idxToVals,g') = foldl f (M.empty,g) [0..n-1] 
     f (agg,g) i = let (j,g') = randomR (i,n-1) g 
                       agg' = M.insert i (M.findWithDefault j j agg) agg
                   in  (M.insert j (M.findWithDefault i i agg) agg', g')
 
-randomSamplingWrapper :: (Show a, RandomGen g, Ord a) => Int -> [a] -> g -> ([[a]],g)
-randomSamplingWrapper k xs = collectRandom 10000 (randomPermutation xs) 
+randomSamplingWrapper :: RandomGen g => Int -> g -> ([[Int]],g)
+randomSamplingWrapper n = collectRandom 10000 (randomPermutation n) 
 
-chk :: (Show a, Ord a) => (Int, [a]) -> [[a]] -> Maybe String
-chk (k,xs) ys = either Just (const Nothing) $ do 
+chk :: Int -> [[Int]] -> Maybe String
+chk n ys = either Just (const Nothing) $ do 
     let permIds = fmap (\p -> (p, (perms M.!?) $ p)) ys 
     rightIfNothing 
         (\p -> "Invalid sample " ++ show (fst p)) 
@@ -28,6 +27,7 @@ chk (k,xs) ys = either Just (const Nothing) $ do
         then Left "Samples are not uniformly random"
         else Right ()
     where
+        xs = [0..n-1] 
         perms = permutationsWithIds (sort xs)
         permsCount = M.size perms
 
@@ -35,7 +35,7 @@ main = do
     g <- getStdGen 
     goTestRandomVoid
         g
-        (uncurry randomSamplingWrapper)
-        (\(x:y:_) -> (intData y, intList x))
+        randomSamplingWrapper
+        (intData . head)
         chk
-        "../test_data/online_sampling.tsv"
+        "../test_data/random_permutation.tsv"
