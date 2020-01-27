@@ -122,7 +122,7 @@ runTestsRandomVoid :: (Show a, Show b, RandomGen g) =>
 runTestsRandomVoid _ rts _ _ _ _ _ [] = printCongrats rts
 runTestsRandomVoid g rts i n f fin chk (t:ts) = do 
     let input = fin t 
-    ((res,g'), rt) <- time $ return $ f input g
+    ((res,g'), rt) <- time $ return $! f input g
     case chk input res of 
         Nothing -> do 
             printSuccess i n rt 

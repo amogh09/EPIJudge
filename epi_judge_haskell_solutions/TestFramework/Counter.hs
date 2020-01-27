@@ -7,6 +7,7 @@ module TestFramework.Counter
     ,   null
     ,   size
     ,   (!)
+    ,   Counter
     ) where
 
 import Prelude hiding (null)
