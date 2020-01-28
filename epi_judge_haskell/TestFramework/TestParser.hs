@@ -15,6 +15,7 @@ module TestFramework.TestParser
     ,   intList 
     ,   doubleList
     ,   listToTuple2
+    ,   listOfIntList
     ) where
 
 import TestFramework.EPIPrelude hiding (takeWhile)
@@ -122,6 +123,8 @@ p_list dt ldt@(IntDT _) = ListD dt <$>
     between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
 p_list dt ldt@(DoubleDT _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_double ldt) `sepBy` (char ','))
+p_list dt ldt@(ListDT ldt' _) = ListD dt <$> 
+    between (char '[') (char ']') ((spaces *> p_list ldt ldt') `sepBy` (char ','))
 
 p_single_field_name :: Parser Text
 p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
@@ -217,6 +220,9 @@ intList (ListD _ ds) = intData <$> ds
 
 doubleList :: Data -> [Double]
 doubleList (ListD _ ds) = doubleData <$> ds
+
+listOfIntList :: Data -> [[Int]]
+listOfIntList (ListD _ ds) = intList <$> ds
 
 listToTuple2 :: [a] -> (a,a)
 listToTuple2 (x:y:_) = (x,y)

@@ -19,7 +19,6 @@ import System.Random
 import TestFramework.TestParser
 import System.CPUTime
 import Control.Exception (evaluate)
-import Debug.Trace
 
 time :: IO a -> IO (a, Int)
 time a = do 
