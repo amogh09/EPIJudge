@@ -10,6 +10,7 @@ module TestFramework.TestParser
     ,   longData
     ,   doubleData
     ,   boolData
+    ,   textData
     ,   tuple3Data
     ,   tuple4Data
     ,   intList 
@@ -30,6 +31,7 @@ data DataType =
     |   LongDT (Maybe Name)
     |   DoubleDT (Maybe Name)
     |   BoolDT (Maybe Name)
+    |   TextDT (Maybe Name)
     |   ListDT DataType (Maybe Name)
     |   VoidDT
     deriving (Show)
@@ -39,6 +41,7 @@ data Data =
     |   IntD DataType Int
     |   LongD DataType Integer
     |   DoubleD DataType Double
+    |   TextD DataType Text
     |   BoolD DataType Bool
     |   ListD DataType [Data]
     |   VoidD
@@ -49,6 +52,7 @@ instance Show Data where
     show (IntD _ x)      = show x
     show (LongD _ x)     = show x 
     show (DoubleD _ x)   = show x
+    show (TextD _ x)     = show x
     show (BoolD _ x)     = show x 
     show (ListD _ x)     = show x
     show VoidD           = "void"
@@ -63,6 +67,7 @@ p_dt = choice [
     ,   p_int_dt
     ,   p_long_dt
     ,   p_double_dt
+    ,   p_text_dt
     ,   p_bool_dt
     ,   p_list_dt
     ,   p_void_dt
@@ -90,6 +95,7 @@ p_d isTsv sep (dt@(ListDT ldt _):rest)  = parseMultiData isTsv sep rest (p_list 
 p_d isTsv sep (dt@(IntDT _):dts)    = parseSingleData isTsv sep dts (p_int dt)
 p_d isTsv sep (dt@(LongDT _):dts)   = parseSingleData isTsv sep dts (p_long dt)
 p_d isTsv sep (dt@(DoubleDT _):dts) = parseSingleData isTsv sep dts (p_double dt)
+p_d isTsv sep (dt@(TextDT _):dts)   = parseSingleData isTsv sep dts (p_text dt)
 p_d isTsv sep (dt@(BoolDT _):dts)   = parseSingleData isTsv sep dts (p_bool dt)
 p_d isTsv sep (VoidDT:rest) = do 
     xs <- spaces *> p_d isTsv sep rest 
@@ -109,7 +115,10 @@ p_long dt = LongD dt <$> signed decimal
 
 p_double :: DataType -> Parser Data
 p_double dt = DoubleD dt <$> double
-    
+
+p_text :: DataType -> Parser Data 
+p_text dt = TextD dt <$> takeWhile isAlphaNum
+
 p_bool :: DataType -> Parser Data 
 p_bool dt = BoolD dt <$> readBool <$> 
     (string "true" <|> string "false" <?> "Bool")
@@ -173,6 +182,13 @@ p_bool_dt = BoolDT <$>
     *>  optional p_single_field_name
     )
 
+p_text_dt :: Parser DataType 
+p_text_dt = TextDT <$>
+    (
+        string "string"
+    *>  optional p_single_field_name
+    )
+
 p_void_dt :: Parser DataType
 p_void_dt = string "void" *> return VoidDT
 
@@ -208,6 +224,9 @@ doubleData (DoubleD _ x) = x
 
 boolData :: Data -> Bool 
 boolData (BoolD _ x) = x
+
+textData :: Data -> Text 
+textData (TextD _ x) = x
 
 tuple3Data :: Data -> (Data, Data, Data)
 tuple3Data (TupleD _ [p,q,r]) = (p,q,r)
