@@ -112,7 +112,7 @@ Failure info
 | Compute a random subset | randomSubset.hs | random\_subset.cc | RandomSubset.java | random\_subset.py | 
 | Generate nonuniform random numbers | nonUniformRandomNumber.hs | nonuniform\_random\_number.cc | NonuniformRandomNumber.java | nonuniform\_random\_number.py | 
 | The Sudoku checker problem | isValidSudoku.hs | is\_valid\_sudoku.cc | IsValidSudoku.java | is\_valid\_sudoku.py | 
-| Compute the spiral ordering of a 2D array | <TBA> | spiral\_ordering\_segments.cc | SpiralOrderingSegments.java | spiral\_ordering\_segments.py | 
+| Compute the spiral ordering of a 2D array | spiralOrderingSegments.hs | spiral\_ordering\_segments.cc | SpiralOrderingSegments.java | spiral\_ordering\_segments.py | 
 | Rotate a 2D array | <TBA> | matrix\_rotation.cc | MatrixRotation.java | matrix\_rotation.py | 
 | Compute rows in Pascal's Triangle | <TBA> | pascal\_triangle.cc | PascalTriangle.java | pascal\_triangle.py | 
 | Interconvert strings and integers | <TBA> | string\_integer\_interconversion.cc | StringIntegerInterconversion.java | string\_integer\_interconversion.py | 
