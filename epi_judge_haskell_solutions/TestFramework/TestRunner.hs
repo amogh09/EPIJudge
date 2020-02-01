@@ -31,16 +31,12 @@ nanosSinceEpoch = do
     u <- getCurrentTime
     return $ floor . (1e9 *) . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds $ u
 
-time :: IO a -> IO (a,Int)
-time a = do 
-    start <- getCPUTime
-    v     <- a
-    end   <- getCPUTime 
-    let diff = (fromIntegral (end - start)) `div` 1000000
-    return (v,diff)
-
-runWithTimeout :: (NFData a, Show a) => a -> IO (Maybe a,Int)
-runWithTimeout act = do 
+-- |Tries to evaluate to Normal Form the given variable with a timeout.
+-- If the variable was evaluated within time then it is returned in a Just 
+-- along with the time spent in evaluation. If not, then None is returned 
+-- with the timeout time.
+evaluateWithTimeout :: (NFData a) => a -> IO (Maybe a,Int)
+evaluateWithTimeout act = do 
     mvar  <- newEmptyMVar 
     start <- nanosSinceEpoch
     tid   <- forkIO $ threadDelay (secs 1) >> putMVar mvar Nothing 
@@ -83,7 +79,7 @@ runTests rts _ _ _ _ _ _ [] = printCongrats rts
 runTests rts i n f fin fout cmp (t:ts) = do
     let expected = fout t
         res = f (fin t)
-    (passed,rt) <- runWithTimeout $ res `cmp` expected
+    (passed,rt) <- evaluateWithTimeout $ res `cmp` expected
     case passed of 
         Just True  -> do 
             printSuccess i n rt 
@@ -115,7 +111,7 @@ runTestsVoid :: (Show a, Show b) =>
 runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
 runTestsVoid rts i n f fin chk (t:ts) = do 
     let input = fin t
-    (err, rt) <- runWithTimeout $ chk input (f input)
+    (err, rt) <- evaluateWithTimeout $ chk input (f input)
     case err of
         Nothing -> printFailure i n t rt >> printTimeout
         Just Nothing -> do
@@ -151,12 +147,14 @@ runTestsRandomVoid :: (Show a, Show b, RandomGen g) =>
 runTestsRandomVoid _ rts _ _ _ _ _ [] = printCongrats rts
 runTestsRandomVoid g rts i n f fin chk (t:ts) = do 
     let input = fin t 
-    ((res,g'), rt) <- time $ return $! f input g
-    case chk input res of 
-        Nothing -> do 
+        (res,g') = f input g
+    (failure, rt) <- evaluateWithTimeout $ chk input res
+    case failure of
+        Nothing -> printFailure i n t rt >> printTimeout
+        Just Nothing -> do 
             printSuccess i n rt 
             runTestsRandomVoid g' (rt:rts) (i+1) n f fin chk ts
-        Just failureInfo -> do 
+        Just (Just failureInfo) -> do 
             printFailure i n t rt
             printColored yellow "Failure info"
             printf ":             "

@@ -14,6 +14,7 @@ The project uses the following Haskell dependencies. All of them can be download
 1. attoparsec
 1. vector
 1. random
+1. deepseq
 
 ## Running the judge from the command line
 
