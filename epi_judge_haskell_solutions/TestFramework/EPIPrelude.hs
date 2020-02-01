@@ -25,9 +25,9 @@ module TestFramework.EPIPrelude
     ) where
 
 import Prelude (
-        (-), (+), div, (^), fromIntegral, (==), Integer
+        (-), (+), div, (^), (*), fromIntegral, (==), Integer
     ,   Double, abs, sqrt, log, (<=), (>=), (&&), otherwise, (**)
-    ,   round, (/=), (||), id, Num, (<), not, ($!)
+    ,   round, (/=), (||), id, Num, (<), not, ($!), floor, fmap
     )
 import Text.Show (Show, show)
 import Text.Read (read)

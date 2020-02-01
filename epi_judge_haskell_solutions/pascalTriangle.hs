@@ -1,5 +1,6 @@
 import TestFramework.TestRunner 
 import Data.List (unfoldr)
+import Debug.Trace
 
 pascal :: Int -> [[Int]]
 pascal = flip take triangle where

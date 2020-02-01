@@ -1,4 +1,5 @@
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE BangPatterns #-}
 
 module TestFramework.TestRunner 
     (
@@ -19,14 +20,41 @@ import System.Random
 import TestFramework.TestParser
 import System.CPUTime
 import Control.Exception (evaluate)
+import Control.Concurrent
+import Data.Time
+import Data.Time.Clock.POSIX
+import Data.Int
+import Control.DeepSeq
 
-time :: IO a -> IO (a, Int)
+nanosSinceEpoch :: IO Int64
+nanosSinceEpoch = do 
+    u <- getCurrentTime
+    return $ floor . (1e9 *) . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds $ u
+
+time :: IO a -> IO (a,Int)
 time a = do 
     start <- getCPUTime
     v     <- a
     end   <- getCPUTime 
     let diff = (fromIntegral (end - start)) `div` 1000000
     return (v,diff)
+
+runWithTimeout :: (NFData a, Show a) => a -> IO (Maybe a,Int)
+runWithTimeout act = do 
+    mvar  <- newEmptyMVar 
+    start <- nanosSinceEpoch
+    tid   <- forkIO $ threadDelay (secs 1) >> putMVar mvar Nothing 
+    tid'  <- forkIO $ do 
+        let !res = force act 
+        putMVar mvar (Just res)
+    res   <- takeMVar mvar
+    mapM_ killThread [tid,tid'] 
+    end   <- nanosSinceEpoch
+    let rt = fromIntegral $ (end - start) `div` 1000
+    return (res,rt)
+
+secs :: Int -> Int 
+secs = (1000 * 1000 *)
 
 type TestCase = [Data]
 
@@ -53,16 +81,17 @@ runTests :: (Show a, Show b) =>
     ->  IO ()                    
 runTests rts _ _ _ _ _ _ [] = printCongrats rts
 runTests rts i n f fin fout cmp (t:ts) = do
-    let input    = fin t 
-        expected = fout t
-    (res, rt) <- time $ return $ f input 
-    if res `cmp` expected 
-        then do
+    let expected = fout t
+        res = f (fin t)
+    (passed,rt) <- runWithTimeout $ res `cmp` expected
+    case passed of 
+        Just True  -> do 
             printSuccess i n rt 
             runTests (rt:rts) (i+1) n f fin fout cmp ts
-        else do 
-            printFailure i n t 
+        Just False -> do 
+            printFailure i n t rt
             printFailureInfoAndExpl t expected res
+        Nothing -> printFailure i n t rt >> printTimeout
 
 goTestVoid :: (Show a, Eq b, Show b) =>
         (a -> b)                  -- Function to test 
@@ -85,14 +114,15 @@ runTestsVoid :: (Show a, Show b) =>
     ->  IO ()
 runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
 runTestsVoid rts i n f fin chk (t:ts) = do 
-    let input = fin t 
-    (res, rt) <- time $ evaluate $ f input
-    case chk input res of 
-        Nothing -> do 
+    let input = fin t
+    (err, rt) <- runWithTimeout $ chk input (f input)
+    case err of
+        Nothing -> printFailure i n t rt >> printTimeout
+        Just Nothing -> do
             printSuccess i n rt 
             runTestsVoid (rt:rts) (i+1) n f fin chk ts
-        Just failureInfo -> do 
-            printFailure i n t
+        Just (Just failureInfo) -> do 
+            printFailure i n t rt
             printColored yellow "Failure info"
             printf ":             "
             printf "%s\n" failureInfo
@@ -127,7 +157,7 @@ runTestsRandomVoid g rts i n f fin chk (t:ts) = do
             printSuccess i n rt 
             runTestsRandomVoid g' (rt:rts) (i+1) n f fin chk ts
         Just failureInfo -> do 
-            printFailure i n t
+            printFailure i n t rt
             printColored yellow "Failure info"
             printf ":             "
             printf "%s\n" failureInfo
@@ -136,7 +166,7 @@ printSuccess :: Int -> Int -> Int -> IO ()
 printSuccess i n rt = do 
     printf "\rTest "
     printColored green "PASSED"
-    printf " (%5d/%d) [%4d us]" i n rt
+    printf " (%6d/%d) [%10d us]" i n rt
     
 type Color = String
 
@@ -154,15 +184,15 @@ printColored c x = printf "%s%s%s" c x colorEnd
 
 printCongrats :: [Int] -> IO ()
 printCongrats rts = do 
-    printf "\nAverage running time: %4d us" (sum rts `div` length rts)
-    printf "\nMedian running time:  %4d us\n" (sort rts !! (length rts `div` 2))
+    printf "\nAverage running time: %10d us" (sum rts `div` length rts)
+    printf "\nMedian running time:  %10d us\n" (sort rts !! (length rts `div` 2))
     putStrLn . pack $ "*** You've passed ALL tests. Congratulations! ***"
     return ()    
 
-printFailure :: Int -> Int -> TestCase -> IO ()
-printFailure i n t = do 
+printFailure :: Int -> Int -> TestCase -> Int -> IO ()
+printFailure i n t rt = do 
     let ins = dropRight 2 t -- Dropping expected and explanation
-    printf "\rTest \x1b[91mFAILED\x1b[0m (%5d/%d)\n" i n
+    printf "\rTest \x1b[91mFAILED\x1b[0m (%5d/%d) [%4d us]\n" i n rt
     printColored yellow "Arguments"
     printf "\n"
     forM_ ([(1::Int)..] `zip` ins) $ \(idx, x) -> do
@@ -171,6 +201,13 @@ printFailure i n t = do
         printf ":           "
         putStrLn (pack (show x))
     printf "\n"
+
+printTimeout :: IO ()
+printTimeout = do 
+    printColored yellow "Failure info"
+    printf "\n\t"
+    printColored yellow "explanation"
+    putStrLn (pack $ ":      " ++ "Time limit exceeded")
 
 printFailureInfoAndExpl :: (Show b) => TestCase -> b -> b -> IO () 
 printFailureInfoAndExpl t expected result = do

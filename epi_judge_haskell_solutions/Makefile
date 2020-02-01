@@ -1,5 +1,5 @@
 HC = ghc 
-OPTFLAG = -O2
+OPTFLAG = -O2 -fno-omit-yields
 BUILD_DIR = build
 BUILD_CMD = ${HC} ${OPTFLAG} -outputdir ${BUILD_DIR} 
 
