@@ -28,4 +28,5 @@ main = do
         (uncurry uniformRandomWrapper)
         (\(lo:hi:_) -> (intData lo, intData hi))
         chk
+        1
         "../test_data/uniform_random_number.tsv"

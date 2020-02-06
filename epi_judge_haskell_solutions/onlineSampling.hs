@@ -34,4 +34,5 @@ main = do
         (uncurry randomSamplingWrapper)
         (\(x:y:_) -> (intData y, intList x))
         chk
+        1
         "../test_data/online_sampling.tsv"

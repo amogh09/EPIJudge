@@ -2,7 +2,7 @@ import TestFramework.TestRunner
 import System.Random 
 import TestFramework.Randomness (collectRandom, checkUniformRandomness, getAllCombinations)
 import qualified Data.Map.Strict as M
-import Data.List (find)
+import Data.List (find,sort)
 import Data.Maybe (isNothing)
 
 randomSubset :: RandomGen g => Int -> Int -> g -> ([Int],g)
@@ -32,4 +32,5 @@ main = do
         (uncurry randomSubsetWrapper)
         (\(x:y:_) -> (intData x, intData y))
         chk 
+        1
         "../test_data/random_subset.tsv"

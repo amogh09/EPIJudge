@@ -32,4 +32,5 @@ main = do
         randomSamplingWrapper
         (intData . head)
         chk
+        1
         "../test_data/random_permutation.tsv"

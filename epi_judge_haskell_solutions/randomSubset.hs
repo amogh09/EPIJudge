@@ -39,4 +39,5 @@ main = do
         (uncurry randomSubsetWrapper)
         (\(x:y:_) -> (intData x, intData y))
         chk 
+        1
         "../test_data/random_subset.tsv"
