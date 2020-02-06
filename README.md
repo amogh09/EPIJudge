@@ -117,7 +117,7 @@ Failure info
 | Rotate a 2D array | matrixRotation.hs | matrix\_rotation.cc | MatrixRotation.java | matrix\_rotation.py | 
 | Compute rows in Pascal's Triangle | pascalTriangle.hs | pascal\_triangle.cc | PascalTriangle.java | pascal\_triangle.py | 
 | Interconvert strings and integers | stringIntegerInterconversion.hs | string\_integer\_interconversion.cc | StringIntegerInterconversion.java | string\_integer\_interconversion.py | 
-| Base conversion | <TBA> | convert\_base.cc | ConvertBase.java | convert\_base.py | 
+| Base conversion | convertBase.hs | convert\_base.cc | ConvertBase.java | convert\_base.py | 
 | Compute the spreadsheet column encoding | <TBA> | spreadsheet\_encoding.cc | SpreadsheetEncoding.java | spreadsheet\_encoding.py | 
 | Replace and remove | <TBA> | replace\_and\_remove.cc | ReplaceAndRemove.java | replace\_and\_remove.py | 
 | Test palindromicity | <TBA> | is\_string\_palindromic\_punctuation.cc | IsStringPalindromicPunctuation.java | is\_string\_palindromic\_punctuation.py | 

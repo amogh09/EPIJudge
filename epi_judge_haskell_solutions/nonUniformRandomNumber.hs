@@ -51,4 +51,5 @@ main = do
         (uncurry randomNumWrapper)
         (\(x:y:_) -> (intList x, doubleList y))
         chk 
+        5
         "../test_data/nonuniform_random_number.tsv"

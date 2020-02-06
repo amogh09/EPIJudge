@@ -31,19 +31,15 @@ nanosSinceEpoch = do
     u <- getCurrentTime
     return $ floor . (1e9 *) . nominalDiffTimeToSeconds . utcTimeToPOSIXSeconds $ u
 
-time :: IO a -> IO (a,Int)
-time a = do 
-    start <- getCPUTime
-    v     <- a
-    end   <- getCPUTime 
-    let diff = (fromIntegral (end - start)) `div` 1000000
-    return (v,diff)
-
-runWithTimeout :: (NFData a, Show a) => a -> IO (Maybe a,Int)
-runWithTimeout act = do 
+-- |Tries to evaluate to Normal Form the given variable with a timeout.
+-- If the variable was evaluated within time then it is returned in a Just 
+-- along with the time spent in evaluation. If not, then None is returned 
+-- with the timeout time.
+evaluateWithTimeout :: (NFData a) => Int -> a -> IO (Maybe a,Int)
+evaluateWithTimeout delaySecs act = do 
     mvar  <- newEmptyMVar 
     start <- nanosSinceEpoch
-    tid   <- forkIO $ threadDelay (secs 1) >> putMVar mvar Nothing 
+    tid   <- forkIO $ threadDelay (secs delaySecs) >> putMVar mvar Nothing 
     tid'  <- forkIO $ do 
         let !res = force act 
         putMVar mvar (Just res)
@@ -83,7 +79,7 @@ runTests rts _ _ _ _ _ _ [] = printCongrats rts
 runTests rts i n f fin fout cmp (t:ts) = do
     let expected = fout t
         res = f (fin t)
-    (passed,rt) <- runWithTimeout $ res `cmp` expected
+    (passed,rt) <- evaluateWithTimeout 1 $ res `cmp` expected
     case passed of 
         Just True  -> do 
             printSuccess i n rt 
@@ -115,7 +111,7 @@ runTestsVoid :: (Show a, Show b) =>
 runTestsVoid rts _ _ _ _ _ [] = printCongrats rts
 runTestsVoid rts i n f fin chk (t:ts) = do 
     let input = fin t
-    (err, rt) <- runWithTimeout $ chk input (f input)
+    (err, rt) <- evaluateWithTimeout 1 $ chk input (f input)
     case err of
         Nothing -> printFailure i n t rt >> printTimeout
         Just Nothing -> do
@@ -132,11 +128,12 @@ goTestRandomVoid :: (RandomGen g, Show a, Eq b, Show b) =>
     ->  (a -> g -> (b,g))         -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input 
     ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
+    ->  Int                       -- Timeout in seconds
     ->  String                    -- Test data file name
     ->  IO ()
-goTestRandomVoid g f fin chk fileName = do 
+goTestRandomVoid g f fin chk to fileName = do 
     ts <- testCases fileName
-    runTestsRandomVoid g [] 1 (length ts) f fin chk ts 
+    runTestsRandomVoid g [] 1 (length ts) f fin chk to ts 
 
 runTestsRandomVoid :: (Show a, Show b, RandomGen g) =>
         g                         -- RandomGen 
@@ -146,17 +143,20 @@ runTestsRandomVoid :: (Show a, Show b, RandomGen g) =>
     ->  (a -> g -> (b,g))         -- Function to test 
     ->  (TestCase -> a)           -- Test case to function input
     ->  (a -> b -> Maybe String)  -- Output checker function returning fail info
+    ->  Int                       -- Timeout in seconds
     ->  [TestCase]                -- List of test cases
     ->  IO ()
-runTestsRandomVoid _ rts _ _ _ _ _ [] = printCongrats rts
-runTestsRandomVoid g rts i n f fin chk (t:ts) = do 
+runTestsRandomVoid _ rts _ _ _ _ _ _ [] = printCongrats rts
+runTestsRandomVoid g rts i n f fin chk to (t:ts) = do 
     let input = fin t 
-    ((res,g'), rt) <- time $ return $! f input g
-    case chk input res of 
-        Nothing -> do 
+        (res,g') = f input g
+    (failure, rt) <- evaluateWithTimeout to $ chk input res
+    case failure of
+        Nothing -> printFailure i n t rt >> printTimeout
+        Just Nothing -> do 
             printSuccess i n rt 
-            runTestsRandomVoid g' (rt:rts) (i+1) n f fin chk ts
-        Just failureInfo -> do 
+            runTestsRandomVoid g' (rt:rts) (i+1) n f fin chk to ts
+        Just (Just failureInfo) -> do 
             printFailure i n t rt
             printColored yellow "Failure info"
             printf ":             "
