@@ -117,7 +117,7 @@ p_double :: DataType -> Parser Data
 p_double dt = DoubleD dt <$> double
 
 p_text :: DataType -> Parser Data 
-p_text dt = TextD dt <$> takeWhile (not . isSpace)
+p_text dt = TextD dt <$> takeTill (=='\t')
 
 p_bool :: DataType -> Parser Data 
 p_bool dt = BoolD dt <$> readBool <$> 
