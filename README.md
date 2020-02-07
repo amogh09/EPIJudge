@@ -121,7 +121,7 @@ Failure info
 | Compute the spreadsheet column encoding | spreadsheetEncoding.hs | spreadsheet\_encoding.cc | SpreadsheetEncoding.java | spreadsheet\_encoding.py | 
 | Replace and remove | <TBA> | replace\_and\_remove.cc | ReplaceAndRemove.java | replace\_and\_remove.py | 
 | Test palindromicity | isStringPalindromicPunctuation.hs | is\_string\_palindromic\_punctuation.cc | IsStringPalindromicPunctuation.java | is\_string\_palindromic\_punctuation.py | 
-| Reverse all the words in a sentence | <TBA> | reverse\_words.cc | ReverseWords.java | reverse\_words.py | 
+| Reverse all the words in a sentence | reverseWords.hs | reverse\_words.cc | ReverseWords.java | reverse\_words.py | 
 | Compute all mnemonics for a phone number | <TBA> | phone\_number\_mnemonic.cc | PhoneNumberMnemonic.java | phone\_number\_mnemonic.py | 
 | The look-and-say problem | <TBA> | look\_and\_say.cc | LookAndSay.java | look\_and\_say.py | 
 | Convert from Roman to decimal | <TBA> | roman\_to\_integer.cc | RomanToInteger.java | roman\_to\_integer.py | 
