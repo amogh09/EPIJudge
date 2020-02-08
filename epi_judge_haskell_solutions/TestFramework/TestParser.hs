@@ -15,6 +15,7 @@ module TestFramework.TestParser
     ,   tuple4Data
     ,   intList 
     ,   doubleList
+    ,   textList
     ,   listToTuple2
     ,   listOfIntList
     ) where
@@ -95,7 +96,7 @@ p_d isTsv sep (dt@(ListDT ldt _):rest)  = parseMultiData isTsv sep rest (p_list 
 p_d isTsv sep (dt@(IntDT _):dts)    = parseSingleData isTsv sep dts (p_int dt)
 p_d isTsv sep (dt@(LongDT _):dts)   = parseSingleData isTsv sep dts (p_long dt)
 p_d isTsv sep (dt@(DoubleDT _):dts) = parseSingleData isTsv sep dts (p_double dt)
-p_d isTsv sep (dt@(TextDT _):dts)   = parseSingleData isTsv sep dts (p_text dt)
+p_d isTsv sep (dt@(TextDT _):dts)   = parseSingleData isTsv sep dts (p_text isTsv dt)
 p_d isTsv sep (dt@(BoolDT _):dts)   = parseSingleData isTsv sep dts (p_bool dt)
 p_d isTsv sep (VoidDT:rest) = do 
     xs <- spaces *> p_d isTsv sep rest 
@@ -107,6 +108,9 @@ spaces = takeWhile (==' ') >> return ()
 between :: Parser b -> Parser b -> Parser a -> Parser a
 between l r m = l *> m <* r 
 
+optionalBetween :: b -> Parser b -> Parser b -> Parser a -> Parser a 
+optionalBetween d l r m = option d l *> m <* option d r
+
 p_int :: DataType -> Parser Data 
 p_int dt = IntD dt <$> signed decimal
 
@@ -116,9 +120,13 @@ p_long dt = LongD dt <$> signed decimal
 p_double :: DataType -> Parser Data
 p_double dt = DoubleD dt <$> double
 
-p_text :: DataType -> Parser Data 
-p_text dt = TextD dt <$> takeTill (=='\t')
-
+p_text :: Bool -> DataType -> Parser Data 
+p_text isTsv dt = TextD dt <$> optionalBetween '_' 
+    (char '"') 
+    (char '"')
+    (takeTill (flip elem (end :: String))) 
+    where end = if isTsv then "\t]\"" else ",]\""
+    
 p_bool :: DataType -> Parser Data 
 p_bool dt = BoolD dt <$> readBool <$> 
     (string "true" <|> string "false" <?> "Bool")
@@ -132,6 +140,8 @@ p_list dt ldt@(IntDT _) = ListD dt <$>
     between (char '[') (char ']') ((spaces *> p_int ldt) `sepBy` (char ','))
 p_list dt ldt@(DoubleDT _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_double ldt) `sepBy` (char ','))
+p_list dt ldt@(TextDT _) = ListD dt <$>
+    between (char '[') (char ']') ((spaces *> p_text False ldt) `sepBy` (char ','))
 p_list dt ldt@(ListDT ldt' _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_list ldt ldt') `sepBy` (char ','))
 
@@ -239,6 +249,9 @@ intList (ListD _ ds) = intData <$> ds
 
 doubleList :: Data -> [Double]
 doubleList (ListD _ ds) = doubleData <$> ds
+
+textList :: Data -> [String]
+textList (ListD _ ds) = unpack <$> textData <$> ds
 
 listOfIntList :: Data -> [[Int]]
 listOfIntList (ListD _ ds) = intList <$> ds

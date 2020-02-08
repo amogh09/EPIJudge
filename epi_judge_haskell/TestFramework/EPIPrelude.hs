@@ -28,6 +28,7 @@ import Prelude (
         (-), (+), div, (^), (*), fromIntegral, (==), Integer
     ,   Double, abs, sqrt, log, (<=), (>=), (&&), otherwise, (**)
     ,   round, (/=), (||), id, Num, (<), not, ($!), floor, fmap
+    ,   flip
     )
 import Text.Show (Show, show)
 import Text.Read (read)
