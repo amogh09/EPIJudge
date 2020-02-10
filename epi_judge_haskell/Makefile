@@ -44,6 +44,7 @@ REVERSE_WORDS = reverseWords
 PHONE_NUMBER_MNEMONIC = phoneNumberMnemonic
 REPLACE_AND_REMOVE = replaceAndRemove
 LOOK_AND_SAY = lookAndSay
+ROMAN_TO_INTEGER = romanToInteger
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -414,6 +415,15 @@ ${LOOK_AND_SAY}: ${BUILD_DIR}/${LOOK_AND_SAY}
 	${BUILD_DIR}/${LOOK_AND_SAY}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${ROMAN_TO_INTEGER}
+${BUILD_DIR}/${ROMAN_TO_INTEGER}: ${BUILD_DIR} ${ROMAN_TO_INTEGER}.hs
+	@echo "Compiling ${ROMAN_TO_INTEGER}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${ROMAN_TO_INTEGER} ${ROMAN_TO_INTEGER}.hs
+${ROMAN_TO_INTEGER}: ${BUILD_DIR}/${ROMAN_TO_INTEGER}
+	@echo "Running ${ROMAN_TO_INTEGER}"
+	${BUILD_DIR}/${ROMAN_TO_INTEGER}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -460,7 +470,8 @@ all: \
 	${REVERSE_WORDS} \
 	${PHONE_NUMBER_MNEMONIC} \
 	${REPLACE_AND_REMOVE} \
-	${LOOK_AND_SAY}
+	${LOOK_AND_SAY} \
+	${ROMAN_TO_INTEGER}
 
 .PHONY: clean 
 clean:
