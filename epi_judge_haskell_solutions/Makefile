@@ -43,6 +43,7 @@ IS_STRING_PALINDROMIC_PUNCTUATION = isStringPalindromicPunctuation
 REVERSE_WORDS = reverseWords
 PHONE_NUMBER_MNEMONIC = phoneNumberMnemonic
 REPLACE_AND_REMOVE = replaceAndRemove
+LOOK_AND_SAY = lookAndSay
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -404,6 +405,15 @@ ${REPLACE_AND_REMOVE}: ${BUILD_DIR}/${REPLACE_AND_REMOVE}
 	${BUILD_DIR}/${REPLACE_AND_REMOVE}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${LOOK_AND_SAY}
+${BUILD_DIR}/${LOOK_AND_SAY}: ${BUILD_DIR} ${LOOK_AND_SAY}.hs
+	@echo "Compiling ${LOOK_AND_SAY}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${LOOK_AND_SAY} ${LOOK_AND_SAY}.hs
+${LOOK_AND_SAY}: ${BUILD_DIR}/${LOOK_AND_SAY}
+	@echo "Running ${LOOK_AND_SAY}"
+	${BUILD_DIR}/${LOOK_AND_SAY}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -449,7 +459,8 @@ all: \
 	${IS_STRING_PALINDROMIC_PUNCTUATION} \
 	${REVERSE_WORDS} \
 	${PHONE_NUMBER_MNEMONIC} \
-	${REPLACE_AND_REMOVE}
+	${REPLACE_AND_REMOVE} \
+	${LOOK_AND_SAY}
 
 .PHONY: clean 
 clean:

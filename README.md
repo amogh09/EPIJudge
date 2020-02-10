@@ -123,7 +123,7 @@ Failure info
 | Test palindromicity | isStringPalindromicPunctuation.hs | is\_string\_palindromic\_punctuation.cc | IsStringPalindromicPunctuation.java | is\_string\_palindromic\_punctuation.py | 
 | Reverse all the words in a sentence | reverseWords.hs | reverse\_words.cc | ReverseWords.java | reverse\_words.py | 
 | Compute all mnemonics for a phone number | phoneNumberMnemonic.hs | phone\_number\_mnemonic.cc | PhoneNumberMnemonic.java | phone\_number\_mnemonic.py | 
-| The look-and-say problem | <TBA> | look\_and\_say.cc | LookAndSay.java | look\_and\_say.py | 
+| The look-and-say problem | lookAndSay.hs | look\_and\_say.cc | LookAndSay.java | look\_and\_say.py | 
 | Convert from Roman to decimal | <TBA> | roman\_to\_integer.cc | RomanToInteger.java | roman\_to\_integer.py | 
 | Compute all valid IP addresses | <TBA> | valid\_ip\_addresses.cc | ValidIpAddresses.java | valid\_ip\_addresses.py | 
 | Write a string sinusoidally | <TBA> | snake\_string.cc | SnakeString.java | snake\_string.py | 
