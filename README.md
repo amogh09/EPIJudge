@@ -119,7 +119,7 @@ Failure info
 | Interconvert strings and integers | stringIntegerInterconversion.hs | string\_integer\_interconversion.cc | StringIntegerInterconversion.java | string\_integer\_interconversion.py | 
 | Base conversion | convertBase.hs | convert\_base.cc | ConvertBase.java | convert\_base.py | 
 | Compute the spreadsheet column encoding | spreadsheetEncoding.hs | spreadsheet\_encoding.cc | SpreadsheetEncoding.java | spreadsheet\_encoding.py | 
-| Replace and remove | <TBA> | replace\_and\_remove.cc | ReplaceAndRemove.java | replace\_and\_remove.py | 
+| Replace and remove | replaceAndRemove.hs | replace\_and\_remove.cc | ReplaceAndRemove.java | replace\_and\_remove.py | 
 | Test palindromicity | isStringPalindromicPunctuation.hs | is\_string\_palindromic\_punctuation.cc | IsStringPalindromicPunctuation.java | is\_string\_palindromic\_punctuation.py | 
 | Reverse all the words in a sentence | reverseWords.hs | reverse\_words.cc | ReverseWords.java | reverse\_words.py | 
 | Compute all mnemonics for a phone number | phoneNumberMnemonic.hs | phone\_number\_mnemonic.cc | PhoneNumberMnemonic.java | phone\_number\_mnemonic.py | 
