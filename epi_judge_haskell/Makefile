@@ -50,6 +50,7 @@ SNAKE_STRING = snakeString
 RUN_LENGTH_COMPRESSION = runLengthCompression
 SUBSTRING_MATCH = substringMatch
 SEARCH_IN_LIST = searchInList
+INSERT_IN_LIST = insertInList
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -474,6 +475,15 @@ ${SEARCH_IN_LIST}: ${BUILD_DIR}/${SEARCH_IN_LIST}
 	${BUILD_DIR}/${SEARCH_IN_LIST}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${INSERT_IN_LIST}
+${BUILD_DIR}/${INSERT_IN_LIST}: ${BUILD_DIR} ${INSERT_IN_LIST}.hs
+	@echo "Compiling ${INSERT_IN_LIST}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${INSERT_IN_LIST} ${INSERT_IN_LIST}.hs
+${INSERT_IN_LIST}: ${BUILD_DIR}/${INSERT_IN_LIST}
+	@echo "Running ${INSERT_IN_LIST}"
+	${BUILD_DIR}/${INSERT_IN_LIST}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -526,7 +536,8 @@ all: \
 	${SNAKE_STRING} \
 	${RUN_LENGTH_COMPRESSION} \
 	${SUBSTRING_MATCH} \
-	${SEARCH_IN_LIST}
+	${SEARCH_IN_LIST} \
+	${INSERT_IN_LIST}
 
 .PHONY: clean 
 clean:
