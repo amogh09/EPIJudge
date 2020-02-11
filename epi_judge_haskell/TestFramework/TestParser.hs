@@ -125,7 +125,7 @@ p_text isTsv dt = TextD dt <$> optionalBetween '_'
     (char '"') 
     (char '"')
     (takeTill (flip elem (end :: String))) 
-    where end = if isTsv then "\t]\"" else ",]\""
+    where end = if isTsv then "\t" else ",]\""
     
 p_bool :: DataType -> Parser Data 
 p_bool dt = BoolD dt <$> readBool <$> 
