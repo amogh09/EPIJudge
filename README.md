@@ -125,7 +125,7 @@ Failure info
 | Compute all mnemonics for a phone number | phoneNumberMnemonic.hs | phone\_number\_mnemonic.cc | PhoneNumberMnemonic.java | phone\_number\_mnemonic.py | 
 | The look-and-say problem | lookAndSay.hs | look\_and\_say.cc | LookAndSay.java | look\_and\_say.py | 
 | Convert from Roman to decimal | romanToInteger.hs | roman\_to\_integer.cc | RomanToInteger.java | roman\_to\_integer.py | 
-| Compute all valid IP addresses | <TBA> | valid\_ip\_addresses.cc | ValidIpAddresses.java | valid\_ip\_addresses.py | 
+| Compute all valid IP addresses | validIpAddresses.hs | valid\_ip\_addresses.cc | ValidIpAddresses.java | valid\_ip\_addresses.py | 
 | Write a string sinusoidally | <TBA> | snake\_string.cc | SnakeString.java | snake\_string.py | 
 | Implement run-length encoding | <TBA> | run\_length\_compression.cc | RunLengthCompression.java | run\_length\_compression.py | 
 | Find the first occurrence of a substring | <TBA> | substring\_match.cc | SubstringMatch.java | substring\_match.py | 
