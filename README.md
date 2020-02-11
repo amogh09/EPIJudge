@@ -127,7 +127,7 @@ Failure info
 | Convert from Roman to decimal | romanToInteger.hs | roman\_to\_integer.cc | RomanToInteger.java | roman\_to\_integer.py | 
 | Compute all valid IP addresses | validIpAddresses.hs | valid\_ip\_addresses.cc | ValidIpAddresses.java | valid\_ip\_addresses.py | 
 | Write a string sinusoidally | snakeString.hs | snake\_string.cc | SnakeString.java | snake\_string.py | 
-| Implement run-length encoding | <TBA> | run\_length\_compression.cc | RunLengthCompression.java | run\_length\_compression.py | 
+| Implement run-length encoding | runLengthCompression.hs | run\_length\_compression.cc | RunLengthCompression.java | run\_length\_compression.py | 
 | Find the first occurrence of a substring | <TBA> | substring\_match.cc | SubstringMatch.java | substring\_match.py | 
 | Bootcamp: Linked Lists | <TBA> | search\_in\_list.cc | SearchInList.java | search\_in\_list.py | 
 | Bootcamp: Linked Lists | <TBA> | insert\_in\_list.cc | InsertInList.java | insert\_in\_list.py | 
