@@ -46,6 +46,7 @@ REPLACE_AND_REMOVE = replaceAndRemove
 LOOK_AND_SAY = lookAndSay
 ROMAN_TO_INTEGER = romanToInteger
 VALID_IP_ADDRESSES = validIpAddresses
+SNAKE_STRING = snakeString
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -434,6 +435,15 @@ ${VALID_IP_ADDRESSES}: ${BUILD_DIR}/${VALID_IP_ADDRESSES}
 	${BUILD_DIR}/${VALID_IP_ADDRESSES}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${SNAKE_STRING}
+${BUILD_DIR}/${SNAKE_STRING}: ${BUILD_DIR} ${SNAKE_STRING}.hs
+	@echo "Compiling ${SNAKE_STRING}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${SNAKE_STRING} ${SNAKE_STRING}.hs
+${SNAKE_STRING}: ${BUILD_DIR}/${SNAKE_STRING}
+	@echo "Running ${SNAKE_STRING}"
+	${BUILD_DIR}/${SNAKE_STRING}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -482,7 +492,8 @@ all: \
 	${REPLACE_AND_REMOVE} \
 	${LOOK_AND_SAY} \
 	${ROMAN_TO_INTEGER} \
-	${VALID_IP_ADDRESSES}
+	${VALID_IP_ADDRESSES} \
+	${SNAKE_STRING}
 
 .PHONY: clean 
 clean:
