@@ -49,6 +49,7 @@ VALID_IP_ADDRESSES = validIpAddresses
 SNAKE_STRING = snakeString
 RUN_LENGTH_COMPRESSION = runLengthCompression
 SUBSTRING_MATCH = substringMatch
+SEARCH_IN_LIST = searchInList
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -464,6 +465,15 @@ ${SUBSTRING_MATCH}: ${BUILD_DIR}/${SUBSTRING_MATCH}
 	${BUILD_DIR}/${SUBSTRING_MATCH}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${SEARCH_IN_LIST}
+${BUILD_DIR}/${SEARCH_IN_LIST}: ${BUILD_DIR} ${SEARCH_IN_LIST}.hs
+	@echo "Compiling ${SEARCH_IN_LIST}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${SEARCH_IN_LIST} ${SEARCH_IN_LIST}.hs
+${SEARCH_IN_LIST}: ${BUILD_DIR}/${SEARCH_IN_LIST}
+	@echo "Running ${SEARCH_IN_LIST}"
+	${BUILD_DIR}/${SEARCH_IN_LIST}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -515,7 +525,8 @@ all: \
 	${VALID_IP_ADDRESSES} \
 	${SNAKE_STRING} \
 	${RUN_LENGTH_COMPRESSION} \
-	${SUBSTRING_MATCH}
+	${SUBSTRING_MATCH} \
+	${SEARCH_IN_LIST}
 
 .PHONY: clean 
 clean:

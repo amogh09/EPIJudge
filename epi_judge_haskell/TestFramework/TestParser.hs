@@ -159,7 +159,7 @@ p_tuple_dt = TupleDT <$>
 p_list_dt :: Parser DataType
 p_list_dt = ListDT <$> 
     (
-        string "array" 
+        (string "array" <|> string "linked_list") 
     *>  (char '(' *> p_dt <* char ')') 
     )
     <*> optional p_single_field_name
