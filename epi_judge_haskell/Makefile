@@ -51,6 +51,7 @@ RUN_LENGTH_COMPRESSION = runLengthCompression
 SUBSTRING_MATCH = substringMatch
 SEARCH_IN_LIST = searchInList
 INSERT_IN_LIST = insertInList
+DELETE_FROM_LIST = deleteFromList
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -484,6 +485,15 @@ ${INSERT_IN_LIST}: ${BUILD_DIR}/${INSERT_IN_LIST}
 	${BUILD_DIR}/${INSERT_IN_LIST}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${DELETE_FROM_LIST}
+${BUILD_DIR}/${DELETE_FROM_LIST}: ${BUILD_DIR} ${DELETE_FROM_LIST}.hs
+	@echo "Compiling ${DELETE_FROM_LIST}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${DELETE_FROM_LIST} ${DELETE_FROM_LIST}.hs
+${DELETE_FROM_LIST}: ${BUILD_DIR}/${DELETE_FROM_LIST}
+	@echo "Running ${DELETE_FROM_LIST}"
+	${BUILD_DIR}/${DELETE_FROM_LIST}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -537,7 +547,8 @@ all: \
 	${RUN_LENGTH_COMPRESSION} \
 	${SUBSTRING_MATCH} \
 	${SEARCH_IN_LIST} \
-	${INSERT_IN_LIST}
+	${INSERT_IN_LIST} \
+	${DELETE_FROM_LIST}
 
 .PHONY: clean 
 clean:

@@ -34,7 +34,7 @@ import Text.Show (Show, show)
 import Text.Read (read)
 import Data.List
 import Data.Bool (Bool(..))
-import Data.Maybe (Maybe)
+import Data.Maybe (Maybe,fromJust)
 import Data.String (String)
 import Data.Char (Char)
 import Data.Either (Either(Left,Right))

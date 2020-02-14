@@ -54,7 +54,7 @@ secs = (1000 * 1000 *)
 
 type TestCase = [Data]
 
-goTest :: (Show a, Eq b, Show b) =>
+goTest :: (Show a, Eq b, Show b, NFData b) =>
         (a -> b)               -- Function to test 
     ->  (TestCase -> a)        -- Test case to function input    
     ->  (TestCase -> b)        -- Test case to function output 
@@ -65,7 +65,7 @@ goTest f fin fout cmp fileName = do
     ts <- testCases fileName
     runTests [] 1 (length ts) f fin fout cmp ts 
 
-runTests :: (Show a, Show b) =>
+runTests :: (Show a, Show b, NFData b) =>
         [Int]                    -- Run times of test cases
     ->  Int                      -- Test case number
     ->  Int                      -- Total number of test cases
@@ -78,15 +78,15 @@ runTests :: (Show a, Show b) =>
 runTests rts _ _ _ _ _ _ [] = printCongrats rts
 runTests rts i n f fin fout cmp (t:ts) = do
     let expected = fout t
-        res = f (fin t)
-    (passed,rt) <- evaluateWithTimeout 1 $ res `cmp` expected
+    (res,rt) <- evaluateWithTimeout 1 $ f (fin t)
+    let passed = res >>= return . (`cmp` expected)
     case passed of 
         Just True  -> do 
             printSuccess i n rt 
             runTests (rt:rts) (i+1) n f fin fout cmp ts
         Just False -> do 
             printFailure i n t rt
-            printFailureInfoAndExpl t expected res
+            printFailureInfoAndExpl t expected (fromJust res)
         Nothing -> printFailure i n t rt >> printTimeout
 
 goTestVoid :: (Show a, Eq b, Show b) =>
