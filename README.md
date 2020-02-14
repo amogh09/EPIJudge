@@ -132,7 +132,7 @@ Failure info
 | Bootcamp: Linked Lists | searchInList.hs | search\_in\_list.cc | SearchInList.java | search\_in\_list.py | 
 | Bootcamp: Linked Lists | insertInList.hs | insert\_in\_list.cc | InsertInList.java | insert\_in\_list.py | 
 | Bootcamp: Linked Lists | deleteFromList.hs | delete\_from\_list.cc | DeleteFromList.java | delete\_from\_list.py | 
-| Merge two sorted lists | <TBA> | sorted\_lists\_merge.cc | SortedListsMerge.java | sorted\_lists\_merge.py | 
+| Merge two sorted lists | sortedListsMerge.hs | sorted\_lists\_merge.cc | SortedListsMerge.java | sorted\_lists\_merge.py | 
 | Reverse a single sublist | <TBA> | reverse\_sublist.cc | ReverseSublist.java | reverse\_sublist.py | 
 | Test for cyclicity | <TBA> | is\_list\_cyclic.cc | IsListCyclic.java | is\_list\_cyclic.py | 
 | Test for overlapping lists - lists are cycle-free | <TBA> | do\_terminated\_lists\_overlap.cc | DoTerminatedListsOverlap.java | do\_terminated\_lists\_overlap.py | 
