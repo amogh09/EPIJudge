@@ -54,6 +54,7 @@ INSERT_IN_LIST = insertInList
 DELETE_FROM_LIST = deleteFromList
 SORTED_LISTS_MERGE = sortedListsMerge
 REVERSE_SUBLIST = reverseSublist
+IS_LIST_CYCLIC = isListCyclic
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -514,6 +515,15 @@ ${REVERSE_SUBLIST}: ${BUILD_DIR}/${REVERSE_SUBLIST}
 	${BUILD_DIR}/${REVERSE_SUBLIST}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${IS_LIST_CYCLIC}
+${BUILD_DIR}/${IS_LIST_CYCLIC}: ${BUILD_DIR} ${IS_LIST_CYCLIC}.hs
+	@echo "Compiling ${IS_LIST_CYCLIC}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${IS_LIST_CYCLIC} ${IS_LIST_CYCLIC}.hs
+${IS_LIST_CYCLIC}: ${BUILD_DIR}/${IS_LIST_CYCLIC}
+	@echo "Running ${IS_LIST_CYCLIC}"
+	${BUILD_DIR}/${IS_LIST_CYCLIC}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -570,7 +580,8 @@ all: \
 	${INSERT_IN_LIST} \
 	${DELETE_FROM_LIST} \
 	${SORTED_LISTS_MERGE} \
-	${REVERSE_SUBLIST}
+	${REVERSE_SUBLIST} \
+	${IS_LIST_CYCLIC}
 
 .PHONY: clean 
 clean:
