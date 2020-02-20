@@ -135,7 +135,7 @@ Failure info
 | Merge two sorted lists | sortedListsMerge.hs | sorted\_lists\_merge.cc | SortedListsMerge.java | sorted\_lists\_merge.py | 
 | Reverse a single sublist | reverseSublist.hs | reverse\_sublist.cc | ReverseSublist.java | reverse\_sublist.py | 
 | Test for cyclicity | isListCyclic.hs | is\_list\_cyclic.cc | IsListCyclic.java | is\_list\_cyclic.py | 
-| Test for overlapping lists - lists are cycle-free | <TBA> | do\_terminated\_lists\_overlap.cc | DoTerminatedListsOverlap.java | do\_terminated\_lists\_overlap.py | 
+| Test for overlapping lists - lists are cycle-free | doTerminatedListsOverlap.hs | do\_terminated\_lists\_overlap.cc | DoTerminatedListsOverlap.java | do\_terminated\_lists\_overlap.py | 
 | Test for overlapping lists - lists may have cycles | <TBA> | do\_lists\_overlap.cc | DoListsOverlap.java | do\_lists\_overlap.py | 
 | Delete a node from a singly linked list | <TBA> | delete\_node\_from\_list.cc | DeleteNodeFromList.java | delete\_node\_from\_list.py | 
 | Remove the kth last element from a list | <TBA> | delete\_kth\_last\_from\_list.cc | DeleteKthLastFromList.java | delete\_kth\_last\_from\_list.py | 
