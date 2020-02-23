@@ -10,10 +10,7 @@ overlap xs ys =
         m = length xs 
         n = length ys 
         k = m - n
-        f ([],_)  = False 
-        f (_,[])  = False 
-        f (ps,qs) = head ps == head qs
-
+        
 main = goTest 
     (uncurry overlap)
     (\(x:y:z:_) -> let zs = intList z in (intList x ++ zs, intList y ++ zs))

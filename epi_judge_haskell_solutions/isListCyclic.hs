@@ -10,11 +10,11 @@ steps k xs =
             [] -> []
             _  -> xs' : steps k xs'
 
-isCyclic :: [Int] -> Int
+isCyclic :: [Int] -> [Int]
 isCyclic xs = 
     case k of 
-        Nothing -> -1
-        Just (_,qs) -> head . fst . fromJust . find f $
+        Nothing -> []
+        Just (_,qs) -> fst . fromJust . find f $
             ([head xs]:steps 1 xs) `zip` ([head qs]:steps 1 qs)
     where 
         k = find f $ steps 1 xs `zip` steps 2 xs
@@ -27,9 +27,18 @@ tie x xs =
         (ps,qs) = splitAt i xs 
     in  ps ++ cycle qs
 
-main = goTest 
-    isCyclic
-    (\(x:y:_) -> tie (intData y) (intList x))
-    (\(_:y:_) -> intData y)
-    (==)
+wrapper :: (Int,[Int]) -> [Int]
+wrapper (x,xs) = isCyclic $ tie x xs
+
+chk :: (Int,[Int]) -> [Int] -> Maybe String 
+chk (x,xs) []     = if x == -1 then Nothing else Just "Cycle expected" 
+chk (x,xs) (c:cs) = 
+    if x == c  
+        then Nothing 
+        else Just $ "Actual cycle start " ++ show c ++ " not equal to returned " ++ show x
+
+main = goTestVoid
+    wrapper
+    (\(x:y:_) -> (intData y, intList x))
+    chk
     "../test_data/is_list_cyclic.tsv"
