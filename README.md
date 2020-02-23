@@ -138,7 +138,7 @@ Failure info
 | Test for overlapping lists - lists are cycle-free | doTerminatedListsOverlap.hs | do\_terminated\_lists\_overlap.cc | DoTerminatedListsOverlap.java | do\_terminated\_lists\_overlap.py | 
 | Test for overlapping lists - lists may have cycles | doListsOverlap.hs | do\_lists\_overlap.cc | DoListsOverlap.java | do\_lists\_overlap.py | 
 | Delete a node from a singly linked list | deleteNodeFromList.hs | delete\_node\_from\_list.cc | DeleteNodeFromList.java | delete\_node\_from\_list.py | 
-| Remove the kth last element from a list | <TBA> | delete\_kth\_last\_from\_list.cc | DeleteKthLastFromList.java | delete\_kth\_last\_from\_list.py | 
+| Remove the kth last element from a list | deleteKthLastFromList.hs | delete\_kth\_last\_from\_list.cc | DeleteKthLastFromList.java | delete\_kth\_last\_from\_list.py | 
 | Remove duplicates from a sorted list | <TBA> | remove\_duplicates\_from\_sorted\_list.cc | RemoveDuplicatesFromSortedList.java | remove\_duplicates\_from\_sorted\_list.py | 
 | Implement cyclic right shift for singly linked lists | <TBA> | list\_cyclic\_right\_shift.cc | ListCyclicRightShift.java | list\_cyclic\_right\_shift.py | 
 | Implement even-odd merge | <TBA> | even\_odd\_list\_merge.cc | EvenOddListMerge.java | even\_odd\_list\_merge.py | 
