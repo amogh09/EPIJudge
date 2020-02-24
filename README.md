@@ -31,22 +31,17 @@ Example:
 
 ### Successful run
 ```
-$ make sortedArrayRemoveDups 
-Creating build directory
-mkdir -p build
-Compiling sortedArrayRemoveDups.hs
-ghc  -O2 -outputdir build  -o build/sortedArrayRemoveDups sortedArrayRemoveDups.hs
+$ make isValidSudoku
+Compiling isValidSudoku.hs
+ghc  -O2 -fno-omit-yields -outputdir build  -o build/isValidSudoku isValidSudoku.hs
 Loaded package environment from /Users/home/.ghc/x86_64-darwin-8.8.1/environments/default
-[1 of 4] Compiling TestFramework.EPIPrelude ( TestFramework/EPIPrelude.hs, build/TestFramework/EPIPrelude.o )
-[2 of 4] Compiling TestFramework.TestParser ( TestFramework/TestParser.hs, build/TestFramework/TestParser.o )
-[3 of 4] Compiling TestFramework.TestRunner ( TestFramework/TestRunner.hs, build/TestFramework/TestRunner.o )
-[4 of 4] Compiling Main             ( sortedArrayRemoveDups.hs, build/Main.o )
-Linking build/sortedArrayRemoveDups ...
-Running sortedArrayRemoveDups
-build/sortedArrayRemoveDups
-Test PASSED ( 2003/2003) [   2 us]
-Average running time:    0 us
-Median running time:     0 us
+[4 of 4] Compiling Main             ( isValidSudoku.hs, build/Main.o )
+Linking build/isValidSudoku ...
+Running isValidSudoku
+build/isValidSudoku
+Test PASSED (   745/745) [        13 us]
+Average running time:         12 us
+Median running time:          13 us
 *** You've passed ALL tests. Congratulations! ***
 ```
 ### Failed run
