@@ -136,7 +136,7 @@ Failure info
 | Remove the kth last element from a list | deleteKthLastFromList.hs | delete\_kth\_last\_from\_list.cc | DeleteKthLastFromList.java | delete\_kth\_last\_from\_list.py | 
 | Remove duplicates from a sorted list | removeDuplicatesFromSortedList.hs | remove\_duplicates\_from\_sorted\_list.cc | RemoveDuplicatesFromSortedList.java | remove\_duplicates\_from\_sorted\_list.py | 
 | Implement cyclic right shift for singly linked lists | listCyclicRightShift.hs | list\_cyclic\_right\_shift.cc | ListCyclicRightShift.java | list\_cyclic\_right\_shift.py | 
-| Implement even-odd merge | <TBA> | even\_odd\_list\_merge.cc | EvenOddListMerge.java | even\_odd\_list\_merge.py | 
+| Implement even-odd merge | evenOddListMerge.hs | even\_odd\_list\_merge.cc | EvenOddListMerge.java | even\_odd\_list\_merge.py | 
 | Test whether a singly linked list is palindromic | <TBA> | is\_list\_palindromic.cc | IsListPalindromic.java | is\_list\_palindromic.py | 
 | Implement list pivoting | <TBA> | pivot\_list.cc | PivotList.java | pivot\_list.py | 
 | Add list-based integers | <TBA> | int\_as\_list\_add.cc | IntAsListAdd.java | int\_as\_list\_add.py | 
