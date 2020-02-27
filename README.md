@@ -139,7 +139,7 @@ Failure info
 | Implement even-odd merge | evenOddListMerge.hs | even\_odd\_list\_merge.cc | EvenOddListMerge.java | even\_odd\_list\_merge.py | 
 | Test whether a singly linked list is palindromic | isListPalindromic.hs | is\_list\_palindromic.cc | IsListPalindromic.java | is\_list\_palindromic.py | 
 | Implement list pivoting | pivotList.hs | pivot\_list.cc | PivotList.java | pivot\_list.py | 
-| Add list-based integers | <TBA> | int\_as\_list\_add.cc | IntAsListAdd.java | int\_as\_list\_add.py | 
+| Add list-based integers | intAsListAdd.hs | int\_as\_list\_add.cc | IntAsListAdd.java | int\_as\_list\_add.py | 
 | Implement a stack with max API | <TBA> | stack\_with\_max.cc | StackWithMax.java | stack\_with\_max.py | 
 | Evaluate RPN expressions | <TBA> | evaluate\_rpn.cc | EvaluateRpn.java | evaluate\_rpn.py | 
 | Test a string over ''{,},(,),[,]'' for well-formedness | <TBA> | is\_valid\_parenthesization.cc | IsValidParenthesization.java | is\_valid\_parenthesization.py | 

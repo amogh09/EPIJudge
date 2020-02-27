@@ -64,6 +64,7 @@ LIST_CYCLIC_RIGHT_SHIFT = listCyclicRightShift
 EVEN_ODD_LIST_MERGE = evenOddListMerge
 IS_LIST_PALINDROMIC = isListPalindromic
 PIVOT_LIST = pivotList
+INT_AS_LIST_ADD = intAsListAdd
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -614,6 +615,15 @@ ${PIVOT_LIST}: ${BUILD_DIR}/${PIVOT_LIST}
 	${BUILD_DIR}/${PIVOT_LIST}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${INT_AS_LIST_ADD}
+${BUILD_DIR}/${INT_AS_LIST_ADD}: ${BUILD_DIR} ${INT_AS_LIST_ADD}.hs
+	@echo "Compiling ${INT_AS_LIST_ADD}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${INT_AS_LIST_ADD} ${INT_AS_LIST_ADD}.hs
+${INT_AS_LIST_ADD}: ${BUILD_DIR}/${INT_AS_LIST_ADD}
+	@echo "Running ${INT_AS_LIST_ADD}"
+	${BUILD_DIR}/${INT_AS_LIST_ADD}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -680,7 +690,8 @@ all: \
 	${LIST_CYCLIC_RIGHT_SHIFT} \
 	${EVEN_ODD_LIST_MERGE} \
 	${IS_LIST_PALINDROMIC} \
-	${PIVOT_LIST}
+	${PIVOT_LIST} \
+	${INT_AS_LIST_ADD}
 
 .PHONY: clean 
 clean:
