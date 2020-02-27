@@ -63,6 +63,7 @@ REMOVE_DUPLICATES_FROM_SORTED_LIST = removeDuplicatesFromSortedList
 LIST_CYCLIC_RIGHT_SHIFT = listCyclicRightShift
 EVEN_ODD_LIST_MERGE = evenOddListMerge
 IS_LIST_PALINDROMIC = isListPalindromic
+PIVOT_LIST = pivotList
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -604,6 +605,15 @@ ${IS_LIST_PALINDROMIC}: ${BUILD_DIR}/${IS_LIST_PALINDROMIC}
 	${BUILD_DIR}/${IS_LIST_PALINDROMIC}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${PIVOT_LIST}
+${BUILD_DIR}/${PIVOT_LIST}: ${BUILD_DIR} ${PIVOT_LIST}.hs
+	@echo "Compiling ${PIVOT_LIST}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${PIVOT_LIST} ${PIVOT_LIST}.hs
+${PIVOT_LIST}: ${BUILD_DIR}/${PIVOT_LIST}
+	@echo "Running ${PIVOT_LIST}"
+	${BUILD_DIR}/${PIVOT_LIST}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -669,7 +679,8 @@ all: \
 	${REMOVE_DUPLICATES_FROM_SORTED_LIST} \
 	${LIST_CYCLIC_RIGHT_SHIFT} \
 	${EVEN_ODD_LIST_MERGE} \
-	${IS_LIST_PALINDROMIC}
+	${IS_LIST_PALINDROMIC} \
+	${PIVOT_LIST}
 
 .PHONY: clean 
 clean:
