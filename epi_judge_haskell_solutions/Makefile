@@ -65,6 +65,7 @@ EVEN_ODD_LIST_MERGE = evenOddListMerge
 IS_LIST_PALINDROMIC = isListPalindromic
 PIVOT_LIST = pivotList
 INT_AS_LIST_ADD = intAsListAdd
+STACK_WITH_MAX = stackWithMax
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -624,6 +625,15 @@ ${INT_AS_LIST_ADD}: ${BUILD_DIR}/${INT_AS_LIST_ADD}
 	${BUILD_DIR}/${INT_AS_LIST_ADD}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${STACK_WITH_MAX}
+${BUILD_DIR}/${STACK_WITH_MAX}: ${BUILD_DIR} ${STACK_WITH_MAX}.hs
+	@echo "Compiling ${STACK_WITH_MAX}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${STACK_WITH_MAX} ${STACK_WITH_MAX}.hs
+${STACK_WITH_MAX}: ${BUILD_DIR}/${STACK_WITH_MAX}
+	@echo "Running ${STACK_WITH_MAX}"
+	${BUILD_DIR}/${STACK_WITH_MAX}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -691,7 +701,8 @@ all: \
 	${EVEN_ODD_LIST_MERGE} \
 	${IS_LIST_PALINDROMIC} \
 	${PIVOT_LIST} \
-	${INT_AS_LIST_ADD}
+	${INT_AS_LIST_ADD} \
+	${STACK_WITH_MAX}
 
 .PHONY: clean 
 clean:

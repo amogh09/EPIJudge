@@ -18,6 +18,8 @@ module TestFramework.TestParser
     ,   textList
     ,   listToTuple2
     ,   listOfIntList
+    ,   tuple2Data
+    ,   stringData
     ) where
 
 import TestFramework.EPIPrelude hiding (takeWhile)
@@ -27,7 +29,7 @@ import Data.Char
 type Name = Text
 
 data DataType = 
-        TupleDT [DataType] Name
+        TupleDT [DataType] (Maybe Name)
     |   IntDT (Maybe Name)
     |   LongDT (Maybe Name)
     |   DoubleDT (Maybe Name)
@@ -144,6 +146,8 @@ p_list dt ldt@(TextDT _) = ListD dt <$>
     between (char '[') (char ']') ((spaces *> p_text False ldt) `sepBy` (char ','))
 p_list dt ldt@(ListDT ldt' _) = ListD dt <$> 
     between (char '[') (char ']') ((spaces *> p_list ldt ldt') `sepBy` (char ','))
+p_list dt ldt@(TupleDT tdt' _) = ListD dt <$>
+    between (char '[') (char ']') ((spaces *> p_tuple ldt tdt') `sepBy` (char ','))
 
 p_single_field_name :: Parser Text
 p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
@@ -154,7 +158,7 @@ p_tuple_dt = TupleDT <$>
         string "tuple" 
     *>  between (char '(') (char ')') ((spaces >> p_dt) `sepBy'` (char ','))
     )
-    <*> between (char '[') (char ']') (takeTill (==']'))
+    <*> optional p_single_field_name
 
 p_list_dt :: Parser DataType
 p_list_dt = ListDT <$> 
@@ -237,6 +241,12 @@ boolData (BoolD _ x) = x
 
 textData :: Data -> Text 
 textData (TextD _ x) = x
+
+stringData :: Data -> String 
+stringData (TextD _ x) = unpack x
+
+tuple2Data :: Data -> (Data, Data)
+tuple2Data (TupleD _ [x,y]) = (x,y)
 
 tuple3Data :: Data -> (Data, Data, Data)
 tuple3Data (TupleD _ [p,q,r]) = (p,q,r)
