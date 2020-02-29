@@ -66,6 +66,7 @@ IS_LIST_PALINDROMIC = isListPalindromic
 PIVOT_LIST = pivotList
 INT_AS_LIST_ADD = intAsListAdd
 STACK_WITH_MAX = stackWithMax
+EVALUATE_RPN = evaluateRpn
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -634,6 +635,15 @@ ${STACK_WITH_MAX}: ${BUILD_DIR}/${STACK_WITH_MAX}
 	${BUILD_DIR}/${STACK_WITH_MAX}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${EVALUATE_RPN}
+${BUILD_DIR}/${EVALUATE_RPN}: ${BUILD_DIR} ${EVALUATE_RPN}.hs
+	@echo "Compiling ${EVALUATE_RPN}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${EVALUATE_RPN} ${EVALUATE_RPN}.hs
+${EVALUATE_RPN}: ${BUILD_DIR}/${EVALUATE_RPN}
+	@echo "Running ${EVALUATE_RPN}"
+	${BUILD_DIR}/${EVALUATE_RPN}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -702,7 +712,8 @@ all: \
 	${IS_LIST_PALINDROMIC} \
 	${PIVOT_LIST} \
 	${INT_AS_LIST_ADD} \
-	${STACK_WITH_MAX}
+	${STACK_WITH_MAX} \
+	${EVALUATE_RPN}
 
 .PHONY: clean 
 clean:

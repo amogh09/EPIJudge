@@ -20,6 +20,7 @@ module TestFramework.TestParser
     ,   listOfIntList
     ,   tuple2Data
     ,   stringData
+    ,   split
     ) where
 
 import TestFramework.EPIPrelude hiding (takeWhile)
@@ -268,3 +269,10 @@ listOfIntList (ListD _ ds) = intList <$> ds
 
 listToTuple2 :: [a] -> (a,a)
 listToTuple2 (x:y:_) = (x,y)
+
+split :: (Eq a) => a -> [a] -> [[a]]
+split _ [] = [] 
+split x' xs = f $ xs where 
+    f (x:xs) | x == x' = [] : f xs 
+    f (x:xs) = let (g:gs) = f xs in (x:g) : gs
+    f [] = [[]]
