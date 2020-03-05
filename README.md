@@ -143,7 +143,7 @@ Failure info
 | Implement a stack with max API | stackWithMax.hs | stack\_with\_max.cc | StackWithMax.java | stack\_with\_max.py | 
 | Evaluate RPN expressions | evaluateRpn.hs | evaluate\_rpn.cc | EvaluateRpn.java | evaluate\_rpn.py | 
 | Test a string over ''{,},(,),[,]'' for well-formedness | isValidParenthesization.hs | is\_valid\_parenthesization.cc | IsValidParenthesization.java | is\_valid\_parenthesization.py | 
-| Normalize pathnames | <TBA> | directory\_path\_normalization.cc | DirectoryPathNormalization.java | directory\_path\_normalization.py | 
+| Normalize pathnames | directoryPathNormalization.hs | directory\_path\_normalization.cc | DirectoryPathNormalization.java | directory\_path\_normalization.py | 
 | Compute buildings with a sunset view | <TBA> | sunset\_view.cc | SunsetView.java | sunset\_view.py | 
 | Compute binary tree nodes in order of increasing depth | <TBA> | tree\_level\_order.cc | TreeLevelOrder.java | tree\_level\_order.py | 
 | Implement a circular queue | <TBA> | circular\_queue.cc | CircularQueue.java | circular\_queue.py | 
