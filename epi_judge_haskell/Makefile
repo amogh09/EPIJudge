@@ -65,11 +65,12 @@ EVEN_ODD_LIST_MERGE = evenOddListMerge
 IS_LIST_PALINDROMIC = isListPalindromic
 PIVOT_LIST = pivotList
 INT_AS_LIST_ADD = intAsListAdd
+STACK_WITH_MAX = stackWithMax
 EVALUATE_RPN = evaluateRpn
 IS_VALID_PARANTHESIZATION = isValidParenthesization
 DIRECTORY_PATH_NORMALIZATION = directoryPathNormalization
 TREE_LEVEL_ORDER = treeLevelOrder
-STACK_WITH_MAX = stackWithMax
+CIRCULAR_QUEUE = circularQueue
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -674,6 +675,15 @@ ${TREE_LEVEL_ORDER}: ${BUILD_DIR}/${TREE_LEVEL_ORDER}
 	${BUILD_DIR}/${TREE_LEVEL_ORDER}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
 
+.PHONY: ${CIRCULAR_QUEUE}
+${BUILD_DIR}/${CIRCULAR_QUEUE}: ${BUILD_DIR} ${CIRCULAR_QUEUE}.hs
+	@echo "Compiling ${CIRCULAR_QUEUE}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${CIRCULAR_QUEUE} ${CIRCULAR_QUEUE}.hs
+${CIRCULAR_QUEUE}: ${BUILD_DIR}/${CIRCULAR_QUEUE}
+	@echo "Running ${CIRCULAR_QUEUE}"
+	${BUILD_DIR}/${CIRCULAR_QUEUE}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -746,7 +756,8 @@ all: \
 	${EVALUATE_RPN} \
 	${IS_VALID_PARANTHESIZATION} \
 	${DIRECTORY_PATH_NORMALIZATION} \
-	${TREE_LEVEL_ORDER}
+	${TREE_LEVEL_ORDER} \
+	${CIRCULAR_QUEUE}
 
 .PHONY: clean 
 clean:
