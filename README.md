@@ -148,7 +148,7 @@ Failure info
 | Compute binary tree nodes in order of increasing depth | treeLevelOrder.hs | tree\_level\_order.cc | TreeLevelOrder.java | tree\_level\_order.py | 
 | Implement a circular queue | circularQueue.hs | circular\_queue.cc | CircularQueue.java | circular\_queue.py | 
 | Implement a queue using stacks | queueFromStacks.hs | queue\_from\_stacks.cc | QueueFromStacks.java | queue\_from\_stacks.py | 
-| Implement a queue with max API | <TBA> | queue\_with\_max.cc | QueueWithMax.java | queue\_with\_max.py | 
+| Implement a queue with max API | queueWithMax.hs | queue\_with\_max.cc | QueueWithMax.java | queue\_with\_max.py | 
 | Test if a binary tree is height-balanced | <TBA> | is\_tree\_balanced.cc | IsTreeBalanced.java | is\_tree\_balanced.py | 
 | Test if a binary tree is symmetric | <TBA> | is\_tree\_symmetric.cc | IsTreeSymmetric.java | is\_tree\_symmetric.py | 
 | Compute the lowest common ancestor in a binary tree | <TBA> | lowest\_common\_ancestor.cc | LowestCommonAncestor.java | lowest\_common\_ancestor.py | 

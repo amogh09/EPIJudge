@@ -72,6 +72,7 @@ DIRECTORY_PATH_NORMALIZATION = directoryPathNormalization
 TREE_LEVEL_ORDER = treeLevelOrder
 CIRCULAR_QUEUE = circularQueue
 QUEUE_FROM_STACKS = queueFromStacks
+QUEUE_WITH_MAX = queueWithMax
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -694,6 +695,15 @@ ${QUEUE_FROM_STACKS}: ${BUILD_DIR}/${QUEUE_FROM_STACKS}
 	${BUILD_DIR}/${QUEUE_FROM_STACKS}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
 
+.PHONY: ${QUEUE_WITH_MAX}
+${BUILD_DIR}/${QUEUE_WITH_MAX}: ${BUILD_DIR} ${QUEUE_WITH_MAX}.hs
+	@echo "Compiling ${QUEUE_WITH_MAX}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${QUEUE_WITH_MAX} ${QUEUE_WITH_MAX}.hs
+${QUEUE_WITH_MAX}: ${BUILD_DIR}/${QUEUE_WITH_MAX}
+	@echo "Running ${QUEUE_WITH_MAX}"
+	${BUILD_DIR}/${QUEUE_WITH_MAX}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -768,7 +778,8 @@ all: \
 	${DIRECTORY_PATH_NORMALIZATION} \
 	${TREE_LEVEL_ORDER} \
 	${CIRCULAR_QUEUE} \
-	${QUEUE_FROM_STACKS}
+	${QUEUE_FROM_STACKS} \
+	${QUEUE_WITH_MAX}
 
 .PHONY: clean 
 clean:
