@@ -145,7 +145,7 @@ Failure info
 | Test a string over ''{,},(,),[,]'' for well-formedness | isValidParenthesization.hs | is\_valid\_parenthesization.cc | IsValidParenthesization.java | is\_valid\_parenthesization.py | 
 | Normalize pathnames | directoryPathNormalization.hs | directory\_path\_normalization.cc | DirectoryPathNormalization.java | directory\_path\_normalization.py | 
 | Compute buildings with a sunset view | <TBA> | sunset\_view.cc | SunsetView.java | sunset\_view.py | 
-| Compute binary tree nodes in order of increasing depth | <TBA> | tree\_level\_order.cc | TreeLevelOrder.java | tree\_level\_order.py | 
+| Compute binary tree nodes in order of increasing depth | treeLevelOrder.hs | tree\_level\_order.cc | TreeLevelOrder.java | tree\_level\_order.py | 
 | Implement a circular queue | <TBA> | circular\_queue.cc | CircularQueue.java | circular\_queue.py | 
 | Implement a queue using stacks | <TBA> | queue\_from\_stacks.cc | QueueFromStacks.java | queue\_from\_stacks.py | 
 | Implement a queue with max API | <TBA> | queue\_with\_max.cc | QueueWithMax.java | queue\_with\_max.py | 
