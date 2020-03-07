@@ -150,7 +150,7 @@ Failure info
 | Implement a queue using stacks | queueFromStacks.hs | queue\_from\_stacks.cc | QueueFromStacks.java | queue\_from\_stacks.py | 
 | Implement a queue with max API | queueWithMax.hs | queue\_with\_max.cc | QueueWithMax.java | queue\_with\_max.py | 
 | Test if a binary tree is height-balanced | isTreeBalanced.hs | is\_tree\_balanced.cc | IsTreeBalanced.java | is\_tree\_balanced.py | 
-| Test if a binary tree is symmetric | <TBA> | is\_tree\_symmetric.cc | IsTreeSymmetric.java | is\_tree\_symmetric.py | 
+| Test if a binary tree is symmetric | isTreeSymmetric.hs | is\_tree\_symmetric.cc | IsTreeSymmetric.java | is\_tree\_symmetric.py | 
 | Compute the lowest common ancestor in a binary tree | <TBA> | lowest\_common\_ancestor.cc | LowestCommonAncestor.java | lowest\_common\_ancestor.py | 
 | Compute the LCA when nodes have parent pointers | <TBA> | lowest\_common\_ancestor\_with\_parent.cc | LowestCommonAncestorWithParent.java | lowest\_common\_ancestor\_with\_parent.py | 
 | Sum the root-to-leaf paths in a binary tree | <TBA> | sum\_root\_to\_leaf.cc | SumRootToLeaf.java | sum\_root\_to\_leaf.py | 

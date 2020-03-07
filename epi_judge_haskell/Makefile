@@ -74,6 +74,7 @@ CIRCULAR_QUEUE = circularQueue
 QUEUE_FROM_STACKS = queueFromStacks
 QUEUE_WITH_MAX = queueWithMax
 IS_TREE_BALANCED = isTreeBalanced
+IS_TREE_SYMMETRIC = isTreeSymmetric
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -714,6 +715,15 @@ ${IS_TREE_BALANCED}: ${BUILD_DIR}/${IS_TREE_BALANCED}
 	${BUILD_DIR}/${IS_TREE_BALANCED}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
 
+.PHONY: ${IS_TREE_SYMMETRIC}
+${BUILD_DIR}/${IS_TREE_SYMMETRIC}: ${BUILD_DIR} ${IS_TREE_SYMMETRIC}.hs
+	@echo "Compiling ${IS_TREE_SYMMETRIC}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${IS_TREE_SYMMETRIC} ${IS_TREE_SYMMETRIC}.hs
+${IS_TREE_SYMMETRIC}: ${BUILD_DIR}/${IS_TREE_SYMMETRIC}
+	@echo "Running ${IS_TREE_SYMMETRIC}"
+	${BUILD_DIR}/${IS_TREE_SYMMETRIC}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -790,7 +800,8 @@ all: \
 	${CIRCULAR_QUEUE} \
 	${QUEUE_FROM_STACKS} \
 	${QUEUE_WITH_MAX} \
-	${IS_TREE_BALANCED}
+	${IS_TREE_BALANCED} \
+	${IS_TREE_SYMMETRIC}
 
 .PHONY: clean 
 clean:
