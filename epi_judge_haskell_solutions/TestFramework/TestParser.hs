@@ -4,7 +4,8 @@
 module TestFramework.TestParser 
     (
         p_tsv
-    ,   Data (..) 
+    ,   Data (..)
+    ,   Tree (..)
     ,   testCases
     ,   intData
     ,   longData
@@ -21,9 +22,13 @@ module TestFramework.TestParser
     ,   tuple2Data
     ,   stringData
     ,   split
+    ,   binaryTree
+    ,   listData
+    ,   binaryTreeKey
     ) where
 
 import TestFramework.EPIPrelude hiding (takeWhile)
+import TestFramework.BinaryTree (Tree(..), makeTree, binaryTreeKey)
 import Data.Attoparsec.Text
 import Data.Char 
 
@@ -37,6 +42,7 @@ data DataType =
     |   BoolDT (Maybe Name)
     |   TextDT (Maybe Name)
     |   ListDT DataType (Maybe Name)
+    |   BinaryTreeDT DataType (Maybe Name)
     |   VoidDT
     deriving (Show)
 
@@ -48,6 +54,7 @@ data Data =
     |   TextD DataType Text
     |   BoolD DataType Bool
     |   ListD DataType [Data]
+    |   BinaryTreeD DataType [Maybe Data]
     |   VoidD
     |   Explanation Text
 
@@ -59,6 +66,7 @@ instance Show Data where
     show (TextD _ x)     = show x
     show (BoolD _ x)     = show x 
     show (ListD _ x)     = show x
+    show (BinaryTreeD _ x)   = show x
     show VoidD           = "void"
     show (Explanation x) = show x
 
@@ -74,6 +82,7 @@ p_dt = choice [
     ,   p_text_dt
     ,   p_bool_dt
     ,   p_list_dt
+    ,   p_binaryTree_dt
     ,   p_void_dt
     ]
     <?> "Type"
@@ -96,6 +105,7 @@ p_d True  _ [] = pure . Explanation <$> takeTill isEndOfLine
 p_d False _ [] = return []
 p_d isTsv sep (dt@(TupleDT dts _):rest) = parseMultiData isTsv sep rest (p_tuple dt dts)
 p_d isTsv sep (dt@(ListDT ldt _):rest)  = parseMultiData isTsv sep rest (p_list dt ldt) 
+p_d isTsv sep (dt@(BinaryTreeDT bdt _):rest) = parseMultiData isTsv sep rest (p_binaryTree dt bdt)
 p_d isTsv sep (dt@(IntDT _):dts)    = parseSingleData isTsv sep dts (p_int dt)
 p_d isTsv sep (dt@(LongDT _):dts)   = parseSingleData isTsv sep dts (p_long dt)
 p_d isTsv sep (dt@(DoubleDT _):dts) = parseSingleData isTsv sep dts (p_double dt)
@@ -150,6 +160,14 @@ p_list dt ldt@(ListDT ldt' _) = ListD dt <$>
 p_list dt ldt@(TupleDT tdt' _) = ListD dt <$>
     between (char '[') (char ']') ((spaces *> p_tuple ldt tdt') `sepBy` (char ','))
 
+p_binaryTree :: DataType -> DataType -> Parser Data
+p_binaryTree dt bdt@(IntDT _) = BinaryTreeD dt <$> 
+    between (char '[') (char ']') 
+        ((spaces *> p_binaryTreeKey (between (char '"') (char '"') (p_int bdt))) `sepBy` (char ','))
+
+p_binaryTreeKey :: Parser Data -> Parser (Maybe Data) 
+p_binaryTreeKey p = fmap (const Nothing) (string "\"null\"") <|> fmap Just p
+
 p_single_field_name :: Parser Text
 p_single_field_name = (char '[') *> (takeTill (\c -> c=='[' || c==']')) <* (char ']') 
 
@@ -165,6 +183,14 @@ p_list_dt :: Parser DataType
 p_list_dt = ListDT <$> 
     (
         (string "array" <|> string "linked_list") 
+    *>  (char '(' *> p_dt <* char ')') 
+    )
+    <*> optional p_single_field_name
+
+p_binaryTree_dt :: Parser DataType
+p_binaryTree_dt = BinaryTreeDT <$> 
+    (
+        (string "binary_tree") 
     *>  (char '(' *> p_dt <* char ')') 
     )
     <*> optional p_single_field_name
@@ -258,6 +284,9 @@ tuple4Data (TupleD _ [p,q,r,s]) = (p,q,r,s)
 intList :: Data -> [Int]
 intList (ListD _ ds) = intData <$> ds
 
+listData :: (Data -> a) -> Data -> [a]
+listData f (ListD _ ds) = f <$> ds
+
 doubleList :: Data -> [Double]
 doubleList (ListD _ ds) = doubleData <$> ds
 
@@ -269,6 +298,9 @@ listOfIntList (ListD _ ds) = intList <$> ds
 
 listToTuple2 :: [a] -> (a,a)
 listToTuple2 (x:y:_) = (x,y)
+
+binaryTree :: (Data -> a) -> Data -> Tree a
+binaryTree f (BinaryTreeD _ xs) = makeTree . fmap (fmap f) $ xs
 
 split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = [] 

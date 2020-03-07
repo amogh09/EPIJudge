@@ -4,6 +4,7 @@
 module TestFramework.TestRunner 
     (
         goTest
+    ,   goTestWithInpDisp
     ,   goTestVoid
     ,   goTestRandomVoid
     ,   uncurry2
@@ -63,9 +64,22 @@ goTest :: (Show a, Eq b, Show b, NFData b) =>
     ->  IO ()
 goTest f fin fout cmp fileName = do 
     ts <- testCases fileName
-    runTests [] 1 (length ts) f fin fout cmp ts 
+    let inpDisp = Nothing :: Maybe (a -> [String])
+    runTests [] 1 (length ts) f fin fout cmp inpDisp ts 
 
-runTests :: (Show a, Show b, NFData b) =>
+goTestWithInpDisp :: (Show a, Eq b, Show b, NFData b, Show c) =>
+        (a -> b)               -- Function to test 
+    ->  (TestCase -> a)        -- Test case to function input    
+    ->  (TestCase -> b)        -- Test case to function output 
+    ->  (b -> b -> Bool)       -- Result Comparator
+    ->  (a -> [c])               -- Input to a list of showables for display
+    ->  String                 -- File name of test data
+    ->  IO ()
+goTestWithInpDisp f fin fout cmp inpDisp fileName = do 
+    ts <- testCases fileName
+    runTests [] 1 (length ts) f fin fout cmp (Just inpDisp) ts 
+
+runTests :: (Show a, Show b, NFData b, Show c) =>
         [Int]                    -- Run times of test cases
     ->  Int                      -- Test case number
     ->  Int                      -- Total number of test cases
@@ -73,19 +87,22 @@ runTests :: (Show a, Show b, NFData b) =>
     ->  (TestCase -> a)          -- Test case to function input
     ->  (TestCase -> b)          -- Test case to expected output
     ->  (b -> b -> Bool)         -- Comparator function
+    ->  Maybe (a -> [c])         -- Input to a list of showables for display
     ->  [TestCase]               -- List of test cases
-    ->  IO ()                    
-runTests rts _ _ _ _ _ _ [] = printCongrats rts
-runTests rts i n f fin fout cmp (t:ts) = do
+    ->  IO ()
+runTests rts _ _ _ _ _ _ _ [] = printCongrats rts
+runTests rts i n f fin fout cmp inpDisp (t:ts) = do
     let expected = fout t
     (res,rt) <- evaluateWithTimeout 1 $ f (fin t)
     let passed = res >>= return . (`cmp` expected)
     case passed of 
         Just True  -> do 
             printSuccess i n rt 
-            runTests (rt:rts) (i+1) n f fin fout cmp ts
-        Just False -> do 
-            printFailure i n t rt
+            runTests (rt:rts) (i+1) n f fin fout cmp inpDisp ts
+        Just False -> do
+            case inpDisp of
+                Nothing -> printFailure i n (dropRight 2 t) rt
+                Just inpDisp -> printFailure i n (inpDisp $ fin t) rt
             printFailureInfoAndExpl t expected (fromJust res)
         Nothing -> printFailure i n t rt >> printTimeout
 
@@ -118,7 +135,7 @@ runTestsVoid rts i n f fin chk (t:ts) = do
             printSuccess i n rt 
             runTestsVoid (rt:rts) (i+1) n f fin chk ts
         Just (Just failureInfo) -> do 
-            printFailure i n t rt
+            printFailure i n (dropRight 1 t) rt
             printColored yellow "Failure info"
             printf ":             "
             printf "%s\n" failureInfo
@@ -189,13 +206,12 @@ printCongrats rts = do
     putStrLn . pack $ "*** You've passed ALL tests. Congratulations! ***"
     return ()    
 
-printFailure :: Int -> Int -> TestCase -> Int -> IO ()
-printFailure i n t rt = do 
-    let ins = dropRight 2 t -- Dropping expected and explanation
+printFailure :: (Show a) => Int -> Int -> [a] -> Int -> IO ()
+printFailure i n fin rt = do 
     printf "\rTest \x1b[91mFAILED\x1b[0m (%5d/%d) [%4d us]\n" i n rt
     printColored yellow "Arguments"
     printf "\n"
-    forM_ ([(1::Int)..] `zip` ins) $ \(idx, x) -> do
+    forM_ ([(1::Int)..] `zip` fin) $ \(idx, x) -> do
         printf "\t"
         printColored yellow ("Input" ++ show idx)
         printf ":           "
