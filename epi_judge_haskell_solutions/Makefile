@@ -73,6 +73,7 @@ TREE_LEVEL_ORDER = treeLevelOrder
 CIRCULAR_QUEUE = circularQueue
 QUEUE_FROM_STACKS = queueFromStacks
 QUEUE_WITH_MAX = queueWithMax
+IS_TREE_BALANCED = isTreeBalanced
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -704,6 +705,15 @@ ${QUEUE_WITH_MAX}: ${BUILD_DIR}/${QUEUE_WITH_MAX}
 	${BUILD_DIR}/${QUEUE_WITH_MAX}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
 
+.PHONY: ${IS_TREE_BALANCED}
+${BUILD_DIR}/${IS_TREE_BALANCED}: ${BUILD_DIR} ${IS_TREE_BALANCED}.hs
+	@echo "Compiling ${IS_TREE_BALANCED}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${IS_TREE_BALANCED} ${IS_TREE_BALANCED}.hs
+${IS_TREE_BALANCED}: ${BUILD_DIR}/${IS_TREE_BALANCED}
+	@echo "Running ${IS_TREE_BALANCED}"
+	${BUILD_DIR}/${IS_TREE_BALANCED}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -779,7 +789,8 @@ all: \
 	${TREE_LEVEL_ORDER} \
 	${CIRCULAR_QUEUE} \
 	${QUEUE_FROM_STACKS} \
-	${QUEUE_WITH_MAX}
+	${QUEUE_WITH_MAX} \
+	${IS_TREE_BALANCED}
 
 .PHONY: clean 
 clean:
