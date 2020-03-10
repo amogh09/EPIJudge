@@ -72,7 +72,7 @@ goTestWithInpDisp :: (Show a, Eq b, Show b, NFData b, Show c) =>
     ->  (TestCase -> a)        -- Test case to function input    
     ->  (TestCase -> b)        -- Test case to function output 
     ->  (b -> b -> Bool)       -- Result Comparator
-    ->  (a -> [c])               -- Input to a list of showables for display
+    ->  (a -> [c])             -- Input to a list of showables for display
     ->  String                 -- File name of test data
     ->  IO ()
 goTestWithInpDisp f fin fout cmp inpDisp fileName = do 
@@ -104,7 +104,11 @@ runTests rts i n f fin fout cmp inpDisp (t:ts) = do
                 Nothing -> printFailure i n (dropRight 2 t) rt
                 Just inpDisp -> printFailure i n (inpDisp $ fin t) rt
             printFailureInfoAndExpl t expected (fromJust res)
-        Nothing -> printFailure i n t rt >> printTimeout
+        Nothing -> do
+            case inpDisp of
+                Nothing -> printFailure i n (dropRight 2 t) rt
+                Just inpDisp -> printFailure i n (inpDisp $ fin t) rt
+            printTimeout
 
 goTestVoid :: (Show a, Eq b, Show b) =>
         (a -> b)                  -- Function to test 

@@ -12,5 +12,5 @@ main = goTestWithInpDisp
     (binaryTree intData . head)
     (listData intList . head . tail)
     (==)
-    ((:[]) . show)
+    (:[])
     "../test_data/tree_level_order.tsv"
