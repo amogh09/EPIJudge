@@ -157,7 +157,7 @@ Failure info
 | Find a root to leaf path with specified sum | <TBA> | path\_sum.cc | PathSum.java | path\_sum.py | 
 | Implement an inorder traversal without recursion | <TBA> | tree\_inorder.cc | TreeInorder.java | tree\_inorder.py | 
 | Implement a preorder traversal without recursion | <TBA> | tree\_preorder.cc | TreePreorder.java | tree\_preorder.py | 
-| Compute the kth node in an inorder traversal | <TBA> | kth\_node\_in\_tree.cc | KthNodeInTree.java | kth\_node\_in\_tree.py | 
+| Compute the kth node in an inorder traversal | kthNodeInTree.hs | kth\_node\_in\_tree.cc | KthNodeInTree.java | kth\_node\_in\_tree.py | 
 | Compute the successor | <TBA> | successor\_in\_tree.cc | SuccessorInTree.java | successor\_in\_tree.py | 
 | Implement an inorder traversal with O(1) space | <TBA> | tree\_with\_parent\_inorder.cc | TreeWithParentInorder.java | tree\_with\_parent\_inorder.py | 
 | Reconstruct a binary tree from traversal data | <TBA> | tree\_from\_preorder\_inorder.cc | TreeFromPreorderInorder.java | tree\_from\_preorder\_inorder.py | 

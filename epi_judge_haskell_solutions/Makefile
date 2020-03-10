@@ -76,6 +76,7 @@ QUEUE_WITH_MAX = queueWithMax
 IS_TREE_BALANCED = isTreeBalanced
 IS_TREE_SYMMETRIC = isTreeSymmetric
 LOWEST_COMMON_ANCESTOR = lowestCommonAncestor
+KTH_NODE_IN_TREE = kthNodeInTree
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -734,6 +735,15 @@ ${LOWEST_COMMON_ANCESTOR}: ${BUILD_DIR}/${LOWEST_COMMON_ANCESTOR}
 	${BUILD_DIR}/${LOWEST_COMMON_ANCESTOR}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o	
 
+.PHONY: ${KTH_NODE_IN_TREE}
+${BUILD_DIR}/${KTH_NODE_IN_TREE}: ${BUILD_DIR} ${KTH_NODE_IN_TREE}.hs
+	@echo "Compiling ${KTH_NODE_IN_TREE}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${KTH_NODE_IN_TREE} ${KTH_NODE_IN_TREE}.hs
+${KTH_NODE_IN_TREE}: ${BUILD_DIR}/${KTH_NODE_IN_TREE}
+	@echo "Running ${KTH_NODE_IN_TREE}"
+	${BUILD_DIR}/${KTH_NODE_IN_TREE}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -812,7 +822,8 @@ all: \
 	${QUEUE_WITH_MAX} \
 	${IS_TREE_BALANCED} \
 	${IS_TREE_SYMMETRIC} \
-	${LOWEST_COMMON_ANCESTOR}
+	${LOWEST_COMMON_ANCESTOR} \
+	${KTH_NODE_IN_TREE}
 
 .PHONY: clean 
 clean:
