@@ -152,7 +152,7 @@ Failure info
 | Test if a binary tree is height-balanced | isTreeBalanced.hs | is\_tree\_balanced.cc | IsTreeBalanced.java | is\_tree\_balanced.py | 
 | Test if a binary tree is symmetric | isTreeSymmetric.hs | is\_tree\_symmetric.cc | IsTreeSymmetric.java | is\_tree\_symmetric.py | 
 | Compute the lowest common ancestor in a binary tree | lowestCommonAncestor.hs | lowest\_common\_ancestor.cc | LowestCommonAncestor.java | lowest\_common\_ancestor.py | 
-| Compute the LCA when nodes have parent pointers | <TBA> | lowest\_common\_ancestor\_with\_parent.cc | LowestCommonAncestorWithParent.java | lowest\_common\_ancestor\_with\_parent.py | 
+| Compute the LCA when nodes have parent pointers | lowestCommonAncestorWithParent.hs | lowest\_common\_ancestor\_with\_parent.cc | LowestCommonAncestorWithParent.java | lowest\_common\_ancestor\_with\_parent.py | 
 | Sum the root-to-leaf paths in a binary tree | <TBA> | sum\_root\_to\_leaf.cc | SumRootToLeaf.java | sum\_root\_to\_leaf.py | 
 | Find a root to leaf path with specified sum | <TBA> | path\_sum.cc | PathSum.java | path\_sum.py | 
 | Implement an inorder traversal without recursion | <TBA> | tree\_inorder.cc | TreeInorder.java | tree\_inorder.py | 

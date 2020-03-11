@@ -1,55 +1,66 @@
-module TestFramework.BinaryTree (makeTree, Tree(..), binaryTreeKey) where
+module TestFramework.BinaryTree 
+    (
+        Tree (..)
+    ,   binaryTreeKey
+    ,   binaryTreeKey'
+    ,   toZipper
+    ,   goLeft
+    ,   goRight
+    ,   goUp
+    ,   goUp'
+    ,   zipperKey
+    ,   zipperKey'
+    ,   Zipper
+    ) where
 
 import Data.Maybe (fromJust)
-import Numeric (readDec)
 
 data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show)
 
-unflattenLevels :: [Maybe a] -> [[Maybe a]]
-unflattenLevels [] = [] 
-unflattenLevels (x:xs) = [x] : nextLevels [x] xs where 
-    nextLevels [] _  = []
-    nextLevels _  [] = []
-    nextLevels ls rs = let (ls',rs') = nextLevelAndRest ls rs 
-                       in  ls' : nextLevels ls' rs'
-
-nextLevelAndRest :: [Maybe a] -> [Maybe a] -> ([Maybe a],[Maybe a])
-nextLevelAndRest (Just _:ls) (r:r':rs) = 
-    let (p,q) = nextLevelAndRest ls rs 
-    in  (r:r':p,q)
-nextLevelAndRest (Nothing:ls) rs = nextLevelAndRest ls rs
-nextLevelAndRest [] rs = ([],rs)
-nextLevelAndRest _ [r] = ([r],[])
-nextLevelAndRest _  [] = ([],[]) 
-
-joinLevels :: [[Maybe a]] -> Tree a 
-joinLevels xs = 
-    case f xs of
-        []        -> Empty
-        [Nothing] -> Empty 
-        [Just t]  -> t 
-    where 
-    f [l]    = fmap singleton l
-    f (l:ls) = joinTwoLevels l (f ls) 
-    singleton Nothing  = Nothing 
-    singleton (Just x) = Just $ Tree x Empty Empty
-
-joinTwoLevels :: [Maybe a] -> [Maybe (Tree a)] -> [Maybe (Tree a)]
-joinTwoLevels (Nothing:hs) ls = Nothing : joinTwoLevels hs ls 
-joinTwoLevels (Just h:hs) (l:l':ls) = 
-    Just (Tree h (treeFromMaybe l) (treeFromMaybe l')) : joinTwoLevels hs ls
-joinTwoLevels (Just h:hs) [l] = 
-    Just (Tree h (treeFromMaybe l) Empty) : joinTwoLevels hs []
-joinTwoLevels (Just h:hs) []  = Just (Tree h Empty Empty) : joinTwoLevels hs []
-joinTwoLevels [] [] = []
-
-treeFromMaybe :: Maybe (Tree a) -> Tree a
-treeFromMaybe Nothing  = Empty
-treeFromMaybe (Just t) = t
-
-makeTree :: [Maybe a] -> Tree a 
-makeTree = joinLevels . unflattenLevels
-
+-- Get key from a tree root safely
 binaryTreeKey :: Tree a -> Maybe a 
 binaryTreeKey Empty = Nothing 
 binaryTreeKey (Tree x _ _) = Just x
+
+-- Get key from a tree root unsafely
+binaryTreeKey' :: Tree a -> a 
+binaryTreeKey' = fromJust . binaryTreeKey
+
+data Crumb a = LeftCrumb a (Tree a) | RightCrumb a (Tree a) deriving (Show)
+
+type BreadCrumbs a = [Crumb a]
+
+type Zipper a = (Tree a, BreadCrumbs a)
+
+-- Turn a tree into a Zipper
+toZipper :: Tree a -> Zipper a 
+toZipper t = (t, [])
+
+-- Go to the left subtree of current tree safely
+goLeft :: Zipper a -> Maybe (Zipper a) 
+goLeft (Tree x l r, bs) = Just (l, LeftCrumb x r : bs)
+goLeft (Empty, bs) = Nothing 
+
+-- Go to the right subtree of current tree safely
+goRight :: Zipper a -> Maybe (Zipper a)
+goRight (Tree x l r, bs) = Just (r, RightCrumb x l : bs)
+goRight (Empty, bs) = Nothing 
+
+-- Go to the parent tree of current tree safely
+goUp :: Zipper a -> Maybe (Zipper a)
+goUp (_, []) = Nothing
+goUp (l, LeftCrumb z r : bs) = Just (Tree z l r, bs)
+goUp (r, RightCrumb z l : bs) = Just (Tree z l r, bs) 
+
+-- Go to the parent tree of current tree unsafely
+goUp' :: Zipper a -> Zipper a 
+goUp' = fromJust . goUp
+
+-- Get the key of current tree in focus of the zipper safely
+zipperKey :: Zipper a -> Maybe a 
+zipperKey (Empty, _) = Nothing 
+zipperKey (t, _) = binaryTreeKey t
+
+-- Get the key of current tree in focus of the zipper unsafely
+zipperKey' :: Zipper a -> a 
+zipperKey' (t, _) = binaryTreeKey' t

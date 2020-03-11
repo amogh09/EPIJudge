@@ -24,11 +24,12 @@ module TestFramework.TestParser
     ,   split
     ,   binaryTree
     ,   listData
-    ,   binaryTreeKey
+    ,   module TestFramework.BinaryTreeParser
     ) where
 
 import TestFramework.EPIPrelude hiding (takeWhile)
-import TestFramework.BinaryTree (Tree(..), makeTree, binaryTreeKey)
+import TestFramework.BinaryTreeParser
+import TestFramework.BinaryTree (Tree(..))
 import Data.Attoparsec.Text
 import Data.Char 
 
