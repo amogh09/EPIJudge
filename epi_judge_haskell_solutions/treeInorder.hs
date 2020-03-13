@@ -49,5 +49,5 @@ main = goTestWithInpDisp
     (toZipper . binaryTree intData . head)
     (intList . head . tail)
     (==)
-    ((:[]) . show)
+    ((:[]) . show . focus)
     "../test_data/tree_inorder.tsv"

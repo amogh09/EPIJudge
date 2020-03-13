@@ -79,6 +79,7 @@ LOWEST_COMMON_ANCESTOR = lowestCommonAncestor
 KTH_NODE_IN_TREE = kthNodeInTree
 LOWEST_COMMON_ANCESTOR_WITH_PARENT = lowestCommonAncestorWithParent
 TREE_INORDER = treeInorder
+TREE_PREORDER = treePreorder
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -764,6 +765,15 @@ ${TREE_INORDER}: ${BUILD_DIR}/${TREE_INORDER}
 	${BUILD_DIR}/${TREE_INORDER}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${TREE_PREORDER}
+${BUILD_DIR}/${TREE_PREORDER}: ${BUILD_DIR} ${TREE_PREORDER}.hs
+	@echo "Compiling ${TREE_PREORDER}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${TREE_PREORDER} ${TREE_PREORDER}.hs
+${TREE_PREORDER}: ${BUILD_DIR}/${TREE_PREORDER}
+	@echo "Running ${TREE_PREORDER}"
+	${BUILD_DIR}/${TREE_PREORDER}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -845,7 +855,8 @@ all: \
 	${LOWEST_COMMON_ANCESTOR} \
 	${KTH_NODE_IN_TREE} \
 	${LOWEST_COMMON_ANCESTOR_WITH_PARENT} \
-	${TREE_INORDER}
+	${TREE_INORDER} \
+	${TREE_PREORDER}
 
 .PHONY: clean 
 clean:
