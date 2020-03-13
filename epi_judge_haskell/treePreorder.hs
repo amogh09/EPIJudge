@@ -9,7 +9,7 @@ import TestFramework.BinaryTree
 -- Some helpful API methods for this problem are imported above.
 
 preorder :: (Eq a) => Zipper a -> [a]
-preorder z = []
+preorder z = [] -- TODO
 
 main = goTestWithInpDisp 
     preorder

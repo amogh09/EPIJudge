@@ -21,11 +21,16 @@ module TestFramework.BinaryTree
     ,   hasRightChild
     ,   hasLeftChild
     ,   emptyZipper
+    ,   isEmpty
     ) where
 
 import Data.Maybe (fromJust)
 
 data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show, Eq)
+
+isEmpty :: Tree a -> Bool 
+isEmpty Empty = True 
+isEmpty _ = False
 
 -- Get key from a tree root safely
 binaryTreeKey :: Tree a -> Maybe a 
@@ -97,11 +102,13 @@ isRoot _ = False
 emptyZipper :: Zipper a
 emptyZipper = (Empty, [])
 
-hasLeftChild :: (Eq a) => Tree a -> Bool
-hasLeftChild (Tree _ l _) = l /= Empty
+hasLeftChild :: Tree a -> Bool
+hasLeftChild (Tree _ Empty _) = False
+hasLeftChild _ = True
 
-hasRightChild :: (Eq a) => Tree a -> Bool 
-hasRightChild (Tree _ _ r) = r /= Empty
+hasRightChild :: Tree a -> Bool 
+hasRightChild (Tree _ _ Empty) = False 
+hasRightChild _ = True
 
 ancestorIsRight :: Ancestor a -> Bool 
 ancestorIsRight (RightAncestor _ _) = True 

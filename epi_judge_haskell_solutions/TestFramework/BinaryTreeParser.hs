@@ -8,6 +8,7 @@ module TestFramework.BinaryTreeParser
 import Numeric (readDec)
 import Data.Maybe (fromJust)
 import TestFramework.BinaryTree
+import Control.Applicative ((<|>))
 
 unflattenLevels :: [Maybe a] -> [[Maybe a]]
 unflattenLevels [] = [] 
@@ -54,19 +55,13 @@ treeFromMaybe (Just t) = t
 makeTree :: [Maybe a] -> Tree a 
 makeTree = joinLevels . unflattenLevels
 
+findZipperInZipper :: (Eq a) => a -> Zipper a -> Maybe (Zipper a)
+findZipperInZipper _ z | isEmpty . focus $ z = Nothing
+findZipperInZipper x z | x == zipperKey' z = Just z 
+findZipperInZipper x z = findZipperInZipper x (goLeft' z) <|> findZipperInZipper x (goRight' z)
+
 findZipper :: (Eq a, Show a) => a -> Tree a -> Maybe (Zipper a) 
-findZipper y = f . toZipper where 
-    f z@(Tree x l r, bs) 
-        | x == y = Just z
-        | otherwise = 
-            let lr = goLeft z >>= f
-                rr = goRight z >>= f
-            in  case (lr, rr) of 
-                    (Nothing, Nothing) -> Nothing 
-                    (lr, Nothing) -> lr 
-                    (Nothing, rr) -> rr
-                    (lr, rr)      -> lr 
-    f z@(Empty, bs) = Nothing
+findZipper y = findZipperInZipper y . toZipper
 
 findZipper' :: (Eq a, Show a) => a -> Tree a -> Zipper a 
 findZipper' y = fromJust . findZipper y
