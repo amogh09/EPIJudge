@@ -5,17 +5,27 @@ module TestFramework.BinaryTree
     ,   binaryTreeKey'
     ,   toZipper
     ,   goLeft
+    ,   goLeft'
     ,   goRight
+    ,   goRight'
     ,   goUp
     ,   goUp'
     ,   zipperKey
     ,   zipperKey'
     ,   Zipper
+    ,   focus
+    ,   Ancestor(..)
+    ,   parent 
+    ,   ancestorIsRight
+    ,   isRoot
+    ,   hasRightChild
+    ,   hasLeftChild
+    ,   emptyZipper
     ) where
 
 import Data.Maybe (fromJust)
 
-data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show)
+data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show, Eq)
 
 -- Get key from a tree root safely
 binaryTreeKey :: Tree a -> Maybe a 
@@ -26,11 +36,16 @@ binaryTreeKey (Tree x _ _) = Just x
 binaryTreeKey' :: Tree a -> a 
 binaryTreeKey' = fromJust . binaryTreeKey
 
-data Crumb a = LeftCrumb a (Tree a) | RightCrumb a (Tree a) deriving (Show)
+data Ancestor a = LeftAncestor a (Tree a) 
+                | RightAncestor a (Tree a) deriving (Show, Eq)
 
-type BreadCrumbs a = [Crumb a]
+type Ancestors a = [Ancestor a]
 
-type Zipper a = (Tree a, BreadCrumbs a)
+type Zipper a = (Tree a, Ancestors a)
+
+-- Focus tree of the Zipper
+focus :: Zipper a -> Tree a 
+focus = fst
 
 -- Turn a tree into a Zipper
 toZipper :: Tree a -> Zipper a 
@@ -38,19 +53,27 @@ toZipper t = (t, [])
 
 -- Go to the left subtree of current tree safely
 goLeft :: Zipper a -> Maybe (Zipper a) 
-goLeft (Tree x l r, bs) = Just (l, LeftCrumb x r : bs)
+goLeft (Tree x l r, bs) = Just (l, RightAncestor x r : bs)
 goLeft (Empty, bs) = Nothing 
+
+-- Go to the left subtree of current tree unsafely
+goLeft' :: Zipper a -> Zipper a
+goLeft' = fromJust . goLeft
 
 -- Go to the right subtree of current tree safely
 goRight :: Zipper a -> Maybe (Zipper a)
-goRight (Tree x l r, bs) = Just (r, RightCrumb x l : bs)
+goRight (Tree x l r, bs) = Just (r, LeftAncestor x l : bs)
 goRight (Empty, bs) = Nothing 
+
+-- Go to the right subtree of current tree unsafely
+goRight' :: Zipper a -> Zipper a 
+goRight' = fromJust . goRight
 
 -- Go to the parent tree of current tree safely
 goUp :: Zipper a -> Maybe (Zipper a)
 goUp (_, []) = Nothing
-goUp (l, LeftCrumb z r : bs) = Just (Tree z l r, bs)
-goUp (r, RightCrumb z l : bs) = Just (Tree z l r, bs) 
+goUp (r, LeftAncestor z l : bs) = Just (Tree z l r, bs)
+goUp (l, RightAncestor z r : bs) = Just (Tree z l r, bs) 
 
 -- Go to the parent tree of current tree unsafely
 goUp' :: Zipper a -> Zipper a 
@@ -64,3 +87,27 @@ zipperKey (t, _) = binaryTreeKey t
 -- Get the key of current tree in focus of the zipper unsafely
 zipperKey' :: Zipper a -> a 
 zipperKey' (t, _) = binaryTreeKey' t
+
+-- Check if Zipper is a root
+isRoot :: Zipper a -> Bool 
+isRoot (_, []) = True 
+isRoot _ = False
+
+-- Empty Zipper
+emptyZipper :: Zipper a
+emptyZipper = (Empty, [])
+
+hasLeftChild :: (Eq a) => Tree a -> Bool
+hasLeftChild (Tree _ l _) = l /= Empty
+
+hasRightChild :: (Eq a) => Tree a -> Bool 
+hasRightChild (Tree _ _ r) = r /= Empty
+
+ancestorIsRight :: Ancestor a -> Bool 
+ancestorIsRight (RightAncestor _ _) = True 
+ancestorIsRight _ = False  
+
+-- Get Parent as ancestor safely (not Tree or Zipper, use goUp for that)
+parent :: Zipper a -> Maybe (Ancestor a)
+parent (_, a:_) = Just a 
+parent _ = Nothing
