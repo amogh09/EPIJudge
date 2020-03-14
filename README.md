@@ -159,7 +159,7 @@ Failure info
 | Implement a preorder traversal without recursion | treePreorder.hs | tree\_preorder.cc | TreePreorder.java | tree\_preorder.py | 
 | Compute the kth node in an inorder traversal | kthNodeInTree.hs | kth\_node\_in\_tree.cc | KthNodeInTree.java | kth\_node\_in\_tree.py | 
 | Compute the successor | successorInTree.hs | successor\_in\_tree.cc | SuccessorInTree.java | successor\_in\_tree.py | 
-| Implement an inorder traversal with O(1) space | <TBA> | tree\_with\_parent\_inorder.cc | TreeWithParentInorder.java | tree\_with\_parent\_inorder.py | 
+| Implement an inorder traversal with O(1) space | treeWithParentInorder.hs | tree\_with\_parent\_inorder.cc | TreeWithParentInorder.java | tree\_with\_parent\_inorder.py | 
 | Reconstruct a binary tree from traversal data | <TBA> | tree\_from\_preorder\_inorder.cc | TreeFromPreorderInorder.java | tree\_from\_preorder\_inorder.py | 
 | Reconstruct a binary tree from a preorder traversal with markers | <TBA> | tree\_from\_preorder\_with\_null.cc | TreeFromPreorderWithNull.java | tree\_from\_preorder\_with\_null.py | 
 | Form a linked list from the leaves of a binary tree | <TBA> | tree\_connect\_leaves.cc | TreeConnectLeaves.java | tree\_connect\_leaves.py | 
