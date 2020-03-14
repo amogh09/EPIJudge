@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module TestFramework.BinaryTree 
     (
         Tree (..)
@@ -25,8 +27,12 @@ module TestFramework.BinaryTree
     ) where
 
 import Data.Maybe (fromJust)
+import Control.DeepSeq (NFData)
+import GHC.Generics (Generic)
 
-data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show, Eq)
+data Tree a = Empty | Tree a (Tree a) (Tree a) deriving (Show, Eq, Generic)
+
+instance NFData a => NFData (Tree a)
 
 isEmpty :: Tree a -> Bool 
 isEmpty Empty = True 
