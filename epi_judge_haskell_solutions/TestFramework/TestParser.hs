@@ -24,6 +24,7 @@ module TestFramework.TestParser
     ,   split
     ,   binaryTree
     ,   listData
+    ,   fastReadInt
     ,   module TestFramework.BinaryTreeParser
     ) where
 
@@ -32,6 +33,7 @@ import TestFramework.BinaryTreeParser
 import TestFramework.BinaryTree (Tree(..))
 import Data.Attoparsec.Text
 import Data.Char 
+import Numeric (readDec)
 
 type Name = Text
 
@@ -309,3 +311,7 @@ split x' xs = f $ xs where
     f (x:xs) | x == x' = [] : f xs 
     f (x:xs) = let (g:gs) = f xs in (x:g) : gs
     f [] = [[]]
+
+fastReadInt :: String -> Int 
+fastReadInt ('-':s) = negate $ fastReadInt s
+fastReadInt s = case readDec s of [(n, "")] -> n
