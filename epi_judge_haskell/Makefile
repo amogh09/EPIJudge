@@ -88,6 +88,7 @@ TREE_CONNECT_LEAVES = treeConnectLeaves
 TREE_EXTERIOR = treeExterior
 TREE_RIGHT_SIBLING = treeRightSibling
 SUM_ROOT_TO_LEAF = sumRootToLeaf
+PATH_SUM = pathSum
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -854,6 +855,15 @@ ${SUM_ROOT_TO_LEAF}: ${BUILD_DIR}/${SUM_ROOT_TO_LEAF}
 	${BUILD_DIR}/${SUM_ROOT_TO_LEAF}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${PATH_SUM}
+${BUILD_DIR}/${PATH_SUM}: ${BUILD_DIR} ${PATH_SUM}.hs
+	@echo "Compiling ${PATH_SUM}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${PATH_SUM} ${PATH_SUM}.hs
+${PATH_SUM}: ${BUILD_DIR}/${PATH_SUM}
+	@echo "Running ${PATH_SUM}"
+	${BUILD_DIR}/${PATH_SUM}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -944,7 +954,8 @@ all: \
 	${TREE_CONNECT_LEAVES} \
 	${TREE_EXTERIOR} \
 	${TREE_RIGHT_SIBLING} \
-	${SUM_ROOT_TO_LEAF}
+	${SUM_ROOT_TO_LEAF} \
+	${PATH_SUM}
 
 .PHONY: clean 
 clean:
