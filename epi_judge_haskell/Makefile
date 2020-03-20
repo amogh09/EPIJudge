@@ -89,6 +89,7 @@ TREE_EXTERIOR = treeExterior
 TREE_RIGHT_SIBLING = treeRightSibling
 SUM_ROOT_TO_LEAF = sumRootToLeaf
 PATH_SUM = pathSum
+SUNSET_VIEW = sunsetView
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -864,6 +865,15 @@ ${PATH_SUM}: ${BUILD_DIR}/${PATH_SUM}
 	${BUILD_DIR}/${PATH_SUM}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${SUNSET_VIEW}
+${BUILD_DIR}/${SUNSET_VIEW}: ${BUILD_DIR} ${SUNSET_VIEW}.hs
+	@echo "Compiling ${SUNSET_VIEW}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${SUNSET_VIEW} ${SUNSET_VIEW}.hs
+${SUNSET_VIEW}: ${BUILD_DIR}/${SUNSET_VIEW}
+	@echo "Running ${SUNSET_VIEW}"
+	${BUILD_DIR}/${SUNSET_VIEW}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -955,7 +965,8 @@ all: \
 	${TREE_EXTERIOR} \
 	${TREE_RIGHT_SIBLING} \
 	${SUM_ROOT_TO_LEAF} \
-	${PATH_SUM}
+	${PATH_SUM} \
+	${SUNSET_VIEW}
 
 .PHONY: clean 
 clean:
