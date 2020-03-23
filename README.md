@@ -166,7 +166,7 @@ Failure info
 | Compute the exterior of a binary tree | treeExterior.hs | tree\_exterior.cc | TreeExterior.java | tree\_exterior.py | 
 | Compute the right sibling tree | treeRightSibling.hs | tree\_right\_sibling.cc | TreeRightSibling.java | tree\_right\_sibling.py | 
 | Merge sorted files | sortedArraysMerge.hs | sorted\_arrays\_merge.cc | SortedArraysMerge.java | sorted\_arrays\_merge.py | 
-| Sort an increasing-decreasing array | <TBA> | sort\_increasing\_decreasing\_array.cc | SortIncreasingDecreasingArray.java | sort\_increasing\_decreasing\_array.py | 
+| Sort an increasing-decreasing array | sortIncreasingDecreasingArray.hs | sort\_increasing\_decreasing\_array.cc | SortIncreasingDecreasingArray.java | sort\_increasing\_decreasing\_array.py | 
 | Sort an almost-sorted array | <TBA> | sort\_almost\_sorted\_array.cc | SortAlmostSortedArray.java | sort\_almost\_sorted\_array.py | 
 | Compute the k closest stars | <TBA> | k\_closest\_stars.cc | KClosestStars.java | k\_closest\_stars.py | 
 | Compute the median of online data | <TBA> | online\_median.cc | OnlineMedian.java | online\_median.py | 
