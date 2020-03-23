@@ -1,5 +1,5 @@
 import TestFramework.TestRunner 
-import qualified TestFramework.LeftistHeap as H
+import qualified Data.LeftistHeap as H
 import Data.Maybe (fromJust)
 
 mergeLists :: (Ord a) => [[a]] -> [a]

@@ -1,4 +1,4 @@
-module TestFramework.LeftistHeap 
+module Data.LeftistHeap 
     (
         getMin
     ,   delMin
