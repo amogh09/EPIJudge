@@ -90,6 +90,7 @@ TREE_RIGHT_SIBLING = treeRightSibling
 SUM_ROOT_TO_LEAF = sumRootToLeaf
 PATH_SUM = pathSum
 SUNSET_VIEW = sunsetView
+SORTED_ARRAYS_MERGE = sortedArraysMerge
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -874,6 +875,15 @@ ${SUNSET_VIEW}: ${BUILD_DIR}/${SUNSET_VIEW}
 	${BUILD_DIR}/${SUNSET_VIEW}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${SORTED_ARRAYS_MERGE}
+${BUILD_DIR}/${SORTED_ARRAYS_MERGE}: ${BUILD_DIR} ${SORTED_ARRAYS_MERGE}.hs
+	@echo "Compiling ${SORTED_ARRAYS_MERGE}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${SORTED_ARRAYS_MERGE} ${SORTED_ARRAYS_MERGE}.hs
+${SORTED_ARRAYS_MERGE}: ${BUILD_DIR}/${SORTED_ARRAYS_MERGE}
+	@echo "Running ${SORTED_ARRAYS_MERGE}"
+	${BUILD_DIR}/${SORTED_ARRAYS_MERGE}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -966,7 +976,8 @@ all: \
 	${TREE_RIGHT_SIBLING} \
 	${SUM_ROOT_TO_LEAF} \
 	${PATH_SUM} \
-	${SUNSET_VIEW}
+	${SUNSET_VIEW} \
+	${SORTED_ARRAYS_MERGE}
 
 .PHONY: clean 
 clean:

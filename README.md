@@ -165,7 +165,7 @@ Failure info
 | Form a linked list from the leaves of a binary tree | treeConnectLeaves.hs | tree\_connect\_leaves.cc | TreeConnectLeaves.java | tree\_connect\_leaves.py | 
 | Compute the exterior of a binary tree | treeExterior.hs | tree\_exterior.cc | TreeExterior.java | tree\_exterior.py | 
 | Compute the right sibling tree | treeRightSibling.hs | tree\_right\_sibling.cc | TreeRightSibling.java | tree\_right\_sibling.py | 
-| Merge sorted files | <TBA> | sorted\_arrays\_merge.cc | SortedArraysMerge.java | sorted\_arrays\_merge.py | 
+| Merge sorted files | sortedArraysMerge.hs | sorted\_arrays\_merge.cc | SortedArraysMerge.java | sorted\_arrays\_merge.py | 
 | Sort an increasing-decreasing array | <TBA> | sort\_increasing\_decreasing\_array.cc | SortIncreasingDecreasingArray.java | sort\_increasing\_decreasing\_array.py | 
 | Sort an almost-sorted array | <TBA> | sort\_almost\_sorted\_array.cc | SortAlmostSortedArray.java | sort\_almost\_sorted\_array.py | 
 | Compute the k closest stars | <TBA> | k\_closest\_stars.cc | KClosestStars.java | k\_closest\_stars.py | 
