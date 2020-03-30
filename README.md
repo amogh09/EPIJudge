@@ -171,7 +171,7 @@ Failure info
 | Compute the k closest stars | kClosestStars.hs | k\_closest\_stars.cc | KClosestStars.java | k\_closest\_stars.py | 
 | Compute the median of online data | onlineMedian.hs | online\_median.cc | OnlineMedian.java | online\_median.py | 
 | Compute the k largest elements in a max-heap | <TBA> | k\_largest\_in\_heap.cc | KLargestInHeap.java | k\_largest\_in\_heap.py | 
-| Search a sorted array for first occurrence of k | <TBA> | search\_first\_key.cc | SearchFirstKey.java | search\_first\_key.py | 
+| Search a sorted array for first occurrence of k | searchFirstKey.hs | search\_first\_key.cc | SearchFirstKey.java | search\_first\_key.py | 
 | Search a sorted array for entry equal to its index | <TBA> | search\_entry\_equal\_to\_index.cc | SearchEntryEqualToIndex.java | search\_entry\_equal\_to\_index.py | 
 | Search a cyclically sorted array | <TBA> | search\_shifted\_sorted\_array.cc | SearchShiftedSortedArray.java | search\_shifted\_sorted\_array.py | 
 | Compute the integer square root | <TBA> | int\_square\_root.cc | IntSquareRoot.java | int\_square\_root.py | 
