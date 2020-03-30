@@ -93,6 +93,7 @@ SUNSET_VIEW = sunsetView
 SORTED_ARRAYS_MERGE = sortedArraysMerge
 SORT_INCREASING_DECREASING_ARRAY = sortIncreasingDecreasingArray
 K_CLOSEST_STARS = kClosestStars
+ONLINE_MEDIAN = onlineMedian
 
 .PHONY: ${COUNT_BITS}
 ${BUILD_DIR}/${COUNT_BITS}: ${BUILD_DIR} ${COUNT_BITS}.hs
@@ -904,6 +905,15 @@ ${K_CLOSEST_STARS}: ${BUILD_DIR}/${K_CLOSEST_STARS}
 	${BUILD_DIR}/${K_CLOSEST_STARS}
 	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
 
+.PHONY: ${ONLINE_MEDIAN}
+${BUILD_DIR}/${ONLINE_MEDIAN}: ${BUILD_DIR} ${ONLINE_MEDIAN}.hs
+	@echo "Compiling ${ONLINE_MEDIAN}.hs"
+	${BUILD_CMD} -o ${BUILD_DIR}/${ONLINE_MEDIAN} ${ONLINE_MEDIAN}.hs
+${ONLINE_MEDIAN}: ${BUILD_DIR}/${ONLINE_MEDIAN}
+	@echo "Running ${ONLINE_MEDIAN}"
+	${BUILD_DIR}/${ONLINE_MEDIAN}
+	@rm -f ${BUILD_DIR}/Main.hi ${BUILD_DIR}/Main.o
+
 ${BUILD_DIR}: 
 	@echo "Creating build directory"
 	mkdir -p ${BUILD_DIR}
@@ -999,7 +1009,8 @@ all: \
 	${SUNSET_VIEW} \
 	${SORTED_ARRAYS_MERGE} \
 	${SORT_INCREASING_DECREASING_ARRAY} \
-	${K_CLOSEST_STARS}
+	${K_CLOSEST_STARS} \
+	${ONLINE_MEDIAN}
 
 .PHONY: clean 
 clean:

@@ -8,6 +8,7 @@ module Data.LeftistHeap
     ,   toList
     ,   fromList
     ,   isEmpty
+    ,   empty
     ,   LHeap
     ) where 
 
@@ -24,6 +25,9 @@ data LHeap k v = LHeap {
 rank :: LHeap k v -> Int 
 rank Empty = 0 
 rank h = _rank h
+
+empty :: LHeap k v 
+empty = Empty
 
 isEmpty :: LHeap k v -> Bool 
 isEmpty Empty = True 

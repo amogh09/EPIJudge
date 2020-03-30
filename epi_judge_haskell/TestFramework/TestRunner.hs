@@ -11,6 +11,7 @@ module TestFramework.TestRunner
     ,   allInRange    
     ,   splitWhen
     ,   cmpDouble
+    ,   cmpDoubleList
     ,   rightIfNothing
     ,   TestCase
     ,   module TestFramework.TestParser
@@ -259,6 +260,10 @@ splitWhen p = f [] where
 
 cmpDouble :: Double -> Double -> Bool 
 cmpDouble x y = abs (x - y) < 0.00001
+
+cmpDoubleList :: [Double] -> [Double] -> Bool 
+cmpDoubleList xs ys = 
+    length xs == length ys && all (uncurry cmpDouble) (xs `zip` ys)
 
 rightIfNothing :: (a -> e) -> Maybe a -> Either e ()
 rightIfNothing f Nothing  = Right () 

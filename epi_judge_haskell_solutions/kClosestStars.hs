@@ -7,7 +7,7 @@ kClosest k = fmap fst . takeHeap k . H.fromList . fmap f where
     f c@(x,y,z) = (sqrt (x**2 + y**2 + z**2), Nothing)
 
 takeHeap :: (Ord a) => Int -> H.LHeap a b -> [(a,b)] 
-takeHeap k h | k <=0 || H.isEmpty h = []
+takeHeap k h | k <= 0 || H.isEmpty h = []
 takeHeap k h = fromJust (H.getMin h) : takeHeap (k-1) (H.delMin h) 
 
 pointData :: Data -> (Double, Double, Double)
