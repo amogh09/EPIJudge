@@ -174,7 +174,7 @@ Failure info
 | Search a sorted array for first occurrence of k | searchFirstKey.hs | search\_first\_key.cc | SearchFirstKey.java | search\_first\_key.py | 
 | Search a sorted array for entry equal to its index | searchEntryEqualToIndex.hs | search\_entry\_equal\_to\_index.cc | SearchEntryEqualToIndex.java | search\_entry\_equal\_to\_index.py | 
 | Search a cyclically sorted array | searchShiftedSortedArray.hs | search\_shifted\_sorted\_array.cc | SearchShiftedSortedArray.java | search\_shifted\_sorted\_array.py | 
-| Compute the integer square root | <TBA> | int\_square\_root.cc | IntSquareRoot.java | int\_square\_root.py | 
+| Compute the integer square root | intSquareRoot.hs | int\_square\_root.cc | IntSquareRoot.java | int\_square\_root.py | 
 | Compute the real square root | <TBA> | real\_square\_root.cc | RealSquareRoot.java | real\_square\_root.py | 
 | Search in a 2D sorted array | <TBA> | search\_row\_col\_sorted\_matrix.cc | SearchRowColSortedMatrix.java | search\_row\_col\_sorted\_matrix.py | 
 | Find the min and max simultaneously | <TBA> | search\_for\_min\_max\_in\_array.cc | SearchForMinMaxInArray.java | search\_for\_min\_max\_in\_array.py | 
