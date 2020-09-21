@@ -167,7 +167,7 @@ Failure info
 | Compute the right sibling tree | treeRightSibling.hs | tree\_right\_sibling.cc | TreeRightSibling.java | tree\_right\_sibling.py | 
 | Merge sorted files | sortedArraysMerge.hs | sorted\_arrays\_merge.cc | SortedArraysMerge.java | sorted\_arrays\_merge.py | 
 | Sort an increasing-decreasing array | sortIncreasingDecreasingArray.hs | sort\_increasing\_decreasing\_array.cc | SortIncreasingDecreasingArray.java | sort\_increasing\_decreasing\_array.py | 
-| Sort an almost-sorted array | <TBA> | sort\_almost\_sorted\_array.cc | SortAlmostSortedArray.java | sort\_almost\_sorted\_array.py | 
+| Sort an almost-sorted array | sortAlmostSortedArray.hs | sort\_almost\_sorted\_array.cc | SortAlmostSortedArray.java | sort\_almost\_sorted\_array.py | 
 | Compute the k closest stars | kClosestStars.hs | k\_closest\_stars.cc | KClosestStars.java | k\_closest\_stars.py | 
 | Compute the median of online data | onlineMedian.hs | online\_median.cc | OnlineMedian.java | online\_median.py | 
 | Compute the k largest elements in a max-heap | <TBA> | k\_largest\_in\_heap.cc | KLargestInHeap.java | k\_largest\_in\_heap.py | 
