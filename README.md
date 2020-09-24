@@ -170,7 +170,7 @@ Failure info
 | Sort an almost-sorted array | sortAlmostSortedArray.hs | sort\_almost\_sorted\_array.cc | SortAlmostSortedArray.java | sort\_almost\_sorted\_array.py | 
 | Compute the k closest stars | kClosestStars.hs | k\_closest\_stars.cc | KClosestStars.java | k\_closest\_stars.py | 
 | Compute the median of online data | onlineMedian.hs | online\_median.cc | OnlineMedian.java | online\_median.py | 
-| Compute the k largest elements in a max-heap | <TBA> | k\_largest\_in\_heap.cc | KLargestInHeap.java | k\_largest\_in\_heap.py | 
+| Compute the k largest elements in a max-heap | kSmallestInHeap.hs | k\_largest\_in\_heap.cc | KLargestInHeap.java | k\_largest\_in\_heap.py | 
 | Search a sorted array for first occurrence of k | searchFirstKey.hs | search\_first\_key.cc | SearchFirstKey.java | search\_first\_key.py | 
 | Search a sorted array for entry equal to its index | searchEntryEqualToIndex.hs | search\_entry\_equal\_to\_index.cc | SearchEntryEqualToIndex.java | search\_entry\_equal\_to\_index.py | 
 | Search a cyclically sorted array | searchShiftedSortedArray.hs | search\_shifted\_sorted\_array.cc | SearchShiftedSortedArray.java | search\_shifted\_sorted\_array.py | 

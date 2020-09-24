@@ -2,6 +2,7 @@ module Data.LeftistHeap
     (
         getMin
     ,   delMin
+    ,   getMin'
     ,   insert
     ,   merge
     ,   singleton
@@ -10,6 +11,7 @@ module Data.LeftistHeap
     ,   isEmpty
     ,   empty
     ,   LHeap
+    ,   children
     ) where
 
 import           Data.Maybe (fromJust)
@@ -21,6 +23,9 @@ data LHeap k v = LHeap {
     ,   _left  :: LHeap k v
     ,   _right :: LHeap k v
     } | Empty deriving (Show)
+
+children :: LHeap k v -> (LHeap k v, LHeap k v)
+children (LHeap _ _ _ l r) = (l,r)
 
 rank :: LHeap k v -> Int
 rank Empty = 0
@@ -52,6 +57,9 @@ insert k v = merge (singleton k v)
 delMin :: (Ord k) => LHeap k v -> LHeap k v
 delMin Empty             = Empty
 delMin (LHeap _ _ _ l r) = l `merge` r
+
+getMin' :: LHeap k v -> (k,v)
+getMin' = fromJust . getMin
 
 getMin :: LHeap k v -> Maybe (k,v)
 getMin Empty             = Nothing
