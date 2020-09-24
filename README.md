@@ -176,7 +176,7 @@ Failure info
 | Search a cyclically sorted array | searchShiftedSortedArray.hs | search\_shifted\_sorted\_array.cc | SearchShiftedSortedArray.java | search\_shifted\_sorted\_array.py | 
 | Compute the integer square root | intSquareRoot.hs | int\_square\_root.cc | IntSquareRoot.java | int\_square\_root.py | 
 | Compute the real square root | realSquareRoot.hs | real\_square\_root.cc | RealSquareRoot.java | real\_square\_root.py | 
-| Search in a 2D sorted array | <TBA> | search\_row\_col\_sorted\_matrix.cc | SearchRowColSortedMatrix.java | search\_row\_col\_sorted\_matrix.py | 
+| Search in a 2D sorted array | searchRowColSortedMatrix.hs | search\_row\_col\_sorted\_matrix.cc | SearchRowColSortedMatrix.java | search\_row\_col\_sorted\_matrix.py | 
 | Find the min and max simultaneously | <TBA> | search\_for\_min\_max\_in\_array.cc | SearchForMinMaxInArray.java | search\_for\_min\_max\_in\_array.py | 
 | Find the kth largest element | <TBA> | kth\_largest\_in\_array.cc | KthLargestInArray.java | kth\_largest\_in\_array.py | 
 | Find the missing IP address | <TBA> | absent\_value\_array.cc | AbsentValueArray.java | absent\_value\_array.py | 
