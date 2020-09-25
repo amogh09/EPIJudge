@@ -10,8 +10,7 @@ import           TestFramework.TestRunner
 findKthLargest
   :: (Ord a, PrimMonad m, RandomGen g)
   => g -> Int -> MVector (PrimState m) a -> m (a,g)
-findKthLargest g k xs = findKthSmallest g (n-k+1) xs where
-  n = MV.length xs
+findKthLargest g k xs = findKthSmallest g (n-k+1) xs where n = MV.length xs
 
 findKthSmallest
   :: (Ord a, PrimMonad m, RandomGen g)
@@ -21,7 +20,7 @@ findKthSmallest g k xs = do
   MV.swap xs pvi (n-1)
   pv <- xs `MV.read` (n-1)
   i  <- (subtract 1) <$> rearrange pv
-  case i `compare` (k-1)of
+  case i `compare` (k-1) of
     LT -> findKthSmallest g' (k-i-1) $ MV.drop (i+1) xs
     EQ -> (,) <$> MV.read xs i <*> pure g'
     GT -> findKthSmallest g' k $ MV.take i xs
