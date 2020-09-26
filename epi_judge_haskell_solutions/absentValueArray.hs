@@ -1,4 +1,5 @@
 import           Data.Bits
+import           Data.List                (foldl')
 import           TestFramework.TestRunner
 
 nbits :: Int
@@ -8,9 +9,9 @@ isBitClear :: Int -> Int -> Int
 isBitClear n x = if x .&. (1 `shiftL` (nbits - n - 1)) == 0 then 1 else 0
 
 findMissingElement :: [Int] -> Int
-findMissingElement = snd . foldl f (0,0) . replicate nbits where
+findMissingElement = snd . foldl' f (0,0) . replicate nbits where
   f (n,x) xs =
-    if foldl g 0 xs == 1 `shiftL` (nbits-n-1)
+    if foldl' g 0 xs == 1 `shiftL` (nbits-n-1)
       then (n+1, setBit x $ nbits - n - 1)
       else (n+1, x)
     where
