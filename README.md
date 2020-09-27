@@ -180,7 +180,7 @@ Failure info
 | Find the min and max simultaneously | searchForMinMaxInArray.hs | search\_for\_min\_max\_in\_array.cc | SearchForMinMaxInArray.java | search\_for\_min\_max\_in\_array.py | 
 | Find the kth largest element | kthLargestInArray.hs | kth\_largest\_in\_array.cc | KthLargestInArray.java | kth\_largest\_in\_array.py | 
 | Find the missing IP address | absentValueArray.hs | absent\_value\_array.cc | AbsentValueArray.java | absent\_value\_array.py | 
-| Find the duplicate and missing elements | <TBA> | search\_for\_missing\_element.cc | SearchForMissingElement.java | search\_for\_missing\_element.py | 
+| Find the duplicate and missing elements | searchForMissingElement.hs | search\_for\_missing\_element.cc | SearchForMissingElement.java | search\_for\_missing\_element.py | 
 | Bootcamp: Hash Tables | <TBA> | anagrams.cc | Anagrams.java | anagrams.py | 
 | Test for palindromic permutations | <TBA> | is\_string\_permutable\_to\_palindrome.cc | IsStringPermutableToPalindrome.java | is\_string\_permutable\_to\_palindrome.py | 
 | Is an anonymous letter constructible? | <TBA> | is\_anonymous\_letter\_constructible.cc | IsAnonymousLetterConstructible.java | is\_anonymous\_letter\_constructible.py | 
