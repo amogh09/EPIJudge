@@ -183,7 +183,7 @@ Failure info
 | Find the duplicate and missing elements | searchForMissingElement.hs | search\_for\_missing\_element.cc | SearchForMissingElement.java | search\_for\_missing\_element.py | 
 | Bootcamp: Hash Tables | anagrams.hs | anagrams.cc | Anagrams.java | anagrams.py | 
 | Test for palindromic permutations | isStringPermutableToPalindrome.hs | is\_string\_permutable\_to\_palindrome.cc | IsStringPermutableToPalindrome.java | is\_string\_permutable\_to\_palindrome.py | 
-| Is an anonymous letter constructible? | <TBA> | is\_anonymous\_letter\_constructible.cc | IsAnonymousLetterConstructible.java | is\_anonymous\_letter\_constructible.py | 
+| Is an anonymous letter constructible? | isAnonymousLetterConstructible.hs | is\_anonymous\_letter\_constructible.cc | IsAnonymousLetterConstructible.java | is\_anonymous\_letter\_constructible.py | 
 | Implement an ISBN cache | <TBA> | lru\_cache.cc | LruCache.java | lru\_cache.py | 
 | Compute the LCA, optimizing for close ancestors | <TBA> | lowest\_common\_ancestor\_close\_ancestor.cc | LowestCommonAncestorCloseAncestor.java | lowest\_common\_ancestor\_close\_ancestor.py | 
 | Find the nearest repeated entries in an array | <TBA> | nearest\_repeated\_entries.cc | NearestRepeatedEntries.java | nearest\_repeated\_entries.py | 
